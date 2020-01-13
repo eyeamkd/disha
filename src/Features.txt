@@ -1,0 +1,4 @@
+App Features  
+1. My Community 
+   Depending on the Branch and the passout year, disha should be able to display it's 
+   users, all their respective branch mates in a so called "My Community List" 
