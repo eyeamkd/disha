@@ -1,10 +1,7 @@
 App Features  
 1. My Community 
-   Depending on the Branch and the passout year, disha should be able to display it's 
-   users, all their respective branch mates in a so called "My Community List"  
+   Depending on the Branch and the passout year, disha should be able to display it's users, all their respective branch mates in a so called "My Community List"  
 2. Announcements Section 
    Place where alumni can share important information
-3. disha-Spaces 
-   Alumni can create their own custom manageable groups that they can send invites to add 
-   members, and only the members of the Space will be notified with the info shared in 
-   the space. 
+3. d-Spaces 
+   Alumni can create their own custom manageable groups that they can send invites to add members, and only the members of the Space will be notified with the info shared in the space. 
