@@ -1,7 +1,6 @@
-import React from 'react' ; 
+import {React, Component} from 'react' ; 
 
-
-export default class HomePage extends React.Component{
+export default class HomePage extends Component{
     render() {
         return( 
             <h1>Disha HomePage</h1>
