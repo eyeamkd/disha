@@ -1,12 +1,14 @@
 import React from 'react';
-import logo from './logo.svg'; 
 import Home from './components/HomePage/HomePage'
+import SignUp from './components/Auth/SignUp/SignUp'
 import './App.css';
 
-function App() {
-  return (
-    <Home/>
-  );
-}
 
-export default App;
+
+export default class App extends React.Component{
+  render() {
+      return( 
+          <SignUp/>
+      );
+  }
+}
