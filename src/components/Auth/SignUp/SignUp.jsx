@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Logo from '../../Logo/Logo';
 
 import './SignUp.css';
 
@@ -38,9 +39,7 @@ export default class SignUp extends React.Component {
             <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className="paper">
-                <Avatar className="avatar">
-                <LockOutlinedIcon />
-                </Avatar>
+                <Logo height="150" width="150"/>
                 <Typography component="h1" variant="h5">
                 Sign up
                 </Typography>
