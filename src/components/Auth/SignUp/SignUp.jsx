@@ -16,7 +16,6 @@ import Logo from '../../Logo/Logo';
 
 import './SignUp.css';
 
-
 export default class SignUp extends React.Component {
 
     state = {
