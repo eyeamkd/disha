@@ -1,17 +1,16 @@
-import React from 'react';
-import Home from './components/HomePage/HomePage'
-import SignUp from './components/Auth/SignUp/SignUp' 
-import ClaimAccountPage from './components/ClaimAccountPage'; 
-import AppDrawer from './navigation/AppDrawer';
-import './App.css';
+import React, { Component } from 'react';
+import Layout from './components/Layout';
+import HomePage from './components/HomePage'; 
+import Navigation from './Navigation';
 
-
-
-export default class App extends React.Component{
+export class App extends Component {
   render() {
-      return( 
-          
-          <AppDrawer/>
-      );
+    return (
+      <Layout>  
+          <Navigation/>
+      </Layout>
+    )
   }
-}
+}   
+
+export default App

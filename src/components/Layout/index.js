@@ -8,20 +8,19 @@ import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton"; 
+import IconButton from "@material-ui/core/IconButton";
 import HomeIcon from "@material-ui/icons/HomeRounded";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText"; 
+import ListItemText from "@material-ui/core/ListItemText";
 import Icon from "@material-ui/core/Icon";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
-import Menu from "./menu.json";
-
-
+import Menu from "../../Navigation/menu.json";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -81,7 +80,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function AppDrawer() {
+export default function Layout(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -138,11 +137,18 @@ export default function AppDrawer() {
         </div>
         <Divider />
         <List>
-       
           {Menu.map((menuItem, key) => (
-            <ListItem button key={menuItem.routeName}>
+            <ListItem
+              component={Link}
+              to={menuItem.endpoint}
+              button
+              key={menuItem.routeName}
+            >
               <Icon>{menuItem.icon}</Icon>
-              <ListItemText primary={menuItem.routeName} style={{padding:'10px'}} />
+              <ListItemText
+                primary={menuItem.routeName}
+                style={{ padding: "10px" }}
+              />
             </ListItem>
           ))}
         </List>
@@ -154,6 +160,7 @@ export default function AppDrawer() {
         })}
       >
         <div className={classes.drawerHeader} />
+        {props.children}
       </main>
     </div>
   );
