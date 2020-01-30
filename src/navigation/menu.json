@@ -11,11 +11,7 @@
     }, 
     { 
         "routeName":"Search D-Spaces", 
-<<<<<<< HEAD
        "endpoint":"/search-d-spaces", 
-=======
-       "endpoint":"/d-space-search", 
->>>>>>> 90d031904128c8ac378930209769c9756b476b29
         "icon": "search" 
     },  
     { 
@@ -27,7 +23,6 @@
         "routeName":"Your D-Spaces", 
        "endpoint":"/d-spaces", 
         "icon": "group" 
-<<<<<<< HEAD
     }, 
     { 
         "routeName":"Claim Account Page", 
@@ -38,7 +33,5 @@
         "routeName":"Account Requests", 
        "endpoint":"/account-requests", 
         "icon": "contacts" 
-=======
->>>>>>> 90d031904128c8ac378930209769c9756b476b29
     }
 ]
