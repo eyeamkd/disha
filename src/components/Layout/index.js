@@ -113,7 +113,7 @@ export default function Layout(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            D.I.S.H.A
+            DISHA
           </Typography>
         </Toolbar>
       </AppBar>

@@ -18,7 +18,8 @@ export class Navigation extends React.Component {
                 <Route path="/claim-account-page" exact component={ClaimAccountPage}/>   
                 <Route path="/d-space-search" exact component={SearchPage}/>   
                 <Route path="/profile" exact component={Profile}/>   
-                <Route path="/d-spaces" exact component={Dspaces}/>   
+                <Route path="/d-spaces" exact component={Dspaces}/>    
+                <Route path="/claim-account" exact component={ClaimAccountPage}/>   
             </Switch>
         )
     }

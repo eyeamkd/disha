@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 
-export class ClaimAccount extends Component {
+export class ClaimAccountPage extends Component {
     render() {
         return (
             <div>
-                <h1>Claim Account Page</h1>
+                ClaimAccountPage
             </div>
         )
     }
 }
 
-export default ClaimAccount;
+export default ClaimAccountPage
