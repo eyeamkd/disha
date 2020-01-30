@@ -12,25 +12,21 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { connect } from 'react-redux';
+import Logo from '../../Logo/Logo';
 
 import './SignUp.css';
+import { setFirstName } from './../../../redux/signup/firstName-actions'; 
+import { setLastName } from './../../../redux/signup/lastName-actions'; 
 
-
-export default class SignUp extends React.Component {
-
-    state = {
-        firstName: '',
-        lastName: '',
-    };
+class SignUp extends React.Component {
 
     handleFirstNameChange = event => {
-        this.setState({firstName: event.target.value},
-            () => console.log(this.state.firstName));
+        this.props.setFirstName(event.target.value);
     }
 
     handleLastNameChange = event => {
-        this.setState({lastName: event.target.value},
-            () => console.log(this.state.lastName));
+        this.props.setLastName(event.target.value);
     }
 
     render() {
@@ -38,9 +34,7 @@ export default class SignUp extends React.Component {
             <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className="paper">
-                <Avatar className="avatar">
-                <LockOutlinedIcon />
-                </Avatar>
+                <Logo height="150" width="150"/>
                 <Typography component="h1" variant="h5">
                 Sign up
                 </Typography>
@@ -123,3 +117,15 @@ export default class SignUp extends React.Component {
         );
     }
 }
+
+const mapStateToProps = state => ({
+    firstName: state.firstName.firstName,
+    lastName: state.lastName.lastName
+});
+
+const mapDispatchToProps = dispatch => ({
+    setFirstName: firstName => dispatch(setFirstName(firstName)),
+    setLastName: lastName => dispatch(setLastName(lastName))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
