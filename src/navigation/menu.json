@@ -1,0 +1,37 @@
+[ 
+    { 
+        "routeName":"Home", 
+       "endpoint":"/", 
+        "icon": "home"
+    },  
+    { 
+        "routeName":"Profile", 
+       "endpoint":"/profile", 
+        "icon": "account_box" 
+    }, 
+    { 
+        "routeName":"Search D-Spaces", 
+       "endpoint":"/search-d-spaces", 
+        "icon": "search" 
+    },  
+    { 
+        "routeName":"Community", 
+       "endpoint":"/community", 
+        "icon": "emoji_people"
+    },  
+    { 
+        "routeName":"Your D-Spaces", 
+       "endpoint":"/d-spaces", 
+        "icon": "group" 
+    }, 
+    { 
+        "routeName":"Claim Account Page", 
+       "endpoint":"/claim-account", 
+        "icon": "nature_people" 
+    }, 
+    { 
+        "routeName":"Account Requests", 
+       "endpoint":"/account-requests", 
+        "icon": "contacts" 
+    }
+]
