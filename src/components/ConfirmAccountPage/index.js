@@ -1,7 +1,9 @@
 import React, { Component } from "react"; 
 import ReactDOM from 'react-dom'
 import MaterialTable from 'material-table'
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core"; 
+
+import usersData from '../../data/users.json';
 
 const tableStyles = makeStyles({ 
     CheckIcon:{ 
@@ -16,34 +18,25 @@ export class ConfirmAccount extends Component {
         <MaterialTable
           title="Account Requests"
           columns={[
-            { title: "Name", field: "name" },
-            { title: "Surname", field: "surname" },
-            { title: "Birth Year", field: "birthYear", type: "numeric" },
-            {
-              title: "Birth Place",
-              field: "birthCity",
-              lookup: { 34: "İstanbul", 63: "Şanlıurfa" }
-            }
+            { title: "Name", field: "firstName" },
+            { title: "Batch", field: "batch" },
+            { title: "Roll Number", field: "rollNumber"}, 
+            { title: "Phone Number", field: "phoneNumber"}, 
+            { title: "Email", field: "email"},
           ]}
-          data={[
-            {
-              name: "Mehmet",
-              surname: "Baran",
-              birthYear: 1987,
-              birthCity: 63
-            },
-            {
-              name: "Zerya Betül",
-              surname: "Baran",
-              birthYear: 2017,
-              birthCity: 34
-            }
-          ]}
+          data={usersData.filter( user => !user.verified)}
           actions={[
             {
               icon: "check",
               tooltip: "Accept",
-              onClick: (event, rowData) => alert("Account Accepted "), 
+              onClick: (event, rowData) => {  
+                const uid = rowData.uId  
+                usersData.forEach(user => { 
+                  if( user.uId === uid ){ 
+                    user.verified = true
+                  }
+                });
+                }, 
               color:'primary', 
               iconProps: { style: {  color: "green" } },
             }, 

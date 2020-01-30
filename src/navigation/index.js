@@ -7,6 +7,7 @@ import CommunityPage from '../components/Community';
 import SearchPage from '../components/SearchPage';
 import Dspaces from '../components/Dspaces';
 import Profile from '../components/Profile';
+import ConfirmAccount from '../components/ConfirmAccountPage';
 
 
 export class Navigation extends React.Component {
@@ -15,7 +16,7 @@ export class Navigation extends React.Component {
             <Switch> 
                 <Route path="/" exact component={HomePage}/>     
                 <Route path="/community" exact component={CommunityPage}/>   
-                <Route path="/claim-account-page" exact component={ClaimAccountPage}/>   
+                <Route path="/account-requests" exact component={ConfirmAccount}/>   
                 <Route path="/d-space-search" exact component={SearchPage}/>   
                 <Route path="/profile" exact component={Profile}/>   
                 <Route path="/d-spaces" exact component={Dspaces}/>    
