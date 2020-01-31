@@ -7,12 +7,14 @@ import CommunityPage from '../components/Community';
 import SearchPage from '../components/SearchPage';
 import Dspaces from '../components/Dspaces';
 import Profile from '../components/Profile';
+import SignUp from '../components/Auth/SignUp/SignUp';
 
 
 export class Navigation extends React.Component {
     render() {
         return (
             <Switch> 
+                <Route path="/signup" exact component={SignUp}/>     
                 <Route path="/" exact component={HomePage}/>     
                 <Route path="/community" exact component={CommunityPage}/>   
                 <Route path="/claim-account-page" exact component={ClaimAccountPage}/>   

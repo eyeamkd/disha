@@ -1,5 +1,10 @@
 [ 
     { 
+        "routeName":"Signup", 
+       "endpoint":"/signup", 
+        "icon": "group" 
+    },
+    { 
         "routeName":"Home", 
        "endpoint":"/", 
         "icon": "home"
@@ -22,6 +27,6 @@
     { 
         "routeName":"Your D-Spaces", 
        "endpoint":"/d-spaces", 
-        "icon": "group" 
+        "icon": "account_box" 
     }
 ]
