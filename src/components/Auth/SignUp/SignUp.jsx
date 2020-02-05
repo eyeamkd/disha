@@ -7,10 +7,13 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Select from '@material-ui/core/Select';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormLabel from '@material-ui/core/FormLabel';
 import Container from '@material-ui/core/Container';
 import { connect } from 'react-redux';
 import Logo from '../../Logo/Logo';
@@ -21,6 +24,10 @@ import { setLastName } from './../../../redux/signup/lastName-actions';
 import { setEmail } from './../../../redux/signup/email-actions';
 import { setRollNumber } from './../../../redux/signup/rollNumber-actions';
 import { setYear } from './../../../redux/signup/year-actions';
+import { setSection } from './../../../redux/signup/section-actions';
+import { setDepartment } from './../../../redux/signup/department-actions';
+import { setPassword } from './../../../redux/signup/password-actions';
+
 
 class SignUp extends React.Component {
 
@@ -29,8 +36,18 @@ class SignUp extends React.Component {
         isLastName: false,
         isEmail: false,
         isRollNumber: false,
-        isYear: false
+        isYear: false,
+        isSection: false,
+        isPassword: false,
+        isConfirmPassword: false,
+        isAckChecked: false,
+        confirmPassword: '',
+        labelWidth: 0,
+        inputLabel: null
     };
+
+    
+    
 
     handleFirstNameChange = event => {
         this.props.setFirstName(event.target.value);
@@ -49,39 +66,77 @@ class SignUp extends React.Component {
     }
 
     handleRollNumberChange = event => {
-        this.props.setRollNumber(event.target.value);
-        let isRollNumberProper = this.validateTicketNum(event.target.value);
-        (event.target.value.length < 1 || !isRollNumberProper) ? this.setState({ isRollNumber: true}) : this.setState({ isRollNumber: false});
+        let tempRollNumber = event.target.value;
+        let departments = {"01": "Civil", "02": "EEE", "03": "Mech", "04": "ECE", "05": "CSE", "12": "IT"};
+        this.props.setRollNumber(tempRollNumber);
+        let isRollNumberProper = this.validateTicketNum(tempRollNumber);
+        (tempRollNumber.length < 1 || !isRollNumberProper) ? this.setState({ isRollNumber: true}) : this.setState({ isRollNumber: false});
+        if(tempRollNumber.length > 7) {
+            let deptCode = tempRollNumber.substring(6,8);
+            this.props.setDepartment(departments[deptCode])
+        }
+            
     }
 
     handleYearChange = event => {
         this.props.setYear(event.target.value);
-        let isYearProper = ((Number)(event.target.value) > 2000 && (Number)(event.target.value) <2050) ;
+        let isYearProper = ((Number)(event.target.value) > 2007 && (Number)(event.target.value) <2050) ;
         (event.target.value.length < 1 || !isYearProper) ? this.setState({ isYear: true}) : this.setState({ isYear: false});
+    }
+
+    handleSectionChange = event => {
+        this.props.setSection(event.target.value);
+        this.setState({isSection: true})
+    };
+
+    handlePasswordChange = event => {
+        this.props.setPassword(event.target.value);
+        (event.target.value.length < 6) ? this.setState({ isPassword: true}) : this.setState({ isPassword: false});
+    };
+
+    handleConfirmPasswordChange = event => {
+        this.setState({ confirmPassword: event.target.value});
+        (event.target.value === this.props.password) ? this.setState({ isConfirmPassword: true}) : this.setState({ isConfirmPassword: false});
+    };
+
+    handleAckChange = () => {
+        this.state.isAckChecked = !this.state.isAckChecked;
+        this.setState({isAckChecked: this.state.isAckChecked},
+            ()=>console.log(this.state.isAckChecked));
+    };
+
+    checkPasswordMatch = () => {
+        if(this.state.confirmPassword.length > 0) {
+            if(!this.state.isConfirmPassword) 
+                return ("Passwords do not match!")
+        }
     }
 
     validateTicketNum(numb){
         numb = numb.toLowerCase();
-        var first = ["1", "2"];
+        var first = ["0", "1", "2"];
         var second = ["1a", "5a"];
-        var third = ["02","04","05","12"]; // Add other branches
+        var third = ["01", "02", "03", "04", "05", "12"]; // Add other branches
+        
         if (numb.length!==10){
            return false;
         }
-        else if (first.indexOf(numb.substring(0,1))===-1){
+        if (first.indexOf(numb.substring(0,1))===-1){
            return false;
         }
-        else if (numb.substring(2,4)!=='p6'){
+        if (numb.substring(2,4)!=='p6'){
            return false;
         }
-        else if (second.indexOf(numb.substring(4,6))===-1){
+        if (second.indexOf(numb.substring(4,6))===-1){
             return false;
          }
-        else if (third.indexOf(numb.substring(6,8))===-1){
+        if (third.indexOf(numb.substring(6,8))===-1){
            return false;
         }
         return true;
      }
+
+     
     
 
     render() {
@@ -97,7 +152,7 @@ class SignUp extends React.Component {
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
                     <TextField
-                        autoComplete="fname"
+                        autoComplete="firstname"
                         name="firstName"
                         variant="outlined"
                         error={this.state.isFirstName}
@@ -119,7 +174,7 @@ class SignUp extends React.Component {
                         id="lastName"
                         label="Last Name"
                         name="lastName"
-                        autoComplete="lname"
+                        autoComplete="lastname"
                         helperText={this.state.isLastName ? '* Required' : ''}
                         onChange={event=> this.handleLastNameChange(event)}
                     />
@@ -139,7 +194,7 @@ class SignUp extends React.Component {
                         onChange={event=> this.handleEmailChange(event)}
                     />
                     </Grid>
-                    <Grid item xs={12} sm={7}>
+                    <Grid item xs={12}>
                     <TextField
                         autoComplete="fname"
                         name="rollNumber"
@@ -160,6 +215,7 @@ class SignUp extends React.Component {
                         error={this.state.isYear}
                         required
                         fullWidth
+                        value={this.state.yearValue}
                         id="year"
                         type="number"
                         label="Pass-out Year"
@@ -167,10 +223,50 @@ class SignUp extends React.Component {
                         autoComplete="year"
                         helperText={this.state.isYear ? '* Enter a valid year' : ''}
                         onChange={event=> this.handleYearChange(event)}
-                    />
-
-                    </Grid>
+                    /></Grid>
+                    <Grid item xs={12} sm={7}>
+                    <TextField
+                        disabled
+                        id="outlined-disabled"
+                        defaultValue="Department"
+                        variant="outlined"
+                        label="Department"
+                        name="department"
+                        autoComplete="department"
+                        value={this.props.department}
+                        helperText={this.state.isYear ? '* Enter a valid year' : ''}
+                        onChange={event=> this.handleYearChange(event)}
+                    /></Grid>
                     <Grid item xs={12}>
+                    <FormLabel component="legend">Section</FormLabel>
+                        <RadioGroup aria-label="section" name="section" value={this.props.section} onChange={event=> this.handleSectionChange(event)} row>
+                            <FormControlLabel
+                            value="a"
+                            control={<Radio color="primary" />}
+                            label="A"
+                            labelPlacement="end"
+                            />
+                            <FormControlLabel
+                            value="b"
+                            control={<Radio color="primary" />}
+                            label="B"
+                            labelPlacement="end"
+                            />
+                            <FormControlLabel
+                            value="c"
+                            control={<Radio color="primary" />}
+                            label="C"
+                            labelPlacement="end"
+                            />
+                            <FormControlLabel
+                            value="d"
+                            control={<Radio color="primary" />}
+                            label="D"
+                            labelPlacement="end"
+                            />
+                        </RadioGroup>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
                     <TextField
                         variant="outlined"
                         required
@@ -179,12 +275,29 @@ class SignUp extends React.Component {
                         label="Password"
                         type="password"
                         id="password"
+                        error={this.state.isPassword}
+                        helperText={this.state.isPassword ? 'Password length too short' : ''}
+                        onChange={event=> this.handlePasswordChange(event)}
                         autoComplete="current-password"
+                    />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                    <TextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        name="password"
+                        label="Confirm Password"
+                        type="password"
+                        id="confirm-password"
+                        error={this.state.confirmPassword.length < 1 ? this.state.isConfirmPassword : !this.state.isConfirmPassword}
+                        onChange={event=> this.handleConfirmPasswordChange(event)}
+                        helperText={this.checkPasswordMatch()}
                     />
                     </Grid>
                     <Grid item xs={12}>
                     <FormControlLabel
-                        control={<Checkbox value="allowExtraEmails" color="primary" />}
+                        control={<Checkbox value="allowExtraEmails" color="primary" onChange={() => this.handleAckChange()} />}
                         label="I agree that aforementioned details are correct."
                     />
                     </Grid>
@@ -218,6 +331,9 @@ const mapStateToProps = state => ({
     email: state.email.email,
     rollNumber: state.rollNumber.rollNumber,
     year: state.year.year,
+    section: state.section.section,
+    department: state.department.department,
+    password: state.password.password
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -225,7 +341,10 @@ const mapDispatchToProps = dispatch => ({
     setLastName: lastName => dispatch(setLastName(lastName)),
     setEmail: email => dispatch(setEmail(email)),
     setRollNumber: rollNumber => dispatch(setRollNumber(rollNumber)),
-    setYear: year => dispatch(setYear(year))
+    setYear: year => dispatch(setYear(year)),
+    setSection: section => dispatch(setSection(section)),
+    setDepartment: department => dispatch(setDepartment(department)),
+    setPassword: password => dispatch(setPassword(password))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
