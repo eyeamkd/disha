@@ -1,0 +1,9 @@
+.MuiCardHeader-content{ 
+    display: flex; 
+    flex-direction: column-reverse; 
+
+} 
+
+.card-footer{ 
+    margin-top: 20px;
+}
