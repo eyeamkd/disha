@@ -5,7 +5,7 @@ import './style.css';
 export default class HomePage extends React.Component{
     render() {
         return(  
-            <div style={{}} class="main-div"> 
+            <div style={{}} className="main-div"> 
                 <Post/>  
                 <Post/>  
                 <Post/>  

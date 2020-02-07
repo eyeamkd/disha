@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import Layout from './components/Layout';
-import Navigation from './navigation';
+import Navigation from './navigation'; 
+import {sampleFunction} from './firebase/firebase.utils'
 
-export class App extends Component {
-  render() {
+export class App extends Component { 
+  
+  render() { 
+  sampleFunction();
     return (
       <Layout>  
           <Navigation/>

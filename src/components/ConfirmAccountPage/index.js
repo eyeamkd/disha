@@ -1,15 +1,15 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
+//import ReactDOM from "react-dom";
 import MaterialTable from "material-table";
-import { makeStyles } from "@material-ui/core";
+//import { makeStyles } from "@material-ui/core";
 
 import usersData from "../../data/users.json";
 
-const tableStyles = makeStyles({
-  CheckIcon: {
-    color: "green"
-  }
-});
+// const tableStyles = makeStyles({
+//   CheckIcon: {
+//     color: "green"
+//   }
+// });
 
 export class ConfirmAccount extends Component {
   render() {
