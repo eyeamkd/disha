@@ -20,7 +20,10 @@ import Icon from "@material-ui/core/Icon";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import Menu from "../../Navigation/menu.json";
+import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
+import Grid from '@material-ui/core/Grid';
+import {auth} from '../../firebase/firebase.utils';
 
 const drawerWidth = 240;
 
@@ -112,9 +115,38 @@ export default function Layout(props) {
           >
             <MenuIcon />
           </IconButton>
+          <Grid item xs={12} sm={2}>
           <Typography variant="h6" noWrap>
-            D.I.S.H.A
+            DISHA
           </Typography>
+          </Grid>
+          <Grid item xs={12} sm={9}></Grid>
+          <Grid item xs={12} sm={1}>
+            {
+              props.currentUser ?
+              <Button
+              type="submit"
+              variant="contained"
+              color="secondary"
+              className="submit"
+              onClick={() => auth.signOut()}
+              >
+                Sign Out
+              </Button>
+              :
+              <Button
+                type="submit"
+                variant="contained"
+                color="secondary"
+                className="submit"
+                onClick={() => auth.signOut()}
+                to="/signin"
+              >
+                Sign Up
+              </Button>
+            }
+            
+          </Grid>
         </Toolbar>
       </AppBar>
       <Drawer

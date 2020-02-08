@@ -27,6 +27,7 @@ import { setYear } from './../../../redux/signup/year-actions';
 import { setSection } from './../../../redux/signup/section-actions';
 import { setDepartment } from './../../../redux/signup/department-actions';
 import { setPassword } from './../../../redux/signup/password-actions';
+import { auth, createUserProfileDocument } from '../../../firebase/firebase.utils';
 
 
 class SignUp extends React.Component {
@@ -41,6 +42,9 @@ class SignUp extends React.Component {
         isPassword: false,
         isConfirmPassword: false,
         isAckChecked: false,
+        isSignup: false,
+        isAlumni: false,
+        signupErrorMessage: '',
         confirmPassword: '',
         labelWidth: 0,
         inputLabel: null
@@ -80,9 +84,32 @@ class SignUp extends React.Component {
 
     handleYearChange = event => {
         this.props.setYear(event.target.value);
+        let yearValue = (Number)(event.target.value);
         let isYearProper = ((Number)(event.target.value) > 2007 && (Number)(event.target.value) <2050) ;
-        (event.target.value.length < 1 || !isYearProper) ? this.setState({ isYear: true}) : this.setState({ isYear: false});
-    }
+        let date = new Date()
+        let currentYear = date.getFullYear()
+        let currentMonth = date.getMonth() + 1;
+        if(event.target.value.length < 1 || !isYearProper)
+            this.setState({ isYear: true});
+        else
+            this.setState({ isYear: false});        
+        if(event.target.value.length > 3) {
+            console.log(yearValue, currentYear)
+            if (yearValue < currentYear ) {
+                this.setState({isAlumni: true})
+
+            }
+            else if (yearValue === currentYear  && currentMonth > 6) {
+                this.setState({isAlumni: true}) 
+            }
+            else {
+                this.setState({isAlumni: false})
+
+            }   
+        }
+        
+    } 
+
 
     handleSectionChange = event => {
         this.props.setSection(event.target.value);
@@ -101,9 +128,48 @@ class SignUp extends React.Component {
 
     handleAckChange = () => {
         this.state.isAckChecked = !this.state.isAckChecked;
-        this.setState({isAckChecked: this.state.isAckChecked},
-            ()=>console.log(this.state.isAckChecked));
+        this.setState({isAckChecked: this.state.isAckChecked});
     };
+
+    handleSignupClick = async () => {
+        console.log(this.props)
+        const { firstName, lastName, email, rollNumber, year, section, department, password } = this.props;
+        console.log(department);
+        if (this.state.isAckChecked 
+            && this.state.isConfirmPassword
+            && !this.state.isEmail
+            && !this.state.isPassword
+            && !this.state.isYear
+            && !this.state.isFirstName
+            && !this.state.isLastName
+            && this.state.isSection
+            && !this.state.isRollNumber
+        ) 
+            {
+                this.setState({isSignup : true}, () => this.setState({signupErrorMessage: ''}));
+                try {
+                    const { user } = await auth.createUserWithEmailAndPassword(email, password)
+                    await createUserProfileDocument(user, {firstName, lastName, email, rollNumber, year, department, section});
+                    this.props.setFirstName('');
+                    this.props.setLastName('');
+                    this.props.setEmail('');
+                    this.props.setRollNumber('');
+                    this.props.setSection('');
+                    this.props.setYear('');
+                    this.props.setPassword('');
+                    this.props.setDepartment('');
+
+
+                }catch(error) {
+                    console.error(error)
+                }
+            }
+        else {
+            this.setState({isSignup : false}, () => this.setState({signupErrorMessage: '* Please check all the fields'}));
+            return;
+        }
+
+    }
 
     checkPasswordMatch = () => {
         if(this.state.confirmPassword.length > 0) {
@@ -139,7 +205,7 @@ class SignUp extends React.Component {
      
     
 
-    render() {
+    render() { 
         return (
             <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -302,15 +368,19 @@ class SignUp extends React.Component {
                     />
                     </Grid>
                 </Grid>
+                </form>
+                {this.state.isSignup ? '' : <p style={{color: 'red'}}>{this.state.signupErrorMessage}</p>}
                 <Button
                     type="submit"
                     fullWidth
                     variant="contained"
                     color="secondary"
                     className="submit"
+                    onClick={() => this.handleSignupClick()}
                 >
                     Sign Up
                 </Button>
+                
                 <Grid container justify="flex-end">
                     <Grid item>
                     <Link href="#" variant="body2">
@@ -318,7 +388,7 @@ class SignUp extends React.Component {
                     </Link>
                     </Grid>
                 </Grid>
-                </form>
+                
             </div>
             </Container>
         );

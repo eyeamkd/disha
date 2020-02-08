@@ -10,6 +10,7 @@ import Profile from '../components/Profile';
 import SignUp from '../components/Auth/SignUp/SignUp';
 
 
+
 export class Navigation extends React.Component {
     render() {
         return (
