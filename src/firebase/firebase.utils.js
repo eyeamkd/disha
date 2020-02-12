@@ -4,7 +4,7 @@ import 'firebase/firestore';
 
 
 const configurationObject =  {
-    apiKey: "AIzaSyBmr3NSe3sRk2Zb2OWOhwqGi_pMo49GDF4",
+    apiKey: "",
     authDomain: "disha-82395.firebaseapp.com",
     databaseURL: "https://disha-82395.firebaseio.com",
     projectId: "disha-82395",
