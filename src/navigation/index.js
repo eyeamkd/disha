@@ -7,7 +7,7 @@ import CommunityPage from '../components/Community';
 import SearchPage from '../components/SearchPage';
 import Dspaces from '../components/Dspaces';
 import Profile from '../components/Profile';
-import ConfirmAccount from '../components/ConfirmAccountPage';
+
 
 
 export class Navigation extends React.Component {
@@ -20,12 +20,8 @@ export class Navigation extends React.Component {
                 <Route path="/d-space-search" exact component={SearchPage}/>   
                 <Route path="/profile" exact component={Profile}/>   
                 <Route path="/d-spaces" exact component={Dspaces}/>    
-<<<<<<< HEAD
-                <Route path="/claim-account" exact component={ClaimAccountPage}/>   
-=======
                 <Route path="/claim-account" exact component={ClaimAccountPage}/>    
                 <Route path="/confirm-account" exact component={ConfirmAccount}/>   
->>>>>>> 08baab3a6888625039feb95e9fe47afadde494c4
             </Switch>
         )
     }

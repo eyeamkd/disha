@@ -61,10 +61,9 @@ export default function Post() {
           together with your guests. Add 1 cup of frozen peas along with the
           mussels, if you like.
         </Typography>
-        <div className="card-footer">
+        
           <Typography variant="body2" color="primary" component="p" >- Kunal Dubey  </Typography> 
-         
-        </div>
+   
       </CardContent>
 
       <CardActions disableSpacing>
