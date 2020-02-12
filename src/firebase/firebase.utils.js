@@ -21,4 +21,5 @@ export const  sampleFunction= async () => {
 const user =  await firestore.collection('users').doc('oAcioYwuM6We2J5YiDgB'); 
 const userData = user.get(); 
 console.log((await userData).data());     
-}
+} 
+

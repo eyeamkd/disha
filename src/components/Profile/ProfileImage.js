@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Avatar } from '@material-ui/core'
+import classes from '*.module.css';
 
 export class ProfileImage extends Component {
     render() {
@@ -7,7 +8,8 @@ export class ProfileImage extends Component {
             <div>
                 <Avatar  
                     variant ="square" 
-                    sizes =" "  
+                    sizes =" "   
+                    className = {class}
                     > 
                     KD 
                 </Avatar>
@@ -16,4 +18,4 @@ export class ProfileImage extends Component {
     }
 }
 
-export default ProfileImage
+export default ProfileImage;
