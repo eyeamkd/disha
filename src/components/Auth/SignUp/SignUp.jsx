@@ -1,5 +1,4 @@
 import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -7,10 +6,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
-import Select from '@material-ui/core/Select';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -44,6 +40,7 @@ class SignUp extends React.Component {
         isAckChecked: false,
         isSignup: false,
         isAlumni: false,
+        isAuthenticated: false,
         signupErrorMessage: '',
         confirmPassword: '',
         labelWidth: 0,
@@ -134,6 +131,7 @@ class SignUp extends React.Component {
     handleSignupClick = async () => {
         console.log(this.props)
         const { firstName, lastName, email, rollNumber, year, section, department, password } = this.props;
+        const { isAlumni, isAuthenticated } = this.state;
         console.log(department);
         if (this.state.isAckChecked 
             && this.state.isConfirmPassword
@@ -149,7 +147,7 @@ class SignUp extends React.Component {
                 this.setState({isSignup : true}, () => this.setState({signupErrorMessage: ''}));
                 try {
                     const { user } = await auth.createUserWithEmailAndPassword(email, password)
-                    await createUserProfileDocument(user, {firstName, lastName, email, rollNumber, year, department, section});
+                    await createUserProfileDocument(user, {firstName, lastName, email, password, rollNumber, year, department, section, isAlumni, isAuthenticated});
                     this.props.setFirstName('');
                     this.props.setLastName('');
                     this.props.setEmail('');

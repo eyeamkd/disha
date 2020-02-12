@@ -96,6 +96,11 @@ export default function Layout(props) {
     setOpen(false);
   };
 
+  const handleSignOut = () => {
+    auth.signOut();
+    props.changeCurrentUser();
+  };
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -129,7 +134,7 @@ export default function Layout(props) {
               variant="contained"
               color="secondary"
               className="submit"
-              onClick={() => auth.signOut()}
+              onClick={() => handleSignOut()}
               >
                 Sign Out
               </Button>
@@ -139,10 +144,8 @@ export default function Layout(props) {
                 variant="contained"
                 color="secondary"
                 className="submit"
-                onClick={() => auth.signOut()}
-                to="/signin"
               >
-                Sign Up
+                <Link to="/signin">Sign In</Link>
               </Button>
             }
             
