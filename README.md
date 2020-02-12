@@ -1,4 +1,7 @@
-<h2>DISHA</h2> 
+<h2>DISHA</h2>  
+
+<img src="https://github.com/eyeamkd/disha/blob/master/src/assets/DISHA%20-%20Logo%20White.jpg" height="200px" width="200px"/>
+
 <i>Delegation, Interaction and Scholarly Help Application</i>
 <br>
 
