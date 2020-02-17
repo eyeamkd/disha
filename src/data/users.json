@@ -1,0 +1,38 @@
+[ 
+    { 
+        "username":"eyeamkd", 
+        "firstName":"Kunal",  
+        "lastName":"Dubey", 
+        "phoneNumber":"8790682297", 
+        "rollNumber":"16P61A1206",
+        "uId":"2297",
+        "password":"pass1",
+        "alumni": false,
+        "batch":2020,
+        "email":"kunaldubey2297@gmail.com", 
+        "facebook":null,
+        "linkedIn":"linkedin.com/eyeamkd", 
+        "github":"github.com/eyeamkd", 
+        "currentDesignation":"Intern",
+        "company":"technovert",  
+        "verified":true
+    },   
+    { 
+        "username":"akylus",  
+        "firstName":"Kaustubh",
+        "lastName":"Eppalapalli", 
+        "phoneNumber":"9494523114",  
+        "rollNumber":"13P61A1206",
+        "uId":"9989",
+        "password":"pass2",
+        "alumni": true,
+        "batch":2013,
+        "email":"kaustubh.e@gmail.com", 
+        "facebook":null,
+        "linkedIn":"linkedin.com/kaustubh.e", 
+        "github":"github.com/akylus", 
+        "currentDesignation":"Senior Staff Engineer",
+        "company":"Google",  
+        "verified":false
+    }
+]

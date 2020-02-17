@@ -1,0 +1,27 @@
+.user-sub-heading-spacing{
+    display: flex; 
+    flex-direction: row;  
+    padding: 10px; 
+    margin-top: 10px;
+} 
+
+.user-community { 
+    display: flex;  
+    flex-direction: column; 
+    flex-wrap: wrap;
+    align-items: center; 
+    margin: 12px;
+} 
+
+.user-activity-parent-div{ 
+    display: flex; 
+    flex-direction: column; 
+} 
+
+.user-profile-header-row{ 
+    display: inline;
+} 
+
+.user-name-title-style{ 
+    width: max-content;
+}
