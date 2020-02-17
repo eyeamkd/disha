@@ -8,6 +8,7 @@ import yearReducer from './signup/year-reducer';
 import sectionReducer from './signup/section-reducer';
 import departmentReducer from './signup/department-reducer';
 import passwordReducer from './signup/password-reducer';
+import isNewUserReducer from './signup/isNewUser-reducer';
 
 export default combineReducers ({
     firstName: firstNameReducer,
@@ -17,5 +18,6 @@ export default combineReducers ({
     year: yearReducer,
     section: sectionReducer,
     department: departmentReducer,
-    password: passwordReducer
+    password: passwordReducer,
+    isNewUser: isNewUserReducer
 });

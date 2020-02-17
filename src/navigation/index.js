@@ -11,7 +11,6 @@ import SignUp from '../components/Auth/SignUp/SignUp';
 import SignIn from '../components/Auth/SignIn/SignIn';
 
 
-
 export class Navigation extends React.Component {
     render() {
         return (

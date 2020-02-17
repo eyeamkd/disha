@@ -98,7 +98,6 @@ export default function Layout(props) {
 
   const handleSignOut = () => {
     auth.signOut();
-    props.changeCurrentUser();
   };
 
   return (
