@@ -1,5 +1,5 @@
 const INITIAL_STATE = {
-    isNewUser: false
+    isNewUser: null
 }// similar to first state value set
 
 const isNewUserReducer = (state = INITIAL_STATE, action) => {

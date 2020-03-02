@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import Layout from './components/Layout';
 import HomePage from './components/HomePage'; 
 import Navigation from './Navigation/index';
@@ -18,28 +19,33 @@ export class App extends Component {
 
   componentDidMount() {
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      console.log("Reaching here")
       console.log(this.props.isNewUser)
-      if(this.props.isNewUser) {
         if(userAuth) {
-          console.log("Auth ", userAuth)
-          const userRef = await createUserProfileDocument(userAuth);
-          userRef.onSnapshot(snapShot => {
-            this.setState({
-              currentUser: {
-                id: snapShot.id,
-                ...snapShot.data()
-              }
+          let userRef = await createUserProfileDocument(userAuth);
+          if(this.props.isNewUser === false) {
+            console.log("Auth ", userAuth)
+            userRef.onSnapshot(snapShot => {
+              this.setState({
+                currentUser: {
+                  id: snapShot.id,
+                  ...snapShot.data()
+                }
+              })
+    
+              //console.log(this.state)
             })
-  
-            //console.log(this.state)
-          })
+          }
+          else if(this.props.isNewUser === true){
+            userRef = null;
+            this.setState({ currentUser: null })
+          }
         }
         else {
           this.setState({ currentUser: userAuth })
         }
-      }
       
-      createUserProfileDocument(userAuth);  
+      
 
     });
   }
@@ -55,7 +61,7 @@ export class App extends Component {
 
   render() {
     return (
-      <Layout currentUser={this.state.currentUser} changeCurrentUser>  
+      <Layout currentUser={this.props.isNewUser ? null : this.state.currentUser} changeCurrentUser>  
           <Navigation/>
       </Layout>
     )

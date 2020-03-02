@@ -51,7 +51,9 @@ class SignIn extends React.Component {
         if (!this.state.isEmail && !this.state.isPassword) {
             try {
                 var signedIn = await auth.signInWithEmailAndPassword(email, password);
-                this.props.setIsNewUser(signedIn.additionalUserInfo.isNewUser)
+                this.props.setIsNewUser(signedIn.additionalUserInfo.isNewUser);
+                await console.log("signedIn.additionalUserInfo.isNewUser", signedIn)
+
                 this.setState({
                     email: '',
                     password: ''
