@@ -15,7 +15,7 @@ export class UserInfo extends Component {
         <Container>
           <Row className="user-sub-heading-spacing">
             <Col>
-              <Typography variant="h1" className = "user-name-title-style">Kunal Dubey</Typography>
+              <Typography variant="h1" className = "user-name-title-style">Kaustubh Eppalapalli</Typography>
             </Col> 
            </Row> 
            <Row className="user-info">
@@ -29,7 +29,7 @@ export class UserInfo extends Component {
             </Col>
             <Col>
               <PhoneIcon />
-              <Typography>8790682297</Typography>
+              <Typography>8520959114</Typography>
             </Col> 
             <Col>
               <DateRangeIcon />

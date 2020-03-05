@@ -1,25 +1,37 @@
-import firebase from 'firebase/app'; 
-import 'firebase/firestore';  
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
+import firebaseConfig from './firebase.config.json';
+
+const config = firebaseConfig;
+
+export const createUserProfileDocument = async(userAuth, additionalData) => {
+    if(!userAuth) return;
+    const userRef = firestore.doc(`users/${userAuth.uid}`);
+    const snapShot = await userRef.get();
 
 
+    if(!snapShot.exists) {
+        const { displayName, email } = userAuth;
+        const createdAt = Date();
 
-const configurationObject =  {
-    apiKey: "",
-    authDomain: "disha-82395.firebaseapp.com",
-    databaseURL: "https://disha-82395.firebaseio.com",
-    projectId: "disha-82395",
-    storageBucket: "disha-82395.appspot.com",
-    messagingSenderId: "161359131723",
-    appId: "1:161359131723:web:d84bdafbe0fed111ce09ce",
-    measurementId: "G-SDLP3D41WJ"
-  };
+        try {
+            await userRef.set({
+                displayName, 
+                email, 
+                createdAt,
+                ...additionalData
+            })
+        }
+        catch(error) {
+            console.log("Error in creating user", error.message);
+        }
+    }
+    return userRef;
+}
 
-firebase.initializeApp(configurationObject); 
-const firestore = firebase.firestore(); 
+firebase.initializeApp(config);
 
-export const  sampleFunction= async () => {  
-const user =  await firestore.collection('users').doc('oAcioYwuM6We2J5YiDgB'); 
-const userData = user.get(); 
-console.log((await userData).data());     
-} 
+export const auth = firebase.auth();
+export const firestore = firebase.firestore();
 

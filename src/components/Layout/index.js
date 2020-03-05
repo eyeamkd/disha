@@ -17,10 +17,18 @@ import ListItem from "@material-ui/core/ListItem";
 //import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Icon from "@material-ui/core/Icon";
-//import InboxIcon from "@material-ui/icons/MoveToInbox";
-//import MailIcon from "@material-ui/icons/Mail";
-import Menu from "../../navigation/menu.json";
+import InboxIcon from "@material-ui/icons/MoveToInbox";
+import MailIcon from "@material-ui/icons/Mail";
+import Menu from "../../Navigation/menu.json";
+import Button from '@material-ui/core/Button';
+
 import { Link } from "react-router-dom";
+import Grid from '@material-ui/core/Grid';
+import {auth} from '../../firebase/firebase.utils';
+import { connect } from "react-redux";
+
+import { setUser } from './../../redux/user/user-actions';
+
 
 const drawerWidth = 240;
 
@@ -80,7 +88,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Layout(props) {
+function Layout(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -92,6 +100,18 @@ export default function Layout(props) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const handleSignOut = () => {
+    auth.signOut();
+    changeCurrentUser();
+  };
+
+  const changeCurrentUser = () => {
+    props.setUser(null)
+    localStorage.removeItem('currentUserId')
+    console.log(props.user)
+  };
+
 
   return (
     <div className={classes.root}>
@@ -112,9 +132,38 @@ export default function Layout(props) {
           >
             <MenuIcon />
           </IconButton>
+          <Grid item xs={12} sm={2}>
           <Typography variant="h6" noWrap>
             DISHA
           </Typography>
+          </Grid>
+          <Grid item xs={12} sm={9}></Grid>
+          <Grid item xs={12} sm={1}>
+            {
+              props.currentUser ?
+              <Button
+              type="submit"
+              variant="contained"
+              color="secondary"
+              className="submit"
+              onClick={() => handleSignOut()}
+              >
+                Sign Out
+              </Button>
+              :
+              <Button
+                type="submit"
+                variant="contained"
+                color="secondary"
+                className="submit"
+              >
+                <Link to="/signin">Sign In</Link>
+              </Button>
+              
+              
+            }
+            
+          </Grid>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -165,3 +214,13 @@ export default function Layout(props) {
     </div>
   );
 }
+
+const mapStateToProps = state => ({
+  user: state.user.user
+});
+
+const mapDispatchToProps = dispatch => ({
+  setUser: user => dispatch(setUser(user))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Layout);

@@ -7,13 +7,17 @@ import UserInfo from "./UserInfo";
 import UserCommunity from "./UserCommunity";
 import UserPosts from "./UserPosts";
 
+import { connect } from 'react-redux';
+
+
 export class Profile extends Component {
   render() {
+    console.log("User from Redux:", this.props)
     return (
       <Grid item xs={12}>
         <Container style={{maxWidth : '100%'}}>
           <Row className="user-profile-header-row">
-            <ProfileImage name="KD" scale={200} variant="square"/>
+            <ProfileImage name="KE" scale={200} variant="square"/>
             <UserInfo/>
           </Row>
           <Divider></Divider>
@@ -27,4 +31,9 @@ export class Profile extends Component {
   }
 }
 
-export default Profile;
+const mapStateToProps = state => ({
+  user: state.user.user
+});
+
+export default connect(mapStateToProps)(Profile);
+

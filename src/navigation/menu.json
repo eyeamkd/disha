@@ -1,7 +1,7 @@
 [ 
     { 
         "routeName":"Home", 
-       "endpoint":"/", 
+       "endpoint":"/home", 
         "icon": "home"
     },  
     { 
