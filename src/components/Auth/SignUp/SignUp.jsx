@@ -14,6 +14,9 @@ import Container from '@material-ui/core/Container';
 import { connect } from 'react-redux';
 import Logo from '../../Logo/Logo';
 
+import { Redirect } from 'react-router-dom'; 
+
+
 import './SignUp.css';
 import { setFirstName } from './../../../redux/signup/firstName-actions';
 import { setLastName } from './../../../redux/signup/lastName-actions';
@@ -24,6 +27,7 @@ import { setSection } from './../../../redux/signup/section-actions';
 import { setDepartment } from './../../../redux/signup/department-actions';
 import { setPassword } from './../../../redux/signup/password-actions';
 import { auth, createUserProfileDocument } from '../../../firebase/firebase.utils';
+import { setIsNewUser } from '../../../redux/signup/isNewUser-actions';
 
 
 class SignUp extends React.Component {
@@ -41,6 +45,8 @@ class SignUp extends React.Component {
         isSignup: false,
         isAlumni: false,
         isAuthenticated: false,
+        accountCreated: false,
+
         signupErrorMessage: '',
         confirmPassword: '',
         labelWidth: 0,
@@ -146,7 +152,10 @@ class SignUp extends React.Component {
             {
                 this.setState({isSignup : true}, () => this.setState({signupErrorMessage: ''}));
                 try {
-                    const { user } = await auth.createUserWithEmailAndPassword(email, password)
+                    const information = await auth.createUserWithEmailAndPassword(email, password)
+                    console.log(information);
+                    this.props.setIsNewUser(information.additionalUserInfo.isNewUser)
+                    const {user} = information; //Have a redux variable for isNewUser from additionalInfo to check if we need to set the current user or no
                     await createUserProfileDocument(user, {firstName, lastName, email, password, rollNumber, year, department, section, isAlumni, isAuthenticated});
                     this.props.setFirstName('');
                     this.props.setLastName('');
@@ -156,7 +165,7 @@ class SignUp extends React.Component {
                     this.props.setYear('');
                     this.props.setPassword('');
                     this.props.setDepartment('');
-
+                    this.setState({accountCreated: true})
 
                 }catch(error) {
                     console.error(error)
@@ -381,12 +390,12 @@ class SignUp extends React.Component {
                 
                 <Grid container justify="flex-end">
                     <Grid item>
-                    <Link href="#" variant="body2">
+                    <Link href="/SignIn" variant="body2">
                         Already have an account? Sign in
                     </Link>
                     </Grid>
                 </Grid>
-                
+                this.state.accountCreated ? (<Redirect to="/SignIn"/>) : null;
             </div>
             </Container>
         );
@@ -412,7 +421,8 @@ const mapDispatchToProps = dispatch => ({
     setYear: year => dispatch(setYear(year)),
     setSection: section => dispatch(setSection(section)),
     setDepartment: department => dispatch(setDepartment(department)),
-    setPassword: password => dispatch(setPassword(password))
+    setPassword: password => dispatch(setPassword(password)),
+    setIsNewUser: isNewUser => dispatch(setIsNewUser(isNewUser))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

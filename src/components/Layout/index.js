@@ -9,21 +9,26 @@ import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
-import HomeIcon from "@material-ui/icons/HomeRounded";
+//import HomeIcon from "@material-ui/icons/HomeRounded";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
+//import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Icon from "@material-ui/core/Icon";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import Menu from "../../Navigation/menu.json";
 import Button from '@material-ui/core/Button';
+
 import { Link } from "react-router-dom";
 import Grid from '@material-ui/core/Grid';
 import {auth} from '../../firebase/firebase.utils';
+import { connect } from "react-redux";
+
+import { setUser } from './../../redux/user/user-actions';
+
 
 const drawerWidth = 240;
 
@@ -83,7 +88,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Layout(props) {
+function Layout(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -98,8 +103,15 @@ export default function Layout(props) {
 
   const handleSignOut = () => {
     auth.signOut();
-    props.changeCurrentUser();
+    changeCurrentUser();
   };
+
+  const changeCurrentUser = () => {
+    props.setUser(null)
+    localStorage.removeItem('currentUserId')
+    console.log(props.user)
+  };
+
 
   return (
     <div className={classes.root}>
@@ -147,6 +159,8 @@ export default function Layout(props) {
               >
                 <Link to="/signin">Sign In</Link>
               </Button>
+              
+              
             }
             
           </Grid>
@@ -200,3 +214,13 @@ export default function Layout(props) {
     </div>
   );
 }
+
+const mapStateToProps = state => ({
+  user: state.user.user
+});
+
+const mapDispatchToProps = dispatch => ({
+  setUser: user => dispatch(setUser(user))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Layout);

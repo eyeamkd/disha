@@ -1,12 +1,7 @@
 [ 
     { 
-        "routeName":"Signup", 
-       "endpoint":"/signup", 
-        "icon": "group" 
-    },
-    { 
         "routeName":"Home", 
-       "endpoint":"/", 
+       "endpoint":"/home", 
         "icon": "home"
     },  
     { 
@@ -16,7 +11,7 @@
     }, 
     { 
         "routeName":"Search D-Spaces", 
-       "endpoint":"/d-space-search", 
+       "endpoint":"/search-d-spaces", 
         "icon": "search" 
     },  
     { 
@@ -27,6 +22,16 @@
     { 
         "routeName":"Your D-Spaces", 
        "endpoint":"/d-spaces", 
-        "icon": "account_box" 
+        "icon": "group" 
+    }, 
+    { 
+        "routeName":"Claim Account Page", 
+       "endpoint":"/claim-account", 
+        "icon": "nature_people" 
+    }, 
+    { 
+        "routeName":"Account Requests", 
+       "endpoint":"/account-requests", 
+        "icon": "contacts" 
     }
 ]

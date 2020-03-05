@@ -12,6 +12,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormLabel from '@material-ui/core/FormLabel';
 import Container from '@material-ui/core/Container';
 import { connect } from 'react-redux';
+import { setIsNewUser } from '../../../redux/signup/isNewUser-actions';
 import Logo from '../../Logo/Logo';
 
 import './SignIn.css';
@@ -49,7 +50,10 @@ class SignIn extends React.Component {
         const { email, password } = this.state;
         if (!this.state.isEmail && !this.state.isPassword) {
             try {
-                await auth.signInWithEmailAndPassword(email, password);
+                var signedIn = await auth.signInWithEmailAndPassword(email, password);
+                this.props.setIsNewUser(signedIn.additionalUserInfo.isNewUser);
+                await console.log("signedIn.additionalUserInfo.isNewUser", signedIn)
+
                 this.setState({
                     email: '',
                     password: ''
@@ -120,7 +124,7 @@ class SignIn extends React.Component {
                 
                 <Grid container justify="flex-end">
                     <Grid item>
-                    <Link href="#" variant="body2">
+                    <Link href="/SignUp" variant="body2">
                         Don't have an account? Sign up
                     </Link>
                     </Grid>
@@ -132,5 +136,8 @@ class SignIn extends React.Component {
     }
 }
 
+const mapDispatchToProps = dispatch => ({
+    setIsNewUser: isNewUser => dispatch(setIsNewUser(isNewUser))
+});
 
-export default SignIn;
+export default connect(null, mapDispatchToProps)(SignIn);
