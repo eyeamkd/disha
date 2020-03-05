@@ -77,7 +77,7 @@ class SignIn extends React.Component {
             <div className="paper">
                 <Logo height="150" width="150"/>
                 <Typography component="h1" variant="h5">
-                Sign in
+                Sign In
                 </Typography>
                 <form className="form" noValidate>
                 <Grid container spacing={2}>
@@ -124,7 +124,7 @@ class SignIn extends React.Component {
                 
                 <Grid container justify="flex-end">
                     <Grid item>
-                    <Link href="/SignUp" variant="body2">
+                    <Link href="/SignUp">
                         Don't have an account? Sign up
                     </Link>
                     </Grid>

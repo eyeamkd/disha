@@ -395,7 +395,7 @@ class SignUp extends React.Component {
                     </Link>
                     </Grid>
                 </Grid>
-                this.state.accountCreated ? (<Redirect to="/SignIn"/>) : null;
+                {this.state.accountCreated ? (<Redirect to="/SignIn"/>) : null}
             </div>
             </Container>
         );

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import Layout from './components/Layout';
 import HomePage from './components/HomePage'; 
-import Navigation from './Navigation/index';
+import Navigation from './navigation/index';
 import { connect } from 'react-redux';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 import { setUser } from './redux/user/user-actions';
