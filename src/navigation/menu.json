@@ -1,12 +1,7 @@
 [ 
     { 
-        "routeName":"Signup", 
-       "endpoint":"/signup", 
-        "icon": "group" 
-    },
-    { 
         "routeName":"Home", 
-       "endpoint":"/", 
+       "endpoint":"/home", 
         "icon": "home"
     },  
     { 

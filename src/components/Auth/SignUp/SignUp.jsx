@@ -14,6 +14,9 @@ import Container from '@material-ui/core/Container';
 import { connect } from 'react-redux';
 import Logo from '../../Logo/Logo';
 
+import { Redirect } from 'react-router-dom'; 
+
+
 import './SignUp.css';
 import { setFirstName } from './../../../redux/signup/firstName-actions';
 import { setLastName } from './../../../redux/signup/lastName-actions';
@@ -42,6 +45,8 @@ class SignUp extends React.Component {
         isSignup: false,
         isAlumni: false,
         isAuthenticated: false,
+        accountCreated: false,
+
         signupErrorMessage: '',
         confirmPassword: '',
         labelWidth: 0,
@@ -160,7 +165,7 @@ class SignUp extends React.Component {
                     this.props.setYear('');
                     this.props.setPassword('');
                     this.props.setDepartment('');
-
+                    this.setState({accountCreated: true})
 
                 }catch(error) {
                     console.error(error)
@@ -390,7 +395,7 @@ class SignUp extends React.Component {
                     </Link>
                     </Grid>
                 </Grid>
-                
+                this.state.accountCreated ? (<Redirect to="/SignIn"/>) : null;
             </div>
             </Container>
         );

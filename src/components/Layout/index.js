@@ -25,6 +25,10 @@ import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
 import Grid from '@material-ui/core/Grid';
 import {auth} from '../../firebase/firebase.utils';
+import { connect } from "react-redux";
+
+import { setUser } from './../../redux/user/user-actions';
+
 
 const drawerWidth = 240;
 
@@ -84,7 +88,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Layout(props) {
+function Layout(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -99,7 +103,15 @@ export default function Layout(props) {
 
   const handleSignOut = () => {
     auth.signOut();
+    changeCurrentUser();
   };
+
+  const changeCurrentUser = () => {
+    props.setUser(null)
+    localStorage.removeItem('currentUserId')
+    console.log(props.user)
+  };
+
 
   return (
     <div className={classes.root}>
@@ -147,6 +159,8 @@ export default function Layout(props) {
               >
                 <Link to="/signin">Sign In</Link>
               </Button>
+              
+              
             }
             
           </Grid>
@@ -200,3 +214,13 @@ export default function Layout(props) {
     </div>
   );
 }
+
+const mapStateToProps = state => ({
+  user: state.user.user
+});
+
+const mapDispatchToProps = dispatch => ({
+  setUser: user => dispatch(setUser(user))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Layout);
