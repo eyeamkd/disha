@@ -13,19 +13,15 @@ export class UserInfo extends Component {
     return (
       <div>
         <Container>
-          <Row className="user-sub-heading-spacing">
-            <Col>
-              <Typography variant="h1" className = "user-name-title-style">Kaustubh Eppalapalli</Typography>
-            </Col> 
-           </Row> 
-           <Row className="user-info">
+          <br/>
+          <Row className="user-info">
             <Col>
               <LocationOnIcon />
-              <Typography>Hyderbad</Typography>
+              <Typography>Hyderabad</Typography>
             </Col>
             <Col>
               <WorkIcon />
-              <Typography>Google</Typography>
+              <Typography>Technovert</Typography>
             </Col>
             <Col>
               <PhoneIcon />
@@ -33,11 +29,11 @@ export class UserInfo extends Component {
             </Col> 
             <Col>
               <DateRangeIcon />
-              <Typography className="user-sub-heading-spacing" >2020</Typography>
+              <Typography  >{this.props.userInfo.year}</Typography>
             </Col> 
             <Col>
               <MailIcon />
-              <Typography className="user-sub-heading-spacing">kunaldubey2297@gmail.com</Typography>
+              <Typography >{this.props.userInfo.email}</Typography>
             </Col>
           </Row>
         </Container>

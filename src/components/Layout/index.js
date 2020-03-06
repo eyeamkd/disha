@@ -19,7 +19,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Icon from "@material-ui/core/Icon";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
-import Menu from "../../Navigation/menu.json";
+import Menu from "./../../navigation/menu.json";
 import Button from '@material-ui/core/Button';
 
 import { Link } from "react-router-dom";
@@ -157,7 +157,7 @@ function Layout(props) {
                 color="secondary"
                 className="submit"
               >
-                <Link to="/signin">Sign In</Link>
+                <Link to="/SignIn">Sign In</Link>
               </Button>
               
               
