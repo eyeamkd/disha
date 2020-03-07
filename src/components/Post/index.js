@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Post() {
+export default function Post(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -52,17 +52,17 @@ export default function Post() {
 
   return (
     <Card className={classes.root}>
-      <CardHeader title="ReactJS Internship" subheader="PROJECTS " />
+      <CardHeader title={props.title} subheader={props.subtitle} />
      
       <CardContent> 
       
         <Typography variant="body2" color="textSecondary" component="p">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the
-          mussels, if you like.
+          Business-to-consumer user experience learning curve marketing research & 
+          development accelerator bootstrapping launch party crowdsource agile development niche 
+          market lean startup responsive web design. Partnership monetization incubator.
         </Typography>
         
-          <Typography variant="body2" color="primary" component="p" >- Kunal Dubey  </Typography> 
+          <Typography variant="body2" color="primary" component="p" >- Kaustubh Eppalapalli  </Typography> 
    
       </CardContent>
 
@@ -73,7 +73,7 @@ export default function Post() {
         <IconButton aria-label="share">
           <ShareIcon />
         </IconButton> 
-        <Typography variant="body2" color="textPrimary" component="p" >Jul 20, '20</Typography>
+        <Typography variant="body2" color="textPrimary" component="p" >Jul 08, '20</Typography>
         
         <IconButton
           className={clsx(classes.expand, {
@@ -88,32 +88,21 @@ export default function Post() {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>Method:</Typography>
+          <Typography paragraph>More Info:</Typography>
           <Typography paragraph>
-            Heat 1/2 cup of the broth in a pot until simmering, add saffron and
-            set aside for 10 minutes.
+            Leverage agile frameworks to provide a robust synopsis for high level overviews. 
+            Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition. 
+            Organically grow the holistic world view of disruptive innovation via workplace diversity and empowerment.
           </Typography>
           <Typography paragraph>
-            Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet
-            over medium-high heat. Add chicken, shrimp and chorizo, and cook,
-            stirring occasionally until lightly browned, 6 to 8 minutes.
-            Transfer shrimp to a large plate and set aside, leaving chicken and
-            chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes,
-            onion, salt and pepper, and cook, stirring often until thickened and
-            fragrant, about 10 minutes. Add saffron broth and remaining 4 1/2
-            cups chicken broth; bring to a boil.
-          </Typography>
-          <Typography paragraph>
-            Add rice and stir very gently to distribute. Top with artichokes and
-            peppers, and cook without stirring, until most of the liquid is
-            absorbed, 15 to 18 minutes. Reduce heat to medium-low, add reserved
-            shrimp and mussels, tucking them down into the rice, and cook again
-            without stirring, until mussels have opened and rice is just tender,
-            5 to 7 minutes more. (Discard any mussels that don’t open.)
+            Bring to the table win-win survival strategies to ensure proactive domination. 
+            At the end of the day, going forward, a new normal that has evolved from generation X is on the runway heading towards a 
+            streamlined cloud solution. User generated content in real-time will have multiple touchpoints for offshoring.
           </Typography>
           <Typography>
-            Set aside off of the heat to let rest for 10 minutes, and then
-            serve.
+            Capitalize on low hanging fruit to identify a ballpark value added activity to beta test. 
+            Override the digital divide with additional clickthroughs from DevOps. 
+            Nanotechnology immersion along the information highway will close the loop on focusing solely on the bottom line.
           </Typography>
         </CardContent>
       </Collapse>

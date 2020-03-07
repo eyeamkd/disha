@@ -5,7 +5,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 
-import { Typography, Divider, Grid } from "@material-ui/core";
+import { Typography, Divider, Grid, CircularProgress } from "@material-ui/core";
 import ProfileImage from "./ProfileImage";
 import UserInfo from "./UserInfo";
 import UserCommunity from "./UserCommunity";
@@ -71,7 +71,13 @@ export class Profile extends Component {
           </Container>
         </Grid>
         :
-        <h1>Loading...</h1>
+        <div style={{
+              position: 'absolute', left: '50%', top: '50%',
+              transform: 'translate(-50%, -50%)'
+          }}
+        >
+        <CircularProgress size={80}/>
+        </div>
     );
   }
 }
