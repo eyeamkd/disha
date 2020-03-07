@@ -9,12 +9,16 @@ export class UserPosts extends Component {
       <Container class="user-activity-parent-div">
         <Typography variant="h6">Your Activity</Typography>
         <Row>
-          <Post />
-          <Divider />
-          <Post />
-          <Divider />
-          <Post />
-          <Divider />
+          <Post title={"codeCraft 2.0 this month!"} subtitle={"EVENTS "}/>  
+          <Post title={"ReactJS Internship"} subtitle={"PROJECTS "}/>  
+          <Post title={"Python Workshop soon!"} subtitle={"WORKSHOPS"}/>  
+          <Post title={"codeCraft 2.0 this month!"} subtitle={"EVENTS "}/>  
+          <Post title={"IEEE hosts Inceptra"} subtitle={"EVENTS"}/>  
+          <Post title={"codeCraft 2.0 this month!"} subtitle={"EVENTS "}/>  
+          <Post title={"ReactJS Internship"} subtitle={"PROJECTS "}/>  
+          <Post title={"Python Workshop soon!"} subtitle={"WORKSHOPS"}/>  
+          <Post title={"codeCraft 2.0 this month!"} subtitle={"EVENTS "}/>  
+          <Post title={"IEEE hosts Inceptra"} subtitle={"EVENTS"}/>
         </Row>
       </Container>
     );
