@@ -1,37 +1,42 @@
 [ 
     { 
         "routeName":"Home", 
-       "endpoint":"/home", 
+        "endpoint":"/home", 
         "icon": "home"
     },  
     { 
         "routeName":"Profile", 
-       "endpoint":"/profile", 
+        "endpoint":"/profile", 
         "icon": "account_box" 
     }, 
     { 
         "routeName":"Search D-Spaces", 
-       "endpoint":"/search-d-spaces", 
+        "endpoint":"/search-d-spaces", 
         "icon": "search" 
     },  
     { 
         "routeName":"Community", 
-       "endpoint":"/community", 
+        "endpoint":"/community", 
         "icon": "emoji_people"
     },  
     { 
         "routeName":"Your D-Spaces", 
-       "endpoint":"/d-spaces", 
+        "endpoint":"/d-spaces", 
         "icon": "group" 
     }, 
     { 
         "routeName":"Claim Account Page", 
-       "endpoint":"/claim-account", 
+        "endpoint":"/claim-account", 
         "icon": "nature_people" 
     }, 
     { 
         "routeName":"Account Requests", 
-       "endpoint":"/account-requests", 
+        "endpoint":"/account-requests", 
         "icon": "contacts" 
+    }, 
+    { 
+        "routeName":"New Post", 
+        "endpoint":"/new-post", 
+        "icon": "post_add" 
     }
 ]
