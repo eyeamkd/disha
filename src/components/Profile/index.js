@@ -27,7 +27,7 @@ export class Profile extends Component {
           console.log('No such document!');
         } else {
           this.setState({ info: doc.data() })
-          console.log('Document data:', doc.data());
+          //console.log('Document data:', doc.data());
         }
       })
       .catch(err => {
