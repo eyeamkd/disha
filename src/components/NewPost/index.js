@@ -9,7 +9,8 @@ import {
     FormControlLabel,
     Checkbox,
     FormLabel,
-    Button
+    Button,
+    CircularProgress
 } from "@material-ui/core";
 import { Row } from "react-bootstrap";
 import "./style.css";
@@ -18,39 +19,119 @@ const postCategories = ["Internship", "Project", "Announcement"];
 
 const dspaces = ["d-space1","d-space2","d-space3"];
 
-export class NewPost extends Component {
-    render() {
+export class NewPost extends Component {    
+
+constructor(props){  
+    super(props);
+    this.state={ 
+        postTitle:'',  
+        isPostTitleInValid:false,
+        postDescription:'',  
+        isPostDescriptionInValid:false,
+        postCategory:'',  
+        onDataSubmitting:false,
+        isSelectedCategoryInValid:false,
+        dSpaces:[]
+    }
+}
+
+isFormDataValid=()=>{ 
+    console.log("in form validation");
+    if(this.state.postTitle.length<10){ 
+        this.setState({isPostTitleInValid:true}); 
+        return false;
+    }else if(this.state.postDescription.length<100) { 
+        this.setState({  
+            isPostTitleInValid:false,
+            isPostDescriptionInValid:true 
+        }); 
+        return false;
+    }else if(this.state.postCategory.length<2){ 
+        this.setState({  
+            isPostTitleInValid:false,
+            isPostDescriptionInValid:false,
+            isSelectedCategoryInValid:true 
+        }); 
+        return false;
+    }else { 
+        this.setState({  
+            isPostTitleInValid:false,
+            isPostDescriptionInValid:false,
+            isSelectedCategoryInValid:true 
+        }); 
+        return true;
+    }
+}
+
+handleChange=(event)=>{  
+    this.setState({
+        [event.target.id]:event.target.value
+    })
+} 
+
+handleCategorySelected=(event)=>{
+    this.setState({
+        postCategory:event.target.value
+    })
+} 
+
+handleDSpaceSelected=(event)=>{
+    this.setState({ 
+        dSpaces:[...this.state.dSpaces,event.target.value]
+    })
+} 
+
+handleSubmit=()=>{ 
+    if(this.isFormDataValid()){ 
+        this.setState({ 
+            onDataSubmitting:true
+        })
+    } 
+} 
+
+    render() {  
+        console.log(this.state);
         return (
         <Container>
             <Typography variant="h1">New Post</Typography>
-            <Row className="form-div">
+            <Row className="form-div"> 
                 <FormControl > 
                         <TextField
-                        label="New Post"
-                        id="new-post"
+                        label="Post Title"
+                        id="postTitle"
                         placeholder="Post Title"
                         variant="outlined"
-                        required
+                        required 
+                        onChange={this.handleChange} 
+                        value={this.state.postTitle || " "} 
+                        error={this.state.isPostTitleInValid} 
+                        helperText="Post Title should be minium 10 characters"
                         /> 
 
                         <TextField
                         label="Description"
-                        id="post-description"
+                        id="postDescription"
                         placeholder="Description"
                         variant="outlined"
                         required
                         multiline
                         rows="10"
-                        
+                        onChange={this.handleChange} 
+                        value={this.state.postDescription || " "} 
+                        error={this.state.isPostDescriptionInValid} 
+                        helperText="Post Description should be minium 100 characters"
                         /> 
 
                         <TextField
-                        id="select-category"
+                        id="postCategory"
                         select
                         label="Category"
                         helperText="Please select post category"
-                        className="new-post-form-field"
-                        > 
+                        className="new-post-form-field"  
+                        onChange={this.handleCategorySelected}
+                        value={this.state.postCategory} 
+                        error={this.state.isSelectedCategoryInValid} 
+                        >  
                         {postCategories.map(option => (
                             <MenuItem key={option} value={option}>
                             {option}
@@ -65,20 +146,27 @@ export class NewPost extends Component {
                                     <FormControlLabel 
                                         control={ 
                                             <Checkbox 
-                                                value={dspaceName} 
+                                                value={dspaceName}  
+                                                onChange={this.handleDSpaceSelected}
                                             />
                                         } 
                                         label={dspaceName}
                                     />
                                 ))} 
                             </FormGroup> 
-                        </div>
-                </FormControl>
-            </Row>  
+                        </div>  
 
-            <Button variant="outlined" color="primary" href="#">
+                </FormControl> 
+            </Row>   
+            {this.state.onDataSubmitting 
+            ? 
+            <CircularProgress color="primary" />  
+            :
+            <Button variant="outlined" color="primary" onClick={this.handleSubmit}>
                 Submit
-            </Button>
+            </Button> 
+            }
+            
         </Container>
         );
     }
