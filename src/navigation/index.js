@@ -11,6 +11,8 @@ import Profile from '../components/Profile';
 import SignUp from '../components/Auth/SignUp/SignUp';
 import SignIn from '../components/Auth/SignIn/SignIn'; 
 import NewPost from '../components/NewPost';
+import LandingPage from '../components/LandingPage';
+
 
 class Navigation extends React.Component {
     componentDidMount(){
@@ -27,7 +29,7 @@ class Navigation extends React.Component {
     render() {
         return (
             <Switch> 
-                <Route path="/" exact render={() => <h1><center>DISHA</center></h1>}/>
+                <Route path="/" exact render={() => <LandingPage/>}/>
                 <Route path="/home" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <HomePage/>}/>
                 <Route path="/SignUp" exact render={() => this.getCurrentUserId() ? (<Redirect to="/home"/>) : <SignUp/>}/>     
                 <Route path="/SignIn" exact render={() => this.getCurrentUserId() ? (<Redirect to="/home"/>) : <SignIn/>}/>
