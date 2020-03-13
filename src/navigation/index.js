@@ -11,8 +11,8 @@ import Profile from '../components/Profile';
 import SignUp from '../components/Auth/SignUp/SignUp';
 import SignIn from '../components/Auth/SignIn/SignIn'; 
 import NewPost from '../components/NewPost';
+import PostSubmitted from '../components/NewPost/PostSubmitted';
 import LandingPage from '../components/LandingPage';
-
 
 class Navigation extends React.Component {
     componentDidMount(){
@@ -40,7 +40,9 @@ class Navigation extends React.Component {
                 <Route path="/d-spaces" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <Dspaces/>}/>    
                 <Route path="/claim-account" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <ClaimAccountPage/>}/>    
                 <Route path="/confirm-account" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <ConfirmAccount/>}/>    
-                <Route path="/new-post" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <NewPost/>}/>   
+                <Route path="/new-post" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <NewPost/>}/>    
+                <Route path="/post-submitted" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <PostSubmitted/>}/>   
+
             </Switch>
         )
     }
