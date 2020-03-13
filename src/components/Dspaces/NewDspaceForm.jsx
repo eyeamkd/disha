@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Container, Typography, FormControl, TextField, MenuItem, Button, OutlinedInput, InputLabel } from '@material-ui/core';
-import { Row } from 'react-bootstrap';
+import { Container, Typography, FormControl, Button, OutlinedInput, InputLabel, Checkbox, FormControlLabel, FormLabel, FormGroup, Input, InputAdornment, IconButton, Chip } from '@material-ui/core';
+import { Row } from 'react-bootstrap';  
+import AddIcon from '@material-ui/icons/Add';
+import './style.css';
 
 const dSpaceCategories = [ 
                             "Tech",  
@@ -24,7 +26,8 @@ export class NewDspaceForm extends Component {
             dSpaceTags:[],
             isDspaceTitleInValid:false, 
             isDspaceDescriptionInValid:false,
-            isSelectedCategoryInValid:false
+            isSelectedCategoryInValid:false, 
+            currentTag:''
         }
     }  
 
@@ -40,8 +43,11 @@ export class NewDspaceForm extends Component {
         })
     }  
 
-    isDspaceDataValid=()=>{
-
+    onAddTagClicked=()=>{
+        this.setState({ 
+            dSpaceTags:[...this.state.dSpaceTags,this.state.currentTag],
+            currentTag:''
+        })
     }
 
     handleCreateDspace=(event)=>{ 
@@ -54,53 +60,87 @@ export class NewDspaceForm extends Component {
         return (
             <Container>
                 <Typography variant="h1">New D-Space</Typography> 
-                <Row>  
-                    <FormControl>  
-                    <FormControl fullWidth  variant="outlined">
-                        <InputLabel>D-Space Title</InputLabel>
-                        <OutlinedInput
-                            id="dSpaceTitle"
-                            value={this.state.dSpaceTitle}
-                            onChange={this.handleChange}
-                            labelWidth={60}
-                        />
-                    </FormControl>
+                <Row className="new-dspace-form">  
+                    <FormControl style={{margin:10}} >   
+                        <InputLabel variant="outlined" className="input-label" > 
+                            DSpace Name 
+                        </InputLabel>
+                            <OutlinedInput
+                                id="dSpaceTitle" 
+                                key={this.state.dSpaceTitle} 
+                                value={this.state.dSpaceTitle}
+                                onChange={this.handleChange}
+                                labelWidth={60}
+                            />   
+                    </FormControl> 
 
-                        <TextField 
-                            label="D-Space Description" 
-                            id="dSpaceDescription" 
-                            placeholder="D-Space Description"
-                            variant="outlined"
-                            required   
-                            multiline 
-                            rows="4"
-                            fullWidth
-                            onChange={this.handleChange} 
-                            value={this.state.dSpaceDescription || " "} 
-                            error={this.state.isDspaceDescriptionInValid} 
-                            helperText="D-Space Description should be atleast 100 characters"
-                        />  
+                    <FormControl style={{margin:10}}>  
+                    <InputLabel variant="outlined" className="input-label" > 
+                            D-Space Description
+                        </InputLabel>
+                            <OutlinedInput
+                                id="dSpaceTitle" 
+                                key={this.state.dSpaceTitle} 
+                                value={this.state.dSpaceTitle}
+                                onChange={this.handleChange}
+                                labelWidth={60} 
+                                multiline 
+                                rows="5"
+                            />   
+                    </FormControl> 
 
-                        <TextField
-                            id="dSpaceCategory"
-                            select
-                            label="D-Space Category"
-                            helperText="Please select D-Space category"
-                            className="new-post-form-field"  
-                            onChange={this.handleCategorySelected}
-                            value={this.state.postCategory} 
-                            error={this.state.isSelectedCategoryInValid} 
-                            >   
-                            {dSpaceCategories.map(option => (
-                                <MenuItem key={option} value={option}>
-                                {option}
-                                </MenuItem>
-                            ))}  
-                        </TextField>  
-                        
-                        {/* Chip Component */ }
+                    <div className="checkbox-section">  
+                        <FormLabel>Select Your D-Space Category</FormLabel> 
+                            <FormGroup>
+                                {dSpaceCategories.map(dspaceCategory => ( 
+                                    <FormControlLabel 
+                                        control={ 
+                                            <Checkbox 
+                                                value={dspaceCategory}  
+                                                onChange={this.handleCategorySelected}
+                                            />
+                                                } 
+                                                label={dspaceCategory}
+                                            />
+                            ))} 
+                        </FormGroup> 
+                    </div>   
 
-                    </FormControl>
+                    <div className="dspace-tags-div">
+                    <FormControl style={{margin:10}}>
+                        <InputLabel>Enter Tags that describe your D-Space </InputLabel>
+                            <Input
+                                id="currentTag"
+                                value={this.state.currentTag}
+                                onChange={this.handleChange} 
+                                fullWidth="true"
+                                endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                    aria-label="Add D-Space Tag"
+                                    onClick={this.onAddTagClicked}
+                                    >
+                                        <AddIcon/>
+                                    </IconButton>
+                                </InputAdornment>
+                                }
+                            />
+                    </FormControl>  
+                    <div className="tags">
+                        { 
+                            this.state.dSpaceTags.map(eachTag=>( 
+                                <Chip 
+                                    variant="outlined"  
+                                    color="primary"  
+                                    label={eachTag} 
+                                    size="small" 
+                                    className="tag"
+                                />
+                            ))
+                        } 
+                    </div>
+                    </div> 
+
                 </Row> 
                 <Button variant="outlined" color="primary" onClick={this.handleCreateDspace}>
                         Create D-Space
