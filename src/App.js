@@ -44,8 +44,6 @@ export class App extends Component {
                 :
                 this.props.setUser(null)
               })
-              
-    
               //console.log(this.state)
             })
           }

@@ -2,7 +2,6 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom'; 
 import { connect } from "react-redux";
 
-
 import HomePage from '../components/HomePage'; 
 import ClaimAccountPage, { ConfirmAccount } from '../components/ConfirmAccountPage'; 
 import CommunityPage from '../components/Community';  
@@ -10,12 +9,10 @@ import SearchPage from '../components/SearchPage';
 import Dspaces from '../components/Dspaces';
 import Profile from '../components/Profile';
 import SignUp from '../components/Auth/SignUp/SignUp';
-import SignIn from '../components/Auth/SignIn/SignIn';
+import SignIn from '../components/Auth/SignIn/SignIn'; 
+import NewPost from '../components/NewPost';
+import PostSubmitted from '../components/NewPost/PostSubmitted';
 import LandingPage from '../components/LandingPage';
-
-
-
-
 
 class Navigation extends React.Component {
     componentDidMount(){
@@ -28,12 +25,8 @@ class Navigation extends React.Component {
             return true;
         else   
             return false;
-
     }
-    
     render() {
-        
-
         return (
             <Switch> 
                 <Route path="/" exact render={() => <LandingPage/>}/>
@@ -46,7 +39,10 @@ class Navigation extends React.Component {
                 <Route path="/profile" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <Profile/>}/>   
                 <Route path="/d-spaces" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <Dspaces/>}/>    
                 <Route path="/claim-account" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <ClaimAccountPage/>}/>    
-                <Route path="/confirm-account" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <ConfirmAccount/>}/>   
+                <Route path="/confirm-account" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <ConfirmAccount/>}/>    
+                <Route path="/new-post" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <NewPost/>}/>    
+                <Route path="/post-submitted" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <PostSubmitted/>}/>   
+
             </Switch>
         )
     }
@@ -55,5 +51,5 @@ class Navigation extends React.Component {
 const mapStateToProps = state => ({
     user: state.user.user
 });
-  
+
 export default connect(mapStateToProps)(Navigation);
