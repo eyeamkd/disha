@@ -10,8 +10,7 @@ import {
     Checkbox,
     FormLabel,
     Button,
-    CircularProgress
-} from "@material-ui/core";
+    CircularProgress } from "@material-ui/core";
 import { Row } from "react-bootstrap"; 
 import {database} from '../../firebase/firebase.utils';
 import "./style.css";
@@ -104,7 +103,7 @@ postData = () => {
     database.collection('posts').add(newPostData)
     .then((docRef)=>{this.setState({dataSubmittedSuccessfully:true})}) 
     .catch(err=>{this.setState({ 
-        dataSubmittingError:'Oof there was an error! Please try posting after some time',
+        dataSubmittingError:'Oof! there was an error! Please try posting after some time',
         onDataSubmitting:false
     })})
 }
