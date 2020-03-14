@@ -98,7 +98,8 @@ postData = () => {
         title:this.state.postTitle, 
         description:this.state.postDescription, 
         category:this.state.postCategory, 
-        dSpaces:this.state.dSpaces
+        dSpaces:this.state.dSpaces, 
+        userid:localStorage.getItem('currentUserId')
     }
     database.collection('posts').add(newPostData)
     .then((docRef)=>{this.setState({dataSubmittedSuccessfully:true})}) 
@@ -175,6 +176,7 @@ postData = () => {
                                                 label={dspaceName}
                                             />
                                         ))} 
+                                         
                                     </FormGroup> 
                                 </div>  
         

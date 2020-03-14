@@ -34,4 +34,15 @@
 
 .tag{
     margin: 2px;
+} 
+
+.post-submitted-div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+} 
+
+.post-submitted-text{
+    color: green;
 }
