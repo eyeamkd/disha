@@ -38,5 +38,10 @@
         "routeName":"New Post", 
         "endpoint":"/new-post", 
         "icon": "post_add" 
+    }, 
+    { 
+        "routeName":"New Dspace", 
+        "endpoint":"/new-dspace", 
+        "icon": "group_add" 
     }
 ]

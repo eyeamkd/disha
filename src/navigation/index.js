@@ -13,6 +13,9 @@ import SignIn from '../components/Auth/SignIn/SignIn';
 import NewPost from '../components/NewPost';
 import PostSubmitted from '../components/NewPost/PostSubmitted';
 import LandingPage from '../components/LandingPage';
+import NewDspaceForm from '../components/Dspaces/NewDspaceForm';
+import DspaceSubmitted from '../components/Dspaces/DspaceSubmitted';
+import LandingPage from '../components/LandingPage';
 
 class Navigation extends React.Component {
     componentDidMount(){
@@ -41,7 +44,9 @@ class Navigation extends React.Component {
                 <Route path="/claim-account" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <ClaimAccountPage/>}/>    
                 <Route path="/confirm-account" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <ConfirmAccount/>}/>    
                 <Route path="/new-post" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <NewPost/>}/>    
-                <Route path="/post-submitted" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <PostSubmitted/>}/>   
+                <Route path="/post-submitted" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <PostSubmitted/>}/>    
+                <Route path="/new-dspace" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <NewDspaceForm/>}/>    
+                <Route path="/d-space-submitted" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <DspaceSubmitted/>}/>   
 
             </Switch>
         )

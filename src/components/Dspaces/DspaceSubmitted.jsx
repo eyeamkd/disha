@@ -4,7 +4,7 @@ import './style.css';
 import { Typography } from "@material-ui/core";
 
 
-export class PostSubmitted extends Component {   
+export class DspaceSubmitted extends Component {   
     constructor(props){ 
         super(props); 
         this.state={ 
@@ -33,7 +33,7 @@ export class PostSubmitted extends Component {
                 ?
                 <Typography variant="h4" className="post-submitted-text">{this.props.message}</Typography> 
                 : 
-                <Typography variant="h4" className="post-submitted-text">Post Submitted Successfully!</Typography> 
+                <Typography variant="h4" className="post-submitted-text">D-Space Submitted Successfully!</Typography> 
             } 
         </div>
         );
@@ -41,4 +41,4 @@ export class PostSubmitted extends Component {
     }
     }
 
-export default PostSubmitted;
+export default DspaceSubmitted;
