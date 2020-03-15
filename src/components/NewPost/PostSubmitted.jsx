@@ -28,8 +28,13 @@ export class PostSubmitted extends Component {
             src="https://media1.tenor.com/images/06ae072fb343a704ee80c2c55d2da80a/tenor.gif?itemid=14090897" 
             width="fit-content"
             height="fit-content"
-            /> 
-            <Typography variant="h4" className="post-submitted-text">Post Submitted Successfully!</Typography>
+            />
+            { this.props.message 
+                ?
+                <Typography variant="h4" className="post-submitted-text">{this.props.message}</Typography> 
+                : 
+                <Typography variant="h4" className="post-submitted-text">Post Submitted Successfully!</Typography> 
+            } 
         </div>
         );
         }
