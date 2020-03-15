@@ -15,6 +15,7 @@ import PostSubmitted from '../components/NewPost/PostSubmitted';
 import LandingPage from '../components/LandingPage';
 import NewDspaceForm from '../components/Dspaces/NewDspaceForm';
 import DspaceSubmitted from '../components/Dspaces/DspaceSubmitted';
+import LandingPage from '../components/LandingPage';
 
 class Navigation extends React.Component {
     componentDidMount(){
