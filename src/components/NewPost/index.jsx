@@ -10,8 +10,7 @@ import {
     Checkbox,
     FormLabel,
     Button,
-    CircularProgress
-} from "@material-ui/core";
+    CircularProgress } from "@material-ui/core";
 import { Row } from "react-bootstrap"; 
 import {database} from '../../firebase/firebase.utils';
 import "./style.css";
@@ -99,12 +98,13 @@ postData = () => {
         title:this.state.postTitle, 
         description:this.state.postDescription, 
         category:this.state.postCategory, 
-        dSpaces:this.state.dSpaces
+        dSpaces:this.state.dSpaces, 
+        userid:localStorage.getItem('currentUserId')
     }
     database.collection('posts').add(newPostData)
     .then((docRef)=>{this.setState({dataSubmittedSuccessfully:true})}) 
     .catch(err=>{this.setState({ 
-        dataSubmittingError:'Oof there was an error! Please try posting after some time',
+        dataSubmittingError:'Oof! there was an error! Please try posting after some time',
         onDataSubmitting:false
     })})
 }
@@ -176,6 +176,7 @@ postData = () => {
                                                 label={dspaceName}
                                             />
                                         ))} 
+                                         
                                     </FormGroup> 
                                 </div>  
         
