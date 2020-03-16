@@ -16,9 +16,10 @@ import {database} from '../../firebase/firebase.utils';
 import "./style.css";
 import { Redirect } from "react-router-dom";
 
-const postCategories = ["Internship", "Project", "Announcement"];
+const postCategories = ["Internship", "Project", "Events"];
+const dspaces = []
 
-const dspaces = ["d-space1","d-space2","d-space3"];
+
 
 export class NewPost extends Component {    
 
@@ -34,7 +35,30 @@ constructor(props){
         isSelectedCategoryInValid:false, 
         dataSubmittedSuccessfully:false, 
         dataSubmittingError:'',
-        dSpaces:[]
+        dSpaces:[],
+        dspaceListArrived: false
+    }
+}
+
+getDspaces=()=>{
+    let dspaceData = database.collection('d-spaces')
+    if(dspaces.length === 0) {
+        let query = dspaceData.get()
+        .then(snapshot => {
+            if (snapshot.empty) {
+                console.log('No matching documents.');
+                return;
+            }  
+            snapshot.forEach(doc => {
+                console.log(doc.id, '=>', doc.data().title);
+                dspaces.push(doc.data().title)
+            });
+            this.setState({dspaceListArrived: true})
+            console.log('dspaces', dspaces)
+        })
+        .catch(err => {
+            console.log('Error getting documents', err);
+        });
     }
 }
 
@@ -109,11 +133,25 @@ postData = () => {
     })})
 }
 
-    render() {  
-        console.log(this.state); 
+    render() {
+        this.getDspaces();  
+        console.log(this.state);
+
         if(this.state.dataSubmittedSuccessfully){  
             return(<Redirect to="/post-submitted"/>);
-        }else{ 
+        }
+        else if(this.state.dspaceListArrived === false) {
+            return(
+                <div style={{
+                    position: 'absolute', left: '50%', top: '50%',
+                    transform: 'translate(-50%, -50%)'
+                    }}
+                >
+                    <CircularProgress size={80}/>
+                </div>
+            )
+        }
+        else{ 
             return ( 
                 <Container> 
                     <Typography variant="h1">New Post</Typography>
@@ -161,7 +199,10 @@ postData = () => {
                                     </MenuItem>
                                 ))} 
                                 </TextField>  
-                                
+                                {
+                                    
+                                    
+                                }
                                 <div className="checkbox-section">  
                                     <FormLabel>Select D-Spaces in which you want this post to appear</FormLabel> 
                                     <FormGroup>

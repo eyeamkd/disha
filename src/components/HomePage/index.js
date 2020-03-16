@@ -14,6 +14,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import postData from './postsdata.json';
 
+const posts = []
+
 export default class HomePage extends React.Component{
 
     state = {
