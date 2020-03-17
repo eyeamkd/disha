@@ -65,7 +65,7 @@ export class Profile extends Component {
             </Row>
             <Divider></Divider>
             <Row>
-              <Col><UserPosts userRollNumber={this.state.info.rollNumber}/></Col>
+              <Col><UserPosts /></Col>
               <Col><UserCommunity /></Col>
             </Row>
           </Container>
