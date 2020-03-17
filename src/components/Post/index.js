@@ -57,12 +57,10 @@ export default function Post(props) {
       <CardContent> 
       
         <Typography variant="body2" color="textSecondary" component="p">
-          Business-to-consumer user experience learning curve marketing research & 
-          development accelerator bootstrapping launch party crowdsource agile development niche 
-          market lean startup responsive web design. Partnership monetization incubator.
+          Click on the arrow on the bottom-right to view more details!
         </Typography>
         
-          <Typography variant="body2" color="primary" component="p" >- Kaustubh Eppalapalli  </Typography> 
+          <Typography variant="body2" color="primary" component="p" >- {props.author}  </Typography> 
    
       </CardContent>
 
@@ -73,7 +71,7 @@ export default function Post(props) {
         <IconButton aria-label="share">
           <ShareIcon />
         </IconButton> 
-        <Typography variant="body2" color="textPrimary" component="p" >Jul 08, '20</Typography>
+        <Typography variant="body2" color="textPrimary" component="p" >{props.date}</Typography>
         
         <IconButton
           className={clsx(classes.expand, {

@@ -16,9 +16,10 @@ import {database} from '../../firebase/firebase.utils';
 import "./style.css";
 import { Redirect } from "react-router-dom";
 
-const postCategories = ["Internship", "Project", "Announcement"];
+const postCategories = ["Internship", "Project", "Events"];
+const dspaces = []
 
-const dspaces = ["d-space1","d-space2","d-space3"];
+
 
 export class NewPost extends Component {    
 
@@ -34,7 +35,33 @@ constructor(props){
         isSelectedCategoryInValid:false, 
         dataSubmittedSuccessfully:false, 
         dataSubmittingError:'',
-        dSpaces:[]
+        dSpaces:[],
+        dspaceListArrived: false,
+        userDetails: null
+    }
+    this.getDspaces();
+    this.getUserDetails();
+}
+
+getDspaces=()=>{
+    let dspaceData = database.collection('d-spaces')
+    if(dspaces.length === 0) {
+        let query = dspaceData.get()
+        .then(snapshot => {
+            if (snapshot.empty) {
+                console.log('No matching documents.');
+                return;
+            }  
+            snapshot.forEach(doc => {
+                console.log(doc.id, '=>', doc.data().title);
+                dspaces.push(doc.data().title)
+            });
+            this.setState({dspaceListArrived: true})
+            console.log('dspaces', dspaces)
+        })
+        .catch(err => {
+            console.log('Error getting documents', err);
+        });
     }
 }
 
@@ -93,13 +120,43 @@ handleSubmit=()=>{
     } 
 }  
 
+getUserDetails = () => {
+    const currentUserId = localStorage.getItem('currentUserId');
+    let userData = database.collection('users').doc(currentUserId);
+    let getDoc = userData.get()
+    .then(doc => {
+        if (!doc.exists) {
+        console.log('No such document!');
+        } else {
+           this.setState({userDetails: doc.data()})
+        }
+    })
+    .catch(err => {
+        console.log('Error getting document', err);
+    });
+}
+
+getCurrentDate = () => {
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+    return dateTime;
+}
+
 postData = () => { 
+    const name = this.state.userDetails.firstName + " " + this.state.userDetails.lastName
+    console.log('name', this.state.userDetails.rollNumber)
+    // console.log('rollNumber', rollNumber)
     const newPostData = { 
         title:this.state.postTitle, 
         description:this.state.postDescription, 
         category:this.state.postCategory, 
         dSpaces:this.state.dSpaces, 
-        userid:localStorage.getItem('currentUserId')
+        timeStamp: this.getCurrentDate(),
+        author:name,
+        authorRollNumber:this.state.userDetails.rollNumber
+        
     }
     database.collection('posts').add(newPostData)
     .then((docRef)=>{this.setState({dataSubmittedSuccessfully:true})}) 
@@ -110,10 +167,22 @@ postData = () => {
 }
 
     render() {  
-        console.log(this.state); 
+        console.log(this.state);
         if(this.state.dataSubmittedSuccessfully){  
             return(<Redirect to="/post-submitted"/>);
-        }else{ 
+        }
+        else if(this.state.dspaceListArrived === false) {
+            return(
+                <div style={{
+                    position: 'absolute', left: '50%', top: '50%',
+                    transform: 'translate(-50%, -50%)'
+                    }}
+                >
+                    <CircularProgress size={80}/>
+                </div>
+            )
+        }
+        else{ 
             return ( 
                 <Container> 
                     <Typography variant="h1">New Post</Typography>
@@ -126,9 +195,9 @@ postData = () => {
                                 variant="outlined"
                                 required 
                                 onChange={this.handleChange} 
-                                value={this.state.postTitle || " "} 
+                                value={this.state.postTitle || ""} 
                                 error={this.state.isPostTitleInValid} 
-                                helperText="Post Title should be minium 10 characters"
+                                helperText="Post Title should be minimum 10 characters"
                                 /> 
         
                                 <TextField
@@ -140,9 +209,9 @@ postData = () => {
                                 multiline
                                 rows="10"
                                 onChange={this.handleChange} 
-                                value={this.state.postDescription || " "} 
+                                value={this.state.postDescription || ""} 
                                 error={this.state.isPostDescriptionInValid} 
-                                helperText="Post Description should be minium 100 characters"
+                                helperText="Post Description should be minimum 100 characters"
                                 /> 
         
                                 <TextField
@@ -161,7 +230,10 @@ postData = () => {
                                     </MenuItem>
                                 ))} 
                                 </TextField>  
-                                
+                                {
+                                    
+                                    
+                                }
                                 <div className="checkbox-section">  
                                     <FormLabel>Select D-Spaces in which you want this post to appear</FormLabel> 
                                     <FormGroup>
