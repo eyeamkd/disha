@@ -80,13 +80,30 @@ export class UserPosts extends Component {
   };
 
   filterPosts = (post) => {
-      console.log("puva", post)
       if(this.state.filterValue === "None") {
-          return(<Post title={post.title} subtitle={post.category} description={post.description} author={post.author} date={post.timeStamp}/>)
+        return(
+          <Post 
+          title={post.title} 
+          subtitle={post.category} 
+          description={post.description} 
+          author={post.author} 
+          date={post.timeStamp}
+          rollNumber={post.authorRollNumber}
+          />
+        )
       }
       else {
           if(post.category === this.state.filterValue) {
-              return(<Post title={post.title} subtitle={post.category} description={post.description} author={post.author} date={post.timeStamp}/>)
+            return(
+              <Post 
+              title={post.title} 
+              subtitle={post.category} 
+              description={post.description} 
+              author={post.author} 
+              date={post.timeStamp}
+              rollNumber={post.authorRollNumber}
+              />
+            )
           }
           else
               return (<div></div>)
