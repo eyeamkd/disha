@@ -1,0 +1,48 @@
+.new-dspace-form{ 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between;
+} 
+
+.input-label{ 
+    background-color: white;
+} 
+
+.d-space-form-element{ 
+    margin:10px;
+} 
+
+.MuiFormControl-root{
+    margin:10px;
+} 
+
+.dspace-tags-div{ 
+    display: flex; 
+    flex-direction: column; 
+    margin: 10px; 
+    max-width: 400px;
+} 
+
+.tags{  
+    width: min-content;
+    display: flex;
+    padding: 10px;
+    margin: 5px;
+    flex-direction: row;
+    justify-content: space-between;
+} 
+
+.tag{
+    margin: 2px;
+} 
+
+.post-submitted-div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+} 
+
+.post-submitted-text{
+    color: green;
+}

@@ -19,7 +19,11 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Icon from "@material-ui/core/Icon";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
+<<<<<<< HEAD
 import Menu from "../../navigation/menu.json";
+=======
+import Menu from "./../../navigation/menu.json";
+>>>>>>> 4f61c98cd9f7999dff17f9abae793f976746a5b7
 import Button from '@material-ui/core/Button';
 
 import { Link } from "react-router-dom";
@@ -102,8 +106,9 @@ function Layout(props) {
   };
 
   const handleSignOut = () => {
-    auth.signOut();
-    changeCurrentUser();
+    auth.signOut().then(
+      changeCurrentUser()
+    );
   };
 
   const changeCurrentUser = () => {
@@ -157,7 +162,7 @@ function Layout(props) {
                 color="secondary"
                 className="submit"
               >
-                <Link to="/signin">Sign In</Link>
+                <Link to="/SignIn">Sign In</Link>
               </Button>
               
               

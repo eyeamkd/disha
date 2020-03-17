@@ -11,6 +11,13 @@ import Profile from '../components/Profile';
 import SignUp from '../components/Auth/SignUp/SignUp';
 import SignIn from '../components/Auth/SignIn/SignIn'; 
 import NewPost from '../components/NewPost';
+import PostSubmitted from '../components/NewPost/PostSubmitted';
+import LandingPage from '../components/LandingPage';
+import NewDspaceForm from '../components/Dspaces/NewDspaceForm';
+import DspaceSubmitted from '../components/Dspaces/DspaceSubmitted';
+import Button from '@material-ui/core/Button';
+import { Link } from "react-router-dom";
+
 
 class Navigation extends React.Component {
     componentDidMount(){
@@ -27,25 +34,60 @@ class Navigation extends React.Component {
     render() {
         return (
             <Switch> 
-                <Route path="/" exact render={() => <h1><center>DISHA</center></h1>}/>
+                <Route path="/" exact render={() => <LandingPage/>}/>
                 <Route path="/home" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <HomePage/>}/>
+<<<<<<< HEAD
                 <Route path="/SignUp"  component={SignUp}/>     
                 <Route path="/SignIn" exact render={() => this.getCurrentUserId() ? (<Redirect to="/"/>) : <SignIn/>}/>
+=======
+                <Route path="/SignUp" exact render={() => this.getCurrentUserId() ? (<Redirect to="/home"/>) : <SignUp/>}/>     
+                <Route path="/SignIn" exact render={() => this.getCurrentUserId() ? (<Redirect to="/home"/>) : <SignIn/>}/>
+>>>>>>> 4f61c98cd9f7999dff17f9abae793f976746a5b7
                 <Route path="/community" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <CommunityPage/>}/>   
-                <Route path="/account-requests" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <CommunityPage/>}/>   
+                <Route path="/account-requests" exact render={() => <ClaimAccountPage/>}/>   
                 <Route path="/search-d-spaces" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <SearchPage/>}/>   
                 <Route path="/profile" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <Profile/>}/>   
                 <Route path="/d-spaces" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <Dspaces/>}/>    
                 <Route path="/claim-account" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <ClaimAccountPage/>}/>    
                 <Route path="/confirm-account" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <ConfirmAccount/>}/>    
-                <Route path="/new-post" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <NewPost/>}/>   
+                <Route path="/new-post" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <NewPost/>}/>    
+                <Route path="/post-submitted" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <PostSubmitted/>}/>    
+                <Route path="/new-dspace" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <NewDspaceForm/>}/>    
+                <Route path="/d-space-submitted" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <DspaceSubmitted/>}/>   
+                <Route path="*"><NoMatch /></Route>
             </Switch>
         )
     }
 }
 
+function NoMatch() {
+  
+    return (
+        <div style={{
+            position: 'absolute', left: '50%', top: '50%',
+            transform: 'translate(-50%, -50%)'
+        }}
+        >
+            <center>
+                <h1>OOF</h1>
+                <h3> Heading in the wrong <i>DISHA</i>, are we?</h3>
+                <h4>Let's get you back to the home page.</h4>
+                <br/>
+                <Button
+                    type="submit"
+                    variant="contained"
+                    color="secondary"
+                    className="submit button"
+                    size="large"
+                >
+                    <Link to="/SignIn"><div id="textColor">Shall we?</div></Link>
+                </Button>
+                </center>
+        </div>
+    );
+  }
+
 const mapStateToProps = state => ({
     user: state.user.user
 });
-
 export default connect(mapStateToProps)(Navigation);

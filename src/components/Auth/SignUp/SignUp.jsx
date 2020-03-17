@@ -46,7 +46,7 @@ class SignUp extends React.Component {
         isAlumni: false,
         isAuthenticated: false,
         accountCreated: false,
-
+        dept: null,
         signupErrorMessage: '',
         confirmPassword: '',
         labelWidth: 0,
@@ -80,6 +80,10 @@ class SignUp extends React.Component {
         (tempRollNumber.length < 1 || !isRollNumberProper) ? this.setState({ isRollNumber: true}) : this.setState({ isRollNumber: false});
         if(tempRollNumber.length > 7) {
             let deptCode = tempRollNumber.substring(6,8);
+            this.setState({dept: departments[deptCode]})
+            if(this.deptCode === "12") {
+                this.props.setSection("a");
+            }
             this.props.setDepartment(departments[deptCode])
         }
             
@@ -322,18 +326,21 @@ class SignUp extends React.Component {
                             <FormControlLabel
                             value="b"
                             control={<Radio color="primary" />}
+                            disabled={this.state.dept === "IT"}
                             label="B"
                             labelPlacement="end"
                             />
                             <FormControlLabel
                             value="c"
                             control={<Radio color="primary" />}
+                            disabled={this.state.dept === "IT"}
                             label="C"
                             labelPlacement="end"
                             />
                             <FormControlLabel
                             value="d"
                             control={<Radio color="primary" />}
+                            disabled={this.state.dept === "IT"}
                             label="D"
                             labelPlacement="end"
                             />
@@ -395,7 +402,7 @@ class SignUp extends React.Component {
                     </Link>
                     </Grid>
                 </Grid>
-                this.state.accountCreated ? (<Redirect to="/SignIn"/>) : null;
+                {this.state.accountCreated ? (<Redirect to="/SignIn"/>) : null}
             </div>
             </Container>
         );

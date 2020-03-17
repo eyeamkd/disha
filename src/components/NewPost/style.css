@@ -1,0 +1,33 @@
+.form-div {
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between;
+} 
+
+.new-post-form-field{
+    margin: 10px; 
+    width: 100%;
+}  
+
+.form-div > * { 
+    margin:10px;
+} 
+
+.MuiFormControl-root .MuiTextField-root{ 
+    margin: 10px;
+}  
+
+.post-submitted-div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+} 
+
+.post-submitted-text{
+    color: green;
+}
+
+.checkbox-section{ 
+    margin: 5px;
+}
