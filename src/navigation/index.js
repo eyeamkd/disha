@@ -17,6 +17,7 @@ import NewDspaceForm from '../components/Dspaces/NewDspaceForm';
 import DspaceSubmitted from '../components/Dspaces/DspaceSubmitted';
 import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
+import OtherUser from '../components/OtherUserProfile';
 
 
 class Navigation extends React.Component {
@@ -49,6 +50,7 @@ class Navigation extends React.Component {
                 <Route path="/post-submitted" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <PostSubmitted/>}/>    
                 <Route path="/new-dspace" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <NewDspaceForm/>}/>    
                 <Route path="/d-space-submitted" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <DspaceSubmitted/>}/>   
+                <Route path="/id=:id" component={ OtherUser } />
                 <Route path="*"><NoMatch /></Route>
             </Switch>
         )

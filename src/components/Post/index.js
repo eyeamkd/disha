@@ -14,6 +14,8 @@ import { red } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { Link } from "react-router-dom";
+
 //import MoreVertIcon from "@material-ui/icons/MoreVert";
 
 import "./style.css";
@@ -50,6 +52,7 @@ export default function Post(props) {
     setExpanded(!expanded);
   };
 
+
   return (
     <Card className={classes.root}>
       <CardHeader title={props.title} subheader={props.subtitle} />
@@ -60,7 +63,12 @@ export default function Post(props) {
           Click on the arrow on the bottom-right to view more details!
         </Typography>
         
-          <Typography variant="body2" color="primary" component="p" >- {props.author}  </Typography> 
+        <Link to={`/id=${props.rollNumber}`}>
+          <Typography variant="body2" color="primary" component="p" >
+            - {props.author}  
+          </Typography>
+        </Link>
+         
    
       </CardContent>
 

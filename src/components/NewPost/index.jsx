@@ -136,10 +136,12 @@ getUserDetails = () => {
     });
 }
 
+getSeconds = (today) => {return (today.getSeconds().toString().length < 2 ? "0" : "" )+ today.getSeconds()}
+
 getCurrentDate = () => {
     var today = new Date();
     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + this.getSeconds(today);
     var dateTime = date+' '+time;
     return dateTime;
 }
