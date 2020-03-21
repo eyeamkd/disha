@@ -157,7 +157,8 @@ postData = () => {
         dSpaces:this.state.dSpaces, 
         timeStamp: this.getCurrentDate(),
         author:name,
-        authorRollNumber:this.state.userDetails.rollNumber
+        authorRollNumber:this.state.userDetails.rollNumber,
+        likes:0
         
     }
     database.collection('posts').add(newPostData)

@@ -26,12 +26,32 @@ export default class HomePage extends React.Component{
         filterClicked: null,
         filterValue: "None",
         allPosts: [],
-        postsArrived: false
+        postsArrived: false,
+        userInfo: null
     };
 
     constructor(props) {
         super(props);
+        this.getUserData();
         this.getPosts(); 
+    }
+
+    getUserData = () => {
+        let currentUserId = localStorage.getItem('currentUserId')
+        let userData = database.collection('users').doc(currentUserId);
+        var a;
+        a = userData.get()
+          .then(doc => {
+            if (!doc.exists) {
+              console.log('No such document!');
+            } else {
+              this.setState({ userInfo: doc.data() })
+              //console.log('Document data:', doc.data());
+            }
+          })
+          .catch(err => {
+            console.log('Error getting document', err);
+        });
     }
 
     getPosts=()=>{
@@ -43,8 +63,11 @@ export default class HomePage extends React.Component{
                 return;
             }  
             snapshot.forEach(doc => {
-                //console.log(doc.id, '=>', doc.data().title);
-                posts.push(doc.data())
+                console.log(doc.id, '=>', doc.data().firstName);
+                var a = doc.data()
+                a.id = doc.id
+                console.log('a', a)
+                posts.push(a)
             });
             posts.sort((a, b) => (a.timeStamp > b.timeStamp) ? -1 : 1);
             this.setState({postsArrived: true, allPosts: posts})
@@ -80,8 +103,8 @@ export default class HomePage extends React.Component{
         this.setState({filterClicked: null, filterValue: value});
     };
 
+
     filterPosts = (post) => {
-        console.log("puva", post)
         if(this.state.filterValue === "None") {
             return(
                 <Post 
@@ -91,6 +114,9 @@ export default class HomePage extends React.Component{
                 author={post.author} 
                 date={post.timeStamp}
                 rollNumber={post.authorRollNumber}
+                likes={post.likes}
+                id={post.id}
+                userLikedPosts={this.state.userInfo.likedPosts}
                 />
             )
         }
@@ -104,6 +130,9 @@ export default class HomePage extends React.Component{
                     author={post.author} 
                     date={post.timeStamp}
                     rollNumber={post.authorRollNumber}
+                    likes={post.likes}
+                    id={post.id}
+                    userLikedPosts={this.state.userInfo.likedPosts}
                     />
                 )
             }

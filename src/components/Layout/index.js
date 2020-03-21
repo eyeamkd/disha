@@ -21,6 +21,8 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import Menu from "./../../navigation/menu.json";
 import Button from '@material-ui/core/Button';
+import { Redirect } from 'react-router-dom'; 
+
 
 import { Link } from "react-router-dom";
 import Grid from '@material-ui/core/Grid';
@@ -105,6 +107,7 @@ function Layout(props) {
     auth.signOut().then(
       changeCurrentUser()
     );
+    return (<Redirect to="/SignIn"/>)
   };
 
   const changeCurrentUser = () => {
