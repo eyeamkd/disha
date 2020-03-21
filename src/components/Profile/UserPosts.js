@@ -43,7 +43,9 @@ export class UserPosts extends Component {
           }  
           snapshot.forEach(doc => {
               //console.log(doc.id, '=>', doc.data().title); 
-              posts.push(doc.data())
+                var a = doc.data()
+                a.id = doc.id
+                posts.push(a)
           });
           posts.sort((a, b) => (a.timeStamp > b.timeStamp) ? -1 : 1);
           this.setState({postsArrived: true, allPosts: posts})
@@ -89,6 +91,9 @@ export class UserPosts extends Component {
           author={post.author} 
           date={post.timeStamp}
           rollNumber={post.authorRollNumber}
+          likes={post.likes}
+          id={post.id}
+          userLikedPosts={this.props.userLikedPosts}
           />
         )
       }
@@ -102,6 +107,10 @@ export class UserPosts extends Component {
               author={post.author} 
               date={post.timeStamp}
               rollNumber={post.authorRollNumber}
+              likes={post.likes}
+              id={post.id}
+              userLikedPosts={this.props.userLikedPosts}
+
               />
             )
           }
@@ -113,7 +122,6 @@ export class UserPosts extends Component {
   setPostsToNull = () => posts = [];
 
   render() {
-      console.log(this.props.userRollNumber);
       if(this.state.postsArrived === false) {
           return(
               <div style={{

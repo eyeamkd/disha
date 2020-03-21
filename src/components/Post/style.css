@@ -4,6 +4,12 @@
 
 } 
 
+.root{
+    max-width: 70%;
+    margin-bottom: 30px;
+    margin-left: 30px;
+  }
+
 .card-footer{ 
     margin-top: 20px; 
     

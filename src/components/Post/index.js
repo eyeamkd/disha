@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
@@ -15,6 +15,9 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { Link } from "react-router-dom";
+import {database} from '../../firebase/firebase.utils';
+import firebase from 'firebase/app'
+//import admin from 'firebase-admin';
 
 //import MoreVertIcon from "@material-ui/icons/MoreVert";
 
@@ -47,10 +50,48 @@ const useStyles = makeStyles(theme => ({
 export default function Post(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
-
+  const [likeToggle, setLikeToggle] = React.useState(props.userLikedPosts.includes(props.id));
+  const [likeCount, setLikeCount] = React.useState(props.likes);
+  let currentLikesCount = props.likes;
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  const handleLikeClick = () => {
+    console.log('props.userLikedPosts', props.userLikedPosts)
+    setLikeToggle(!likeToggle);
+    if(!likeToggle) {
+      currentLikesCount = likeCount+1;
+      setLikeCount(currentLikesCount);
+    }
+    else {
+      currentLikesCount = likeCount-1;
+      setLikeCount(currentLikesCount)
+    }
+  };
+
+
+  useEffect(() => {
+    setLikeCount(likeCount);
+    console.log('props.id', props.id)
+    // return () => {
+      let setDoc = database.collection('posts').doc(props.id).update({likes: likeCount});
+      console.log('currentLikesCount', likeCount)
+      if(likeCount > props.likes) {
+        let currentUserId = localStorage.getItem('currentUserId')
+        let setDoc = database.collection('users').doc(currentUserId).update({
+          likedPosts: firebase.firestore.FieldValue.arrayUnion(props.id)
+        });
+      }
+      else if(likeCount < props.likes) {
+        let currentUserId = localStorage.getItem('currentUserId')
+        let setDoc = database.collection('users').doc(currentUserId).update({
+          likedPosts: firebase.firestore.FieldValue.arrayRemove(props.id)
+        });
+      }
+    // }
+  });
+
 
 
   return (
@@ -73,9 +114,12 @@ export default function Post(props) {
       </CardContent>
 
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
+        <div className={classes.verticalLine}>
+          <IconButton aria-label="add to favorites" color={likeToggle ? "primary" : ""} onClick={handleLikeClick}>
+            <FavoriteIcon />
+          </IconButton>
+          {likeCount}
+        </div>
         <IconButton aria-label="share">
           <ShareIcon />
         </IconButton> 

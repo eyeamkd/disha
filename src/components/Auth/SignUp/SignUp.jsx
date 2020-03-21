@@ -159,16 +159,10 @@ class SignUp extends React.Component {
                     const information = await auth.createUserWithEmailAndPassword(email, password)
                     console.log(information);
                     this.props.setIsNewUser(information.additionalUserInfo.isNewUser)
+                    var likedPosts = [];
+                    var newRollNumber = rollNumber.toLowerCase()
                     const {user} = information; //Have a redux variable for isNewUser from additionalInfo to check if we need to set the current user or no
-                    await createUserProfileDocument(user, {firstName, lastName, email, password, rollNumber, year, department, section, isAlumni, isAuthenticated});
-                    this.props.setFirstName('');
-                    this.props.setLastName('');
-                    this.props.setEmail('');
-                    this.props.setRollNumber('');
-                    this.props.setSection('');
-                    this.props.setYear('');
-                    this.props.setPassword('');
-                    this.props.setDepartment('');
+                    await createUserProfileDocument(user, {firstName, lastName, email, password, newRollNumber, year, department, section, isAlumni, isAuthenticated, likedPosts});
                     this.setState({accountCreated: true})
 
                 }catch(error) {

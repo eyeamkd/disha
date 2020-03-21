@@ -43,7 +43,7 @@ export class Profile extends Component {
 
   render() {
     const db = firebase.firestore();
-    var currentUserId = localStorage.getItem('currentUserId')
+    let currentUserId = localStorage.getItem('currentUserId')
     let userData = db.collection('users').doc(currentUserId);
 
     this.getUserData(userData);
@@ -65,7 +65,7 @@ export class Profile extends Component {
             </Row>
             <Divider></Divider>
             <Row>
-              <Col><UserPosts userRollNumber={this.state.info.rollNumber}/></Col>
+              <Col><UserPosts userRollNumber={this.state.info.rollNumber} userLikedPosts={this.state.info.likedPosts}/></Col>
               <Col><UserCommunity /></Col>
             </Row>
           </Container>

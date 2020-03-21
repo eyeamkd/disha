@@ -17,6 +17,7 @@ export class OtherUser extends Component {
 
   state = {
     info: null,
+    currentUserInfo: null,
     userNotExists: false
   }
 
@@ -37,10 +38,30 @@ export class OtherUser extends Component {
     });
   }
 
+  getCurrentUserData = () => {
+    let currentUserId = localStorage.getItem('currentUserId')
+    let query = database.collection('users').doc(currentUserId).get()
+      .then(doc => {
+        if (!doc.exists) {
+          console.log('No such document!');
+        } else {
+          this.setState({ currentUserInfo: doc.data() })
+          //console.log('Document data:', doc.data());
+        }
+      })
+      .catch(err => {
+        console.log('Error getting document', err);
+      });
+  }
+
   initials() {
     return this.state.info.firstName[0].toUpperCase() + this.state.info.lastName[0].toUpperCase()
   }
 
+  constructor(props) {
+    super(props);
+    this.getCurrentUserData();
+  }
   componentDidMount () {
     const { id } = this.props.match.params
     
@@ -50,11 +71,13 @@ export class OtherUser extends Component {
     
   }
 
+
+  
   render() {
     if(this.state.userNotExists)
         return(<Redirect to="/home"/>)
     else return (
-      this.state.info ?
+      this.state.info && this.state.currentUserInfo ?
         <Grid item xs={12}>
           <Container style={{ maxWidth: '100%' }}>
             <Row className="user-profile-header-row">
@@ -70,7 +93,7 @@ export class OtherUser extends Component {
             </Row>
             <Divider></Divider>
             <Row>
-              <Col><UserPosts userRollNumber={this.state.info.rollNumber}/></Col>
+              <Col><UserPosts userRollNumber={this.state.info.rollNumber} userLikedPosts={this.state.currentUserInfo.likedPosts}/></Col>
             </Row>
           </Container>
         </Grid>
