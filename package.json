@@ -1,7 +1,6 @@
 {
-  "name": "dishapp",
+  "name": "@eyeamkd/disha",
   "version": "0.1.0",
-  "private": true,
   "dependencies": {
     "@material-ui/core": "^4.9.0",
     "@material-ui/icons": "^4.5.1",
@@ -10,7 +9,7 @@
     "@testing-library/user-event": "^7.1.2",
     "bootstrap": "^4.4.1",
     "firebase": "^7.8.0",
-    "firebase-admin": "^8.9.2",
+    "firebase-admin": "^8.10.0",
     "material-table": "^1.56.1",
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.0-beta.16",
@@ -46,5 +45,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   }
 }

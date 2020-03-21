@@ -5,6 +5,7 @@ import { Row, Col } from 'react-bootstrap';
 
 export class Dspaces extends Component {
     render() {
+<<<<<<< HEAD
         return ( 
             <Container fluid>  
                 <Row> 
@@ -19,6 +20,12 @@ export class Dspaces extends Component {
                 </Row>
             </Container>
             
+=======
+        return (
+            <div>
+                <h1>D-Space Header</h1>
+            </div>
+>>>>>>> 7c5262b54ba71e4b699146397c6549ca817e3cbe
         )
     }
 }

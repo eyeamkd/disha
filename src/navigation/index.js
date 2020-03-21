@@ -15,6 +15,12 @@ import PostSubmitted from '../components/NewPost/PostSubmitted';
 import LandingPage from '../components/LandingPage';
 import NewDspaceForm from '../components/Dspaces/NewDspaceForm';
 import DspaceSubmitted from '../components/Dspaces/DspaceSubmitted';
+<<<<<<< HEAD
+=======
+import Button from '@material-ui/core/Button';
+import { Link } from "react-router-dom";
+import OtherUser from '../components/OtherUserProfile';
+>>>>>>> 7c5262b54ba71e4b699146397c6549ca817e3cbe
 
 
 class Navigation extends React.Component {
@@ -47,14 +53,41 @@ class Navigation extends React.Component {
                 <Route path="/post-submitted" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <PostSubmitted/>}/>    
                 <Route path="/new-dspace" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <NewDspaceForm/>}/>    
                 <Route path="/d-space-submitted" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <DspaceSubmitted/>}/>   
-
+                <Route path="/id=:id" component={ OtherUser } />
+                <Route path="*"><NoMatch /></Route>
             </Switch>
         )
     }
 }
 
+function NoMatch() {
+  
+    return (
+        <div style={{
+            position: 'absolute', left: '50%', top: '50%',
+            transform: 'translate(-50%, -50%)'
+        }}
+        >
+            <center>
+                <h1>OOF</h1>
+                <h3> Heading in the wrong <i>DISHA</i>, are we?</h3>
+                <h4>Let's get you back to the home page.</h4>
+                <br/>
+                <Button
+                    type="submit"
+                    variant="contained"
+                    color="secondary"
+                    className="submit button"
+                    size="large"
+                >
+                    <Link to="/SignIn"><div id="textColor">Shall we?</div></Link>
+                </Button>
+                </center>
+        </div>
+    );
+  }
+
 const mapStateToProps = state => ({
     user: state.user.user
 });
-
 export default connect(mapStateToProps)(Navigation);

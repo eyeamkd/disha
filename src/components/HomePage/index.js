@@ -10,9 +10,12 @@ import SortIcon from '@material-ui/icons/Sort';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import {database} from '../../firebase/firebase.utils';
 
 
 import postData from './postsdata.json';
+
+let posts = [];
 
 export default class HomePage extends React.Component{
 
@@ -21,8 +24,61 @@ export default class HomePage extends React.Component{
         hasMore: true,
         index: 5,
         filterClicked: null,
-        filterValue: ""
+        filterValue: "None",
+        allPosts: [],
+        postsArrived: false,
+        userInfo: null
     };
+
+    constructor(props) {
+        super(props);
+        this.getUserData();
+        this.getPosts(); 
+    }
+
+    getUserData = () => {
+        let currentUserId = localStorage.getItem('currentUserId')
+        let userData = database.collection('users').doc(currentUserId);
+        var a;
+        a = userData.get()
+          .then(doc => {
+            if (!doc.exists) {
+              console.log('No such document!');
+            } else {
+              this.setState({ userInfo: doc.data() })
+              //console.log('Document data:', doc.data());
+            }
+          })
+          .catch(err => {
+            console.log('Error getting document', err);
+        });
+    }
+
+    getPosts=()=>{
+        let postsData = database.collection('posts')
+        let query = postsData.get()
+        .then(snapshot => {
+            if (snapshot.empty) {
+                console.log('No matching documents.');
+                return;
+            }  
+            snapshot.forEach(doc => {
+                console.log(doc.id, '=>', doc.data().firstName);
+                var a = doc.data()
+                a.id = doc.id
+                console.log('a', a)
+                posts.push(a)
+            });
+            posts.sort((a, b) => (a.timeStamp > b.timeStamp) ? -1 : 1);
+            this.setState({postsArrived: true, allPosts: posts})
+            posts = [];
+            //console.log('dspaces', dspaces)
+        })
+        .catch(err => {
+            console.log('Error getting documents', err);
+        });
+        
+    }
 
     fetchMoreData = () => {
         if (postData.length === this.state.items.length) {
@@ -47,24 +103,60 @@ export default class HomePage extends React.Component{
         this.setState({filterClicked: null, filterValue: value});
     };
 
-    filterPosts = (element) => {
-        console.log('element.subtitle', element.subtitle)
-        console.log('this.state.filterValue', this.state.filterValue)
-        if(this.state.filterValue === "") {
-            return(<Post title={element.title} subtitle={element.subtitle} description={element.description}/>)
+
+    filterPosts = (post) => {
+        if(this.state.filterValue === "None") {
+            return(
+                <Post 
+                title={post.title} 
+                subtitle={post.category} 
+                description={post.description} 
+                author={post.author} 
+                date={post.timeStamp}
+                rollNumber={post.authorRollNumber}
+                likes={post.likes}
+                id={post.id}
+                userLikedPosts={this.state.userInfo.likedPosts}
+                />
+            )
         }
         else {
-            if(element.subtitle === this.state.filterValue) {
-                return(<Post title={element.title} subtitle={element.subtitle} description={element.description}/>)
+            if(post.category === this.state.filterValue) {
+                return(
+                    <Post 
+                    title={post.title} 
+                    subtitle={post.category} 
+                    description={post.description} 
+                    author={post.author} 
+                    date={post.timeStamp}
+                    rollNumber={post.authorRollNumber}
+                    likes={post.likes}
+                    id={post.id}
+                    userLikedPosts={this.state.userInfo.likedPosts}
+                    />
+                )
             }
             else
                 return (<div></div>)
         }
     }
 
+    setPostsToNull = () => posts = [];
+
     render() {
         console.log(this.state.filterValue);
-        return(  
+        if(this.state.postsArrived === false) {
+            return(
+                <div style={{
+                    position: 'absolute', left: '50%', top: '50%',
+                    transform: 'translate(-50%, -50%)'
+                    }}
+                >
+                    <CircularProgress size={80}/>
+                </div>
+            )
+        }
+        else return(  
             <div>
                 <Box display="flex" flexDirection="row-reverse" p={1} m={1}>
                     <Box p={1} >
@@ -78,37 +170,19 @@ export default class HomePage extends React.Component{
                 anchorEl={this.state.filterClicked}
                 keepMounted
                 open={Boolean(this.state.filterClicked)}
-                onClose={() => this.handleClose("")}
+                onClose={() => this.handleClose("None")}
                 >
-                <MenuItem onClick={() => this.handleClose("EVENTS")}>Events</MenuItem>
-                <MenuItem onClick={() => this.handleClose("INTERNSHIP")}>Internship</MenuItem>
-                <MenuItem onClick={() => this.handleClose("FREELANCING")}>Freelancing</MenuItem>
-                <MenuItem onClick={() => this.handleClose("")}>None</MenuItem>
+                <MenuItem onClick={() => this.handleClose("Events")}>Events</MenuItem>
+                <MenuItem onClick={() => this.handleClose("Internship")}>Internship</MenuItem>
+                <MenuItem onClick={() => this.handleClose("Project")}>Project</MenuItem>
+                <MenuItem onClick={() => this.handleClose("None")}>None</MenuItem>
                 </Menu>
-                <InfiniteScroll
-                    dataLength={this.state.items.length}
-                    next={this.fetchMoreData}
-                    hasMore={this.state.hasMore}
-                    loader={<div style={{
-                        position: 'absolute', left: '50%',
-                        transform: 'translate(-50%, -50%)'
-                        }}
-                        >
-                        <CircularProgress size={20}/>
-                        </div>
-                    }
-                    endMessage={
-                        <p style={{ textAlign: "center" }}>
-                        <b>Yay! You have seen it all</b>
-                        </p>
-                    }
-                >
-                <div style={{}} className="main-div"> 
-                    {this.state.items.map(element => {
-                        return this.filterPosts(element)
-                    })}
-                </div>
-                </InfiniteScroll>
+
+                {
+                    this.state.allPosts.map(post => {
+                        return this.filterPosts(post)
+                    })
+                }
             </div>
             
             

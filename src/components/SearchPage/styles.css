@@ -1,0 +1,17 @@
+.search-bar{ 
+
+} 
+
+.d-space-cards-display{
+    margin-top: 100px;
+} 
+
+.d-space-cards-display-row{ 
+    justify-content: space-around; 
+    
+}  
+
+.d-space-card{ 
+    margin: 10px;
+}
+

@@ -46,7 +46,7 @@ class SignUp extends React.Component {
         isAlumni: false,
         isAuthenticated: false,
         accountCreated: false,
-
+        dept: null,
         signupErrorMessage: '',
         confirmPassword: '',
         labelWidth: 0,
@@ -80,6 +80,10 @@ class SignUp extends React.Component {
         (tempRollNumber.length < 1 || !isRollNumberProper) ? this.setState({ isRollNumber: true}) : this.setState({ isRollNumber: false});
         if(tempRollNumber.length > 7) {
             let deptCode = tempRollNumber.substring(6,8);
+            this.setState({dept: departments[deptCode]})
+            if(this.deptCode === "12") {
+                this.props.setSection("a");
+            }
             this.props.setDepartment(departments[deptCode])
         }
             
@@ -155,16 +159,10 @@ class SignUp extends React.Component {
                     const information = await auth.createUserWithEmailAndPassword(email, password)
                     console.log(information);
                     this.props.setIsNewUser(information.additionalUserInfo.isNewUser)
+                    var likedPosts = [];
+                    var newRollNumber = rollNumber.toLowerCase()
                     const {user} = information; //Have a redux variable for isNewUser from additionalInfo to check if we need to set the current user or no
-                    await createUserProfileDocument(user, {firstName, lastName, email, password, rollNumber, year, department, section, isAlumni, isAuthenticated});
-                    this.props.setFirstName('');
-                    this.props.setLastName('');
-                    this.props.setEmail('');
-                    this.props.setRollNumber('');
-                    this.props.setSection('');
-                    this.props.setYear('');
-                    this.props.setPassword('');
-                    this.props.setDepartment('');
+                    await createUserProfileDocument(user, {firstName, lastName, email, password, newRollNumber, year, department, section, isAlumni, isAuthenticated, likedPosts});
                     this.setState({accountCreated: true})
 
                 }catch(error) {
@@ -322,18 +320,21 @@ class SignUp extends React.Component {
                             <FormControlLabel
                             value="b"
                             control={<Radio color="primary" />}
+                            disabled={this.state.dept === "IT"}
                             label="B"
                             labelPlacement="end"
                             />
                             <FormControlLabel
                             value="c"
                             control={<Radio color="primary" />}
+                            disabled={this.state.dept === "IT"}
                             label="C"
                             labelPlacement="end"
                             />
                             <FormControlLabel
                             value="d"
                             control={<Radio color="primary" />}
+                            disabled={this.state.dept === "IT"}
                             label="D"
                             labelPlacement="end"
                             />
