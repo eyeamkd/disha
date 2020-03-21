@@ -43,7 +43,9 @@ export class UserPosts extends Component {
           }  
           snapshot.forEach(doc => {
               //console.log(doc.id, '=>', doc.data().title); 
-              posts.push(doc.data())
+                var a = doc.data()
+                a.id = doc.id
+                posts.push(a)
           });
           posts.sort((a, b) => (a.timeStamp > b.timeStamp) ? -1 : 1);
           this.setState({postsArrived: true, allPosts: posts})
@@ -80,13 +82,37 @@ export class UserPosts extends Component {
   };
 
   filterPosts = (post) => {
-      console.log("puva", post)
       if(this.state.filterValue === "None") {
-          return(<Post title={post.title} subtitle={post.category} description={post.description} author={post.author} date={post.timeStamp}/>)
+        return(
+          <Post 
+          title={post.title} 
+          subtitle={post.category} 
+          description={post.description} 
+          author={post.author} 
+          date={post.timeStamp}
+          rollNumber={post.authorRollNumber}
+          likes={post.likes}
+          id={post.id}
+          userLikedPosts={this.props.userLikedPosts}
+          />
+        )
       }
       else {
           if(post.category === this.state.filterValue) {
-              return(<Post title={post.title} subtitle={post.category} description={post.description} author={post.author} date={post.timeStamp}/>)
+            return(
+              <Post 
+              title={post.title} 
+              subtitle={post.category} 
+              description={post.description} 
+              author={post.author} 
+              date={post.timeStamp}
+              rollNumber={post.authorRollNumber}
+              likes={post.likes}
+              id={post.id}
+              userLikedPosts={this.props.userLikedPosts}
+
+              />
+            )
           }
           else
               return (<div></div>)
@@ -96,7 +122,6 @@ export class UserPosts extends Component {
   setPostsToNull = () => posts = [];
 
   render() {
-      console.log(this.props.userRollNumber);
       if(this.state.postsArrived === false) {
           return(
               <div style={{

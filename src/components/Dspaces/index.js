@@ -4,7 +4,7 @@ export class Dspaces extends Component {
     render() {
         return (
             <div>
-                <h1>Dspaces</h1>
+                <h1>D-Space Header</h1>
             </div>
         )
     }

@@ -1,32 +1,51 @@
 import React, { Component, Fragment } from "react";
 import { Container, Col, Row } from "react-bootstrap";
+import { Redirect } from 'react-router-dom'; 
 
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 
 import { Typography, Divider, Grid, CircularProgress } from "@material-ui/core";
-import ProfileImage from "./ProfileImage";
-import UserInfo from "./UserInfo";
-import UserCommunity from "./UserCommunity";
-import UserPosts from "./UserPosts";
+import UserInfo from "./../Profile/UserInfo";
+import UserPosts from "./../Profile/UserPosts";
+import ProfileImage from "./../Profile/ProfileImage";
+import {database} from '../../firebase/firebase.utils';
 
-import { connect } from 'react-redux';
 
-export class Profile extends Component {
+export class OtherUser extends Component {
 
   state = {
-    info: null
+    info: null,
+    currentUserInfo: null,
+    userNotExists: false
   }
 
-  getUserData(userData) {
-    var a;
-    a = userData.get()
+  getUserData(usersData, id) {
+    let query = usersData.where('rollNumber', '==', id).get()
+    .then(snapshot => {
+      if (snapshot.empty) {
+        console.log('No matching documents.');
+        this.setState({ userNotExists: true })
+      }  
+  
+      snapshot.forEach(doc => {
+        this.setState({ info: doc.data() })
+        });
+    })
+    .catch(err => {
+      console.log('Error getting documents', err);
+    });
+  }
+
+  getCurrentUserData = () => {
+    let currentUserId = localStorage.getItem('currentUserId')
+    let query = database.collection('users').doc(currentUserId).get()
       .then(doc => {
         if (!doc.exists) {
           console.log('No such document!');
         } else {
-          this.setState({ info: doc.data() })
+          this.setState({ currentUserInfo: doc.data() })
           //console.log('Document data:', doc.data());
         }
       })
@@ -39,17 +58,26 @@ export class Profile extends Component {
     return this.state.info.firstName[0].toUpperCase() + this.state.info.lastName[0].toUpperCase()
   }
 
+  constructor(props) {
+    super(props);
+    this.getCurrentUserData();
+  }
+  componentDidMount () {
+    const { id } = this.props.match.params
+    
+    let usersData = database.collection('users');
+
+    this.getUserData(usersData, id);
+    
+  }
 
 
+  
   render() {
-    const db = firebase.firestore();
-    let currentUserId = localStorage.getItem('currentUserId')
-    let userData = db.collection('users').doc(currentUserId);
-
-    this.getUserData(userData);
-
-    return (
-      this.state.info ?
+    if(this.state.userNotExists)
+        return(<Redirect to="/home"/>)
+    else return (
+      this.state.info && this.state.currentUserInfo ?
         <Grid item xs={12}>
           <Container style={{ maxWidth: '100%' }}>
             <Row className="user-profile-header-row">
@@ -65,8 +93,7 @@ export class Profile extends Component {
             </Row>
             <Divider></Divider>
             <Row>
-              <Col><UserPosts userRollNumber={this.state.info.rollNumber} userLikedPosts={this.state.info.likedPosts}/></Col>
-              <Col><UserCommunity /></Col>
+              <Col><UserPosts userRollNumber={this.state.info.rollNumber} userLikedPosts={this.state.currentUserInfo.likedPosts}/></Col>
             </Row>
           </Container>
         </Grid>
@@ -82,9 +109,5 @@ export class Profile extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  user: state.user.user
-});
-
-export default connect(mapStateToProps)(Profile);
+export default OtherUser;
 
