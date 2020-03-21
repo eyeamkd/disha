@@ -34,6 +34,7 @@ class LandingPage extends Component {
                 </div>
                 <div >
                     <center>
+                        <Link to="/SignIn">
                             <Button
                                 type="submit"
                                 variant="contained"
@@ -41,9 +42,9 @@ class LandingPage extends Component {
                                 className="submit button"
                                 size="large"
                             >
-                                <Link to="/SignIn"><div id="textColor">Get Started</div></Link>
+                                <div id="textColor">Get Started</div>
                             </Button>
-                        
+                        </Link>
                     </center>
                 </div>
             </div>
