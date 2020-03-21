@@ -36,13 +36,8 @@ class Navigation extends React.Component {
             <Switch> 
                 <Route path="/" exact render={() => <LandingPage/>}/>
                 <Route path="/home" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <HomePage/>}/>
-<<<<<<< HEAD
-                <Route path="/SignUp"  component={SignUp}/>     
-                <Route path="/SignIn" exact render={() => this.getCurrentUserId() ? (<Redirect to="/"/>) : <SignIn/>}/>
-=======
                 <Route path="/SignUp" exact render={() => this.getCurrentUserId() ? (<Redirect to="/home"/>) : <SignUp/>}/>     
                 <Route path="/SignIn" exact render={() => this.getCurrentUserId() ? (<Redirect to="/home"/>) : <SignIn/>}/>
->>>>>>> 4f61c98cd9f7999dff17f9abae793f976746a5b7
                 <Route path="/community" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <CommunityPage/>}/>   
                 <Route path="/account-requests" exact render={() => <ClaimAccountPage/>}/>   
                 <Route path="/search-d-spaces" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <SearchPage/>}/>   
