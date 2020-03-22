@@ -116,6 +116,7 @@ export default class HomePage extends React.Component{
                 rollNumber={post.authorRollNumber}
                 likes={post.likes}
                 id={post.id}
+                postUrl={post.postUrl}
                 userLikedPosts={this.state.userInfo.likedPosts}
                 />
             )
@@ -132,6 +133,7 @@ export default class HomePage extends React.Component{
                     rollNumber={post.authorRollNumber}
                     likes={post.likes}
                     id={post.id}
+                    postUrl={post.postUrl}
                     userLikedPosts={this.state.userInfo.likedPosts}
                     />
                 )
