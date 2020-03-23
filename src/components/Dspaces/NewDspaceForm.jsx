@@ -26,7 +26,7 @@ const dSpaceCategories = [
                             "Tech",  
                             "Enterainment", 
                             "College Life",  
-                            "Carrer Advice", 
+                            "Career Advice", 
                             "MS", 
                             "MBA", 
                             "MTech", 
@@ -47,6 +47,7 @@ constructor(props){
             isSelectedCategoryInValid:false, 
             isDspaceTagsInValid:false, 
             onDspaceAdding:false, 
+            currentTag: "",
             dSpaceCreatedSuccessfully:false, 
             dSpaceAddingError:'', 
         }
@@ -102,6 +103,7 @@ handleCategorySelected = (event) => {
 }
 
 onAddTagClicked = () => {
+    if(this.state.currentTag.length > 0)
         this.setState({ 
             dSpaceTags:[...this.state.dSpaceTags,this.state.currentTag],
             currentTag:''
