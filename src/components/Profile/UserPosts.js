@@ -93,6 +93,7 @@ export class UserPosts extends Component {
           rollNumber={post.authorRollNumber}
           likes={post.likes}
           id={post.id}
+          postUrl={post.postUrl}
           userLikedPosts={this.props.userLikedPosts}
           />
         )
@@ -108,6 +109,7 @@ export class UserPosts extends Component {
               date={post.timeStamp}
               rollNumber={post.authorRollNumber}
               likes={post.likes}
+              postUrl={post.postUrl}
               id={post.id}
               userLikedPosts={this.props.userLikedPosts}
 

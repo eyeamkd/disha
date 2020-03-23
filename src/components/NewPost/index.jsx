@@ -146,7 +146,28 @@ getCurrentDate = () => {
     return dateTime;
 }
 
+addPostUrl = () => {
+    let titleArray = this.state.postTitle.split(" ")
+    if(titleArray.length > 3)
+      titleArray = titleArray.slice(0,3)
+    let postUrl = titleArray.join("-")
+    let dateTime = this.getCurrentDate()
+    let timeCode = this.getTimeCode(dateTime)
+    postUrl += "-" + timeCode
+    return postUrl
+}
+
+getTimeCode = (dateTime) => {
+    let timeCode = [];
+    for(var i=2;i<dateTime.length;i++)
+      if(dateTime[i] !== ":" && dateTime[i] !== " " && dateTime[i] !== "-")
+        timeCode.push(dateTime[i])
+    timeCode = timeCode.join("")
+    return timeCode;
+  }
+
 postData = () => { 
+    const postUrl = this.addPostUrl()
     const name = this.state.userDetails.firstName + " " + this.state.userDetails.lastName
     console.log('name', this.state.userDetails.rollNumber)
     // console.log('rollNumber', rollNumber)
@@ -157,6 +178,7 @@ postData = () => {
         dSpaces:this.state.dSpaces, 
         timeStamp: this.getCurrentDate(),
         author:name,
+        postUrl:postUrl,
         authorRollNumber:this.state.userDetails.rollNumber,
         likes:0
         
