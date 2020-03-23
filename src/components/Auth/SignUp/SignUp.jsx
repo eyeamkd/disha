@@ -46,7 +46,7 @@ class SignUp extends React.Component {
         isAlumni: false,
         isAuthenticated: false,
         accountCreated: false,
-        dept: null,
+        dept: "IT",
         signupErrorMessage: '',
         confirmPassword: '',
         labelWidth: 0,
@@ -140,7 +140,7 @@ class SignUp extends React.Component {
 
     handleSignupClick = async () => {
         console.log(this.props)
-        const { firstName, lastName, email, rollNumber, year, section, department, password } = this.props;
+        const { firstName, lastName, email, year, section, department, password } = this.props;
         const { isAlumni, isAuthenticated } = this.state;
         console.log(department);
         if (this.state.isAckChecked 
@@ -160,9 +160,9 @@ class SignUp extends React.Component {
                     console.log(information);
                     this.props.setIsNewUser(information.additionalUserInfo.isNewUser)
                     var likedPosts = [];
-                    var newRollNumber = rollNumber.toLowerCase()
+                    var rollNumber = this.props.rollNumber.toLowerCase()
                     const {user} = information; //Have a redux variable for isNewUser from additionalInfo to check if we need to set the current user or no
-                    await createUserProfileDocument(user, {firstName, lastName, email, password, newRollNumber, year, department, section, isAlumni, isAuthenticated, likedPosts});
+                    await createUserProfileDocument(user, {firstName, lastName, email, password, rollNumber, year, department, section, isAlumni, isAuthenticated, likedPosts});
                     this.setState({accountCreated: true})
 
                 }catch(error) {
@@ -327,14 +327,14 @@ class SignUp extends React.Component {
                             <FormControlLabel
                             value="c"
                             control={<Radio color="primary" />}
-                            disabled={this.state.dept === "IT"}
+                            disabled={this.state.dept === "IT" || this.state.dept === "Civil" || this.state.dept === "EEE" || this.state.dept === "Mech"}
                             label="C"
                             labelPlacement="end"
                             />
                             <FormControlLabel
                             value="d"
                             control={<Radio color="primary" />}
-                            disabled={this.state.dept === "IT"}
+                            disabled={this.state.dept === "IT" || this.state.dept === "Civil" || this.state.dept === "EEE" || this.state.dept === "Mech"}
                             label="D"
                             labelPlacement="end"
                             />

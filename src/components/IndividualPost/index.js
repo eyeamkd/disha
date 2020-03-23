@@ -40,33 +40,38 @@ export class IndividualPost extends Component {
 
   getCurrentUserData = () => {
     let currentUserId = localStorage.getItem('currentUserId')
-    let query = database.collection('users').doc(currentUserId).get()
-      .then(doc => {
-        if (!doc.exists) {
-          console.log('No such document!');
-        } else {
-          this.setState({ currentUserInfo: doc.data() })
-          //console.log('Document data:', doc.data());
-        }
-      })
-      .catch(err => {
-        console.log('Error getting document', err);
-      });
+    if(currentUserId) {
+      let query = database.collection('users').doc(currentUserId).get()
+        .then(doc => {
+          if (!doc.exists) {
+            console.log('No such document!');
+          } else {
+            this.setState({ currentUserInfo: doc.data() })
+            //console.log('Document data:', doc.data());
+          }
+        })
+        .catch(err => {
+          console.log('Error getting document', err);
+        });
+    }
+    else {
+      console.log("Coming here????")
+      this.setState({ currentUserInfo: {likedPosts : []} })
+    }
+        
   }
 
-  initials() {
-    return this.state.info.firstName[0].toUpperCase() + this.state.info.lastName[0].toUpperCase()
-  }
 
   constructor(props) {
     super(props);
-    this.getCurrentUserData();
   }
+
   componentDidMount () {
     const { post } = this.props.match.params
     let postsData = database.collection('posts');
     console.log('post', post)
-    this.getPostData(postsData, post);   
+    this.getPostData(postsData, post); 
+    this.getCurrentUserData();
   }
 
 
@@ -74,6 +79,7 @@ export class IndividualPost extends Component {
   render() {
     // return(<h1>Hello</h1>)
     console.log('this.state.info', this.state.info)
+    console.log('this.state.currentUserInfo', this.state.currentUserInfo)
     if(this.state.postNotExists)
         return(<Redirect to="/home"/>)
     else return (

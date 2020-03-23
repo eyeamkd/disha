@@ -126,10 +126,17 @@ export default function Post(props) {
 
       <CardActions disableSpacing>
         <div className={classes.verticalLine}>
-          <IconButton aria-label="add to favorites" color={likeToggle ? "primary" : ""} onClick={handleLikeClick}>
-            <FavoriteIcon />
-          </IconButton>
-          {likeCount}
+          {
+            localStorage.getItem('currentUserId') ? 
+            <div>
+              <IconButton aria-label="add to favorites" color={likeToggle ? "primary" : ""} onClick={handleLikeClick}>
+                <FavoriteIcon />
+              </IconButton>
+              {likeCount}
+            </div>
+            : <div></div>
+          }
+          
         </div>
         <IconButton 
           aria-label="share"
