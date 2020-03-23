@@ -70,7 +70,7 @@ export default class SharePost extends Component {
                         onClose={this.handleClose}
                         anchorOrigin={{
                             vertical: 'bottom',
-                            horizontal: 'left',
+                            horizontal: 'center',
                         }}
 
                     >
