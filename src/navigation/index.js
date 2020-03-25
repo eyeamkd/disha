@@ -22,9 +22,6 @@ import IndividualPost from '../components/IndividualPost';
 
 
 class Navigation extends React.Component {
-    componentDidMount(){
-        console.log("userrrr", this.props);   
-    };
 
     getCurrentUserId() {
         var currentUserId = localStorage.getItem('currentUserId');
