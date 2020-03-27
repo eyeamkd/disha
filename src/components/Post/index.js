@@ -17,7 +17,8 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { Link } from "react-router-dom";
 import {database} from '../../firebase/firebase.utils';
 import firebase from 'firebase/app'
-//import admin from 'firebase-admin';
+import SharePost from '../SharePost';
+
 
 //import MoreVertIcon from "@material-ui/icons/MoreVert";
 
@@ -49,13 +50,15 @@ const useStyles = makeStyles(theme => ({
 
 export default function Post(props) {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
+  const [share, setShare] = React.useState(false);
   const [likeToggle, setLikeToggle] = React.useState(props.userLikedPosts.includes(props.id));
   const [likeCount, setLikeCount] = React.useState(props.likes);
   let currentLikesCount = props.likes;
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
+  const handleShareClick = () => {
+    setShare(!share);
   };
+
+
 
   const handleLikeClick = () => {
     console.log('props.userLikedPosts', props.userLikedPosts)
@@ -92,58 +95,64 @@ export default function Post(props) {
     // }
   });
 
-
+  const getWebsiteUrl = () => {
+    var websiteUrl = window.location.href;
+    websiteUrl = websiteUrl.split("/")[2]
+    websiteUrl += "/post=" + props.postUrl
+    return websiteUrl;
+  }
 
   return (
     <Card className={classes.root}>
-      <CardHeader title={props.title} subheader={props.subtitle} />
-     
-      <CardContent> 
+      <Link to={`/post=${props.postUrl}`}>
+
+        <CardHeader title={props.title} subheader={props.subtitle} />
       
-        <Typography variant="body2" color="textSecondary" component="p">
-          Click on the arrow on the bottom-right to view more details!
-        </Typography>
+        <CardContent> 
         
-        <Link to={`/id=${props.rollNumber}`}>
-          <Typography variant="body2" color="primary" component="p" >
-            - {props.author}  
+          <Typography variant="body2" color="textSecondary" component="p">
+            {props.description}
           </Typography>
-        </Link>
-         
-   
-      </CardContent>
+          
+          <Link to={`/id=${props.rollNumber}`}>
+            <Typography variant="body2" color="primary" component="p" >
+              - {props.author}  
+            </Typography>
+          </Link>
+          
+    
+        </CardContent>
+      </Link>
 
       <CardActions disableSpacing>
         <div className={classes.verticalLine}>
-          <IconButton aria-label="add to favorites" color={likeToggle ? "primary" : ""} onClick={handleLikeClick}>
-            <FavoriteIcon />
-          </IconButton>
-          {likeCount}
+          {
+            localStorage.getItem('currentUserId') ? 
+            <div>
+              <IconButton aria-label="add to favorites" color={likeToggle ? "primary" : ""} onClick={handleLikeClick}>
+                <FavoriteIcon />
+              </IconButton>
+              {likeCount}
+            </div>
+            : <div></div>
+          }
+          
         </div>
-        <IconButton aria-label="share">
+        <IconButton 
+          aria-label="share"
+          onClick={handleShareClick}
+          aria-expanded={share}
+        >
           <ShareIcon />
         </IconButton> 
-        <Typography variant="body2" color="textPrimary" component="p" >{props.date}</Typography>
-        
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded
-          })}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
+        <Typography variant="body2" color="textPrimary" component="p" className={classes.expand}>{props.date}</Typography>
       </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography paragraph>More Info:</Typography>
-          <Typography paragraph>
-          {props.description}
-          </Typography>
-        </CardContent>
+      <Collapse in={share} timeout="auto" unmountOnExit>
+          <CardContent>
+            <SharePost url={getWebsiteUrl()}/>
+          </CardContent>
       </Collapse>
     </Card>
+
   );
 }

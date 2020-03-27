@@ -14,7 +14,8 @@ import {
     InputAdornment, 
     IconButton, 
     Chip, 
-    CircularProgress} from '@material-ui/core';
+    CircularProgress, 
+    FormHelperText} from '@material-ui/core';
 import { Row } from 'react-bootstrap';  
 import AddIcon from '@material-ui/icons/Add'; 
 import {database} from '../../firebase/firebase.utils';
@@ -25,7 +26,7 @@ const dSpaceCategories = [
                             "Tech",  
                             "Enterainment", 
                             "College Life",  
-                            "Carrer Advice", 
+                            "Career Advice", 
                             "MS", 
                             "MBA", 
                             "MTech", 
@@ -46,6 +47,7 @@ constructor(props){
             isSelectedCategoryInValid:false, 
             currentTag:'', 
             onDspaceAdding:false, 
+            currentTag: "",
             dSpaceCreatedSuccessfully:false, 
             dSpaceAddingError:'', 
         }
@@ -91,6 +93,7 @@ handleCategorySelected = (event) => {
 }  
 
 onAddTagClicked = () => {
+    if(this.state.currentTag.length > 0)
         this.setState({ 
             dSpaceTags:[...this.state.dSpaceTags,this.state.currentTag],
             currentTag:''
@@ -141,6 +144,11 @@ addDspace = () => {
                                     labelWidth={60} 
                                     error={this.state.isDspaceTitleInValid} 
                                 />   
+                                    required={true}
+                                /> 
+                                {this.state.isDspaceTitleInValid&&  
+                                    <FormHelperText error={true}>Title should be of minimum 4 characters</FormHelperText>   
+                                } 
                         </FormControl> 
     
                         <FormControl style={{margin:10}}>  
