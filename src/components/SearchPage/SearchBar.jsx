@@ -1,31 +1,31 @@
-import React, { Component } from 'react'
+import React,{useState} from 'react';
 import { TextField } from '@material-ui/core'; 
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'; 
 
-export class SearchBar extends Component { 
-    constructor(props){
-        super(); 
-        this.state={ 
-            value:''
-        }
-    }
-    render() {
-        return (
-            <div>
-                <TextField  
-                    id="outlined-basic" 
-                    placeholder="Search D-Spaces"
-                    variant="outlined" 
-                    fullWidth 
-                    onChange={event =>  this.setState({value: event.target.value})} 
-                    />
-            </div>
-        )
-    }
+import {onSearchValueEntered} from '../../redux/dSpaceSearch/searchBar-action';
+
+function SearchBar(props){    
+    console.log(props);
+    return( 
+        <div>
+            <TextField  
+                id="outlined-basic" 
+                placeholder="Search D-Spaces"
+                variant="outlined" 
+                fullWidth 
+                onChange={event => props.onSearchValueEntered(event.target.value)}   
+                value={props.searchValue}
+                />
+        </div>
+    );
 }
 
-const mapStateToProps = state => ({ 
-    searchValue : state.value
+const mapDispatchToProps = dispatch => ({ 
+    onSearchValueEntered : value => dispatch(onSearchValueEntered(value))
+}) 
+
+const mapStateToProps = state => ({
+    searchValue : state.dSpaceSearch.searchValue
 })
 
-export default connect()(SearchBar);
+export default connect(mapStateToProps,mapDispatchToProps)(SearchBar);

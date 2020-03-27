@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function DspaceHeader() {
+export default function DspaceHeader(props) {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
 
@@ -65,7 +65,7 @@ export default function DspaceHeader() {
             Item One
         </TabPanel>
         <TabPanel value={value} index={1}>
-            Item Two
+            {props.dspace.description}
         </TabPanel>
         <TabPanel value={value} index={2}>
             Item Three

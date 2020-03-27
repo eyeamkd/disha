@@ -47,7 +47,6 @@ constructor(props){
             isSelectedCategoryInValid:false, 
             currentTag:'', 
             onDspaceAdding:false, 
-            currentTag: "",
             dSpaceCreatedSuccessfully:false, 
             dSpaceAddingError:'', 
         }
