@@ -29,4 +29,4 @@ export class SearchPage extends Component {
     }
 }
 
-export default SearchPage
+export default SearchPage;

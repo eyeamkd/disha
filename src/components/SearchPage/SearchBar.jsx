@@ -1,7 +1,14 @@
 import React, { Component } from 'react'
-import { TextField } from '@material-ui/core';
+import { TextField } from '@material-ui/core'; 
+import { connect } from 'react-redux';
 
-export class SearchBar extends Component {
+export class SearchBar extends Component { 
+    constructor(props){
+        super(); 
+        this.state={ 
+            value:''
+        }
+    }
     render() {
         return (
             <div>
@@ -9,11 +16,16 @@ export class SearchBar extends Component {
                     id="outlined-basic" 
                     placeholder="Search D-Spaces"
                     variant="outlined" 
-                    fullWidth
+                    fullWidth 
+                    onChange={event =>  this.setState({value: event.target.value})} 
                     />
             </div>
         )
     }
 }
 
-export default SearchBar;
+const mapStateToProps = state => ({ 
+    searchValue : state.value
+})
+
+export default connect()(SearchBar);

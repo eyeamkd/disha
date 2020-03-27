@@ -15,12 +15,9 @@ import PostSubmitted from '../components/NewPost/PostSubmitted';
 import LandingPage from '../components/LandingPage';
 import NewDspaceForm from '../components/Dspaces/NewDspaceForm';
 import DspaceSubmitted from '../components/Dspaces/DspaceSubmitted';
-<<<<<<< HEAD
-=======
 import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
 import OtherUser from '../components/OtherUserProfile';
->>>>>>> 7c5262b54ba71e4b699146397c6549ca817e3cbe
 
 
 class Navigation extends React.Component {

@@ -14,8 +14,7 @@ import {
     InputAdornment, 
     IconButton, 
     Chip, 
-    CircularProgress,
-    FormHelperText} from '@material-ui/core';
+    CircularProgress} from '@material-ui/core';
 import { Row } from 'react-bootstrap';  
 import AddIcon from '@material-ui/icons/Add'; 
 import {database} from '../../firebase/firebase.utils';
@@ -41,11 +40,11 @@ constructor(props){
             dSpaceTitle:'', 
             dSpaceDescription:'', 
             dSpaceCategory:[],
-            dSpaceTags:[], 
+            dSpaceTags:[],
             isDspaceTitleInValid:false, 
             isDspaceDescriptionInValid:false,
             isSelectedCategoryInValid:false, 
-            isDspaceTagsInValid:false, 
+            currentTag:'', 
             onDspaceAdding:false, 
             dSpaceCreatedSuccessfully:false, 
             dSpaceAddingError:'', 
@@ -62,28 +61,18 @@ isDspaceDataValid = () => {
                 isDspaceDescriptionInValid:true 
             }); 
             return false;
-        }else if(this.state.dSpaceCategory.length<1){ 
+        }else if(this.state.dSpaceCategory.length<2){ 
             this.setState({  
                 isDspaceTitleInValid:false,
                 isDspaceDescriptionInValid:false,
                 isSelectedCategoryInValid:true 
             }); 
             return false;
-        }else if(this.state.dSpaceTags.length<2){ 
-            console.log("tags true");
+        }else { 
             this.setState({  
                 isDspaceTitleInValid:false,
                 isDspaceDescriptionInValid:false,
-                isSelectedCategoryInValid:false,
-                isDspaceTagsInValid:true
-            }); 
-            return false;
-        }else { 
-            this.setState({ 
-                isDspaceTitleInValid:false,
-                isDspaceDescriptionInValid:false,
-                isSelectedCategoryInValid:false,
-                isDspaceTagsInValid:false
+                isSelectedCategoryInValid:true 
             }); 
             return true;
         }
@@ -95,11 +84,11 @@ handleChange = (event) => {
         })
 }  
 
-handleCategorySelected = (event) => {   
+handleCategorySelected = (event) => {
         this.setState({
-           dSpaceCategory:[...this.state.dSpaceCategory,event.target.value]
+            dSpaceCategory:event.target.value
         })
-}
+}  
 
 onAddTagClicked = () => {
         this.setState({ 
@@ -122,8 +111,7 @@ addDspace = () => {
         title:this.state.dSpaceTitle,
         description:this.state.dSpaceDescription, 
         Category:this.state.dSpaceCategory, 
-        tags:this.state.dSpaceTags, 
-        userId: localStorage.getItem('currentUserId')
+        tags:this.state.dSpaceTags
     }
     database.collection('d-spaces').add(newDspaceData)
     .then((docRef)=>{this.setState({dSpaceCreatedSuccessfully:true})}) 
@@ -133,10 +121,10 @@ addDspace = () => {
     })})
 }
 
-    render() {  
-        if(this.state.dSpaceCreatedSuccessfully){  
-            return(<Redirect to="/d-space-submitted"/>);
-        }else{ 
+    render() { 
+        if(this.state.dSpaceCreatedSuccessfully){ 
+            return(<Redirect to="/post-submitted"/>);
+        }else{  
             return (
                 <Container>
                     <Typography variant="h1">New D-Space</Typography> 
@@ -146,16 +134,13 @@ addDspace = () => {
                                 DSpace Name 
                             </InputLabel>
                                 <OutlinedInput
-                                    id="dSpaceTitle"
-                                    onChange={this.handleChange} 
+                                    id="dSpaceTitle" 
+                                    key={this.state.dSpaceTitle} 
                                     value={this.state.dSpaceTitle}
+                                    onChange={this.handleChange}
                                     labelWidth={60} 
                                     error={this.state.isDspaceTitleInValid} 
-                                    required={true}
-                                /> 
-                                {this.state.isDspaceTitleInValid&&  
-                                    <FormHelperText error={true}>Title Should be of Minimum 4 Chacters</FormHelperText>   
-                                } 
+                                />   
                         </FormControl> 
     
                         <FormControl style={{margin:10}}>  
@@ -164,35 +149,30 @@ addDspace = () => {
                             </InputLabel>
                                 <OutlinedInput
                                     id="dSpaceDescription" 
+                                    key={this.state.dSpaceDescription} 
                                     value={this.state.dSpaceDescription}
                                     onChange={this.handleChange}
                                     labelWidth={60} 
                                     multiline 
                                     rows="5"
-                                /> 
-                                {this.state.isDspaceDescriptionInValid&&  
-                                    <FormHelperText error={true}>Description Should be of Minimum 100 Characters</FormHelperText>   
-                                }    
+                                />   
                         </FormControl> 
     
                         <div className="checkbox-section">  
                             <FormLabel>Select Your D-Space Category</FormLabel> 
                                 <FormGroup>
-                                    {dSpaceCategories.map(category => ( 
+                                    {dSpaceCategories.map(dspaceCategory => ( 
                                         <FormControlLabel 
                                             control={ 
                                                 <Checkbox 
-                                                    value={category}  
+                                                    value={dspaceCategory}  
                                                     onChange={this.handleCategorySelected}
                                                 />
                                                     } 
-                                                    label={category}
+                                                    label={dspaceCategory}
                                                 />
                                 ))} 
-                                {this.state.isSelectedCategoryInValid&&  
-                                    <FormHelperText error={true}>Please Select at least one category</FormHelperText>   
-                                }  
-                                </FormGroup> 
+                            </FormGroup> 
                         </div>   
     
                         <div className="dspace-tags-div">
@@ -202,12 +182,7 @@ addDspace = () => {
                                     id="currentTag"
                                     value={this.state.currentTag}
                                     onChange={this.handleChange} 
-                                    fullWidth="true" 
-                                    onKeyUp={(event)=>{ 
-                                        if(event.key==="Enter"){ 
-                                            this.onAddTagClicked();
-                                        }
-                                    }} 
+                                    fullWidth="true"
                                     endAdornment={
                                     <InputAdornment position="end">
                                         <IconButton
@@ -218,10 +193,7 @@ addDspace = () => {
                                         </IconButton>
                                     </InputAdornment>
                                     }
-                                /> 
-                                {this.state.isDspaceTagsInValid&&  
-                                    <FormHelperText error={true}>tags help people to discover your D-space please enter atleast two</FormHelperText>   
-                                }  
+                                />
                         </FormControl>  
                         <div className="tags">
                             { 
@@ -251,9 +223,9 @@ addDspace = () => {
 
                 </Container>
             )
-        }    
-    }
+        }
         
     }
+}
 
 export default NewDspaceForm
