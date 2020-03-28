@@ -54,21 +54,21 @@ export default function DspaceHeader(props) {
 
     return (
         <div className={classes.root}>
-        <AppBar position="static">
+        <AppBar position="static" color="secondary">
             <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-            <Tab label="Posts" {...a11yProps(0)} />
-            <Tab label="Description" {...a11yProps(1)} />
+            <Tab label="Description " {...a11yProps(0)} />
+            <Tab label="Posts" {...a11yProps(1)} />
             <Tab label="Members" {...a11yProps(2)} />
             </Tabs>
         </AppBar>
         <TabPanel value={value} index={0}>
-            Item One
-        </TabPanel>
-        <TabPanel value={value} index={1}>
             {props.dspace.description}
         </TabPanel>
+        <TabPanel value={value} index={1}>
+            Posts
+        </TabPanel>
         <TabPanel value={value} index={2}>
-            Item Three
+            Members who have subscribed to this D-Space (Coming soon)
         </TabPanel>
         </div>
     );

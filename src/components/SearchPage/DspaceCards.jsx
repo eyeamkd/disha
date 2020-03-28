@@ -1,10 +1,11 @@
 import React, { Component, Fragment } from 'react'
 import DspaceCard from './DspaceCard'
 import { Container, CircularProgress, Typography } from '@material-ui/core';
-import { Row } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 
 import './styles.css'; 
 import {database} from '../../firebase/firebase.utils';
+import { Link } from 'react-router-dom';
 
 const dSpacesReference  =  database.collection('d-spaces'); 
 
@@ -81,8 +82,14 @@ export class DspaceCards extends Component {
     
     render() {    
         if(!this.state.dSpacesLoaded){ 
-            return( 
-                <CircularProgress color="secondary"/>
+            return(  
+                <Container>  
+                    <Row>   
+                    <Col md={{ span: 6, offset: 3 }}>  
+                        <CircularProgress color="secondary"/>
+                    </Col>
+                    </Row>
+                </Container> 
             )
         } 
             else{   
@@ -93,14 +100,17 @@ export class DspaceCards extends Component {
                                 {  this.state.isDspacePresent  
                                     ?
                                     Dspaces.map(dSpace => {  
-                                        return( 
-                                            <div className="d-space-card">  
-                                                <DspaceCard  
+                                        return(  
+                                            <Link to={{ 
+                                                pathname:'/d-spaces', 
+                                                state:{ dSpaceInfo : {dSpace} }
+                                            }}>
+                                            <DspaceCard  
                                                     className="d-space-card" 
                                                     title = { dSpace.title } 
                                                     key={dSpace.title}
-                                                /> 
-                                            </div> 
+                                            />
+                                            </Link> 
                                         );
                                     }) 
                                     :  
