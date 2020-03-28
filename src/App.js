@@ -30,7 +30,7 @@ export class App extends Component {
       console.log("Current user:", this.state.currentUser)
         if(userAuth) {
           let userRef = await createUserProfileDocument(userAuth);
-          if(this.props.isNewUser === false) {
+          // if(this.props.isNewUser === false) {
             console.log("Auth ", userAuth)
             userRef.onSnapshot(snapShot => {
               this.setState({
@@ -46,13 +46,13 @@ export class App extends Component {
               })
               //console.log(this.state)
             })
-          }
-          else if(this.props.isNewUser === true){
-            userRef = null;
-            this.setState({ currentUser: null }, () => {
-              this.props.setUser(null)
-            })
-          }
+          // }
+          // else if(this.props.isNewUser === true){
+            // userRef = null;
+            // this.setState({ currentUser: null }, () => {
+            //   this.props.setUser(null)
+            // })
+          // }
         }
         else {
           this.setState({ currentUser: userAuth }, () => {
