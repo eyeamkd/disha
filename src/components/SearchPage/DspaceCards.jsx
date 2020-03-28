@@ -35,7 +35,12 @@ export class DspaceCards extends Component {
 
     componentWillMount(){  
         this.storeDspaces();
-    }  
+    } 
+    
+    componentWillUnmount(){ 
+        Dspaces=[]; 
+        DspacesConstant=[];
+    }
     
     componentDidUpdate(prevProps){  
         if(prevProps.searchValue===""){

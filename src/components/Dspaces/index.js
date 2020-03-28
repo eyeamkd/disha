@@ -18,7 +18,7 @@ export class Dspaces extends Component {
             <Container fluid>  
                 <Row> 
                     <Col>
-                        <Typography variant="h1">{dspace.title}</Typography>
+                        <Typography variant="h1">Python</Typography>
                     </Col>
                 </Row> 
                 <Row> 

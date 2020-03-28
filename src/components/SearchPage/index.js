@@ -20,7 +20,6 @@ export class SearchPage extends Component {
                         </Box>
                     </Col>
                 </Row> 
-
                 <Row className="d-space-cards-display">
                     <Col>
                         <DspaceCards searchValue={this.props.searchValue}/>

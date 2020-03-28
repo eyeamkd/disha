@@ -165,7 +165,7 @@ class SignUp extends React.Component {
                 try {
                     const information = await auth.createUserWithEmailAndPassword(email, password)
                     console.log(information);
-                    this.props.setIsNewUser(information.additionalUserInfo.isNewUser)
+                    // this.props.setIsNewUser(information.additionalUserInfo.isNewUser)
                     var likedPosts = [];
                     var rollNumber = this.props.rollNumber.toLowerCase()
                     const {user} = information; //Have a redux variable for isNewUser from additionalInfo to check if we need to set the current user or no
@@ -180,7 +180,6 @@ class SignUp extends React.Component {
             this.setState({isSignup : false}, () => this.setState({signupErrorMessage: '* Please check all the fields'}));
             return;
         }
-        sessionStorage.clear();
     }
 
     checkPasswordMatch = () => {
@@ -438,7 +437,7 @@ class SignUp extends React.Component {
                     </Link>
                     </Grid>
                 </Grid>
-                {this.state.accountCreated ? (<Redirect to="/SignIn"/>) : null}
+                {this.state.accountCreated ? (<Redirect to="/home"/>) : null}
             </div>
             </Container>
         );
