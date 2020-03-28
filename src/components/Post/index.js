@@ -12,12 +12,14 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { red } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import DeleteIcon from "@material-ui/icons/Delete";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { Link } from "react-router-dom";
 import {database} from '../../firebase/firebase.utils';
 import firebase from 'firebase/app'
 import SharePost from '../SharePost';
+import DialogBox from '../DialogBox';
 
 
 //import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -34,7 +36,6 @@ const useStyles = makeStyles(theme => ({
     paddingTop: "56.25%" // 16:9
   },
   expand: {
-    transform: "rotate(0deg)",
     marginLeft: "auto",
     transition: theme.transitions.create("transform", {
       duration: theme.transitions.duration.shortest
@@ -51,17 +52,32 @@ const useStyles = makeStyles(theme => ({
 export default function Post(props) {
   const classes = useStyles();
   const [share, setShare] = React.useState(false);
-  const [likeToggle, setLikeToggle] = React.useState(props.userLikedPosts.includes(props.id));
-  const [likeCount, setLikeCount] = React.useState(props.likes);
-  let currentLikesCount = props.likes;
+  const [likeToggle, setLikeToggle] = React.useState(props.userLiked);
+  const [likeCount, setLikeCount] = React.useState(props.post.likes);
+  const [open, setOpen] = React.useState(false);
+  let currentLikesCount = props.post.likes;
+
+
   const handleShareClick = () => {
     setShare(!share);
   };
 
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setOpen(false);
+  };
+
+  const handlePostDelete = () => {
+    console.log("post deleted")
+    props.removePost(props.post);
+    setOpen(false);
+  };
 
   const handleLikeClick = () => {
-    console.log('props.userLikedPosts', props.userLikedPosts)
     setLikeToggle(!likeToggle);
     if(!likeToggle) {
       currentLikesCount = likeCount+1;
@@ -76,20 +92,20 @@ export default function Post(props) {
 
   useEffect(() => {
     setLikeCount(likeCount);
-    console.log('props.id', props.id)
+    console.log('props.post.id', props.post.id)
     // return () => {
-      let setDoc = database.collection('posts').doc(props.id).update({likes: likeCount});
+      let setDoc = database.collection('posts').doc(props.post.id).update({likes: likeCount});
       console.log('currentLikesCount', likeCount)
-      if(likeCount > props.likes) {
+      if(likeCount > props.post.likes) {
         let currentUserId = localStorage.getItem('currentUserId')
         let setDoc = database.collection('users').doc(currentUserId).update({
-          likedPosts: firebase.firestore.FieldValue.arrayUnion(props.id)
+          likedPosts: firebase.firestore.FieldValue.arrayUnion(props.post.id)
         });
       }
-      else if(likeCount < props.likes) {
+      else if(likeCount < props.post.likes) {
         let currentUserId = localStorage.getItem('currentUserId')
         let setDoc = database.collection('users').doc(currentUserId).update({
-          likedPosts: firebase.firestore.FieldValue.arrayRemove(props.id)
+          likedPosts: firebase.firestore.FieldValue.arrayRemove(props.post.id)
         });
       }
     // }
@@ -98,25 +114,25 @@ export default function Post(props) {
   const getWebsiteUrl = () => {
     var websiteUrl = window.location.href;
     websiteUrl = websiteUrl.split("/")[2]
-    websiteUrl += "/post=" + props.postUrl
+    websiteUrl += "/post=" + props.post.postUrl
     return websiteUrl;
   }
 
   return (
     <Card className={classes.root}>
-      <Link to={`/post=${props.postUrl}`}>
+      <Link to={`/post=${props.post.postUrl}`}>
 
-        <CardHeader title={props.title} subheader={props.subtitle} />
+        <CardHeader title={props.post.title} subheader={props.post.subtitle} />
       
         <CardContent> 
         
           <Typography variant="body2" color="textSecondary" component="p">
-            {props.description}
+            {props.post.description}
           </Typography>
           
-          <Link to={`/id=${props.rollNumber}`}>
+          <Link to={`/id=${props.post.authorRollNumber}`}>
             <Typography variant="body2" color="primary" component="p" >
-              - {props.author}  
+              - {props.post.author}  
             </Typography>
           </Link>
           
@@ -145,8 +161,21 @@ export default function Post(props) {
         >
           <ShareIcon />
         </IconButton> 
-        <Typography variant="body2" color="textPrimary" component="p" className={classes.expand}>{props.date}</Typography>
-      </CardActions>
+        <Typography variant="body2" color="textPrimary" component="p">{props.post.date}</Typography>
+        {props.postedByUser ?
+          <IconButton 
+            aria-label="share"
+            onClick={handleClickOpen}
+            aria-expanded={share}
+            className={classes.expand}
+          >
+            <DeleteIcon />
+          </IconButton> 
+          :
+          <div></div>
+        }
+        <DialogBox open={open} handleDialogClose={handleDialogClose} handlePostDelete={handlePostDelete}/>
+        </CardActions>
       <Collapse in={share} timeout="auto" unmountOnExit>
           <CardContent>
             <SharePost url={getWebsiteUrl()}/>

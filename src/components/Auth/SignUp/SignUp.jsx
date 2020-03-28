@@ -14,6 +14,13 @@ import Container from '@material-ui/core/Container';
 import { connect } from 'react-redux';
 import Logo from '../../Logo/Logo';
 
+import { 
+    FormControl, 
+    OutlinedInput, 
+    InputLabel, 
+    CircularProgress,
+    FormHelperText} from '@material-ui/core';
+
 import { Redirect } from 'react-router-dom'; 
 
 
@@ -173,13 +180,13 @@ class SignUp extends React.Component {
             this.setState({isSignup : false}, () => this.setState({signupErrorMessage: '* Please check all the fields'}));
             return;
         }
-
     }
 
     checkPasswordMatch = () => {
         if(this.state.confirmPassword.length > 0) {
-            if(!this.state.isConfirmPassword) 
-                return ("Passwords do not match!")
+            if(this.state.isConfirmPassword) 
+                return false
+            else return true
         }
     }
 
@@ -222,92 +229,112 @@ class SignUp extends React.Component {
                 <form className="form" noValidate>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
-                    <TextField
-                        autoComplete="firstname"
-                        name="firstName"
-                        variant="outlined"
-                        error={this.state.isFirstName}
-                        required
-                        fullWidth
-                        id="firstName"
-                        label="First Name"
-                        autoFocus
-                        helperText={this.state.isFirstName ? '* Required' : ''}
-                        onChange={event=> this.handleFirstNameChange(event)}
-                    />
+                        <FormControl  >   
+                            <InputLabel variant="outlined" className="input-label" > 
+                                First Name 
+                            </InputLabel>
+                            <OutlinedInput
+                                id="firstName"
+                                labelWidth={60} 
+                                error={this.state.isFirstName} 
+                                required={true}
+                                fullWidth
+                                onChange={event=> this.handleFirstNameChange(event)}
+                            /> 
+                            {this.state.isFirstName&&  
+                                <FormHelperText error={true}>* Required</FormHelperText>   
+                            } 
+                        </FormControl>                     
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                    <TextField
-                        variant="outlined"
-                        error={this.state.isLastName}
-                        required
-                        fullWidth
-                        id="lastName"
-                        label="Last Name"
-                        name="lastName"
-                        autoComplete="lastname"
-                        helperText={this.state.isLastName ? '* Required' : ''}
-                        onChange={event=> this.handleLastNameChange(event)}
-                    />
-
+                        <FormControl  >   
+                            <InputLabel variant="outlined" className="input-label" > 
+                                Last Name 
+                            </InputLabel>
+                            <OutlinedInput
+                                id="lastName"
+                                labelWidth={60} 
+                                error={this.state.isLastName} 
+                                required={true}
+                                fullWidth
+                                onChange={event=> this.handleLastNameChange(event)}
+                            /> 
+                            {this.state.isLastName&&  
+                                <FormHelperText error={true}>* Required</FormHelperText>   
+                            } 
+                        </FormControl>
                     </Grid>
                     <Grid item xs={12}>
-                    <TextField
-                        variant="outlined"
-                        required
-                        fullWidth
-                        id="email"
-                        error={this.state.isEmail}
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
-                        helperText={this.state.isEmail ? '* Please check the email entered' : ''}
-                        onChange={event=> this.handleEmailChange(event)}
-                    />
+                        <FormControl fullWidth>   
+                                <InputLabel variant="outlined" className="input-label" > 
+                                    Email Address
+                                </InputLabel>
+                                <OutlinedInput
+                                    id="email"
+                                    labelWidth={60} 
+                                    error={this.state.isEmail} 
+                                    required={true}
+                                    fullWidth
+                                    onChange={event=> this.handleEmailChange(event)}
+                                /> 
+                                {this.state.isEmail&&  
+                                    <FormHelperText error={true}>* Please check the email entered</FormHelperText>   
+                                } 
+                        </FormControl>
                     </Grid>
                     <Grid item xs={12}>
-                    <TextField
-                        autoComplete="fname"
-                        name="rollNumber"
-                        variant="outlined"
-                        error={this.state.isRollNumber}
-                        required
-                        fullWidth
-                        id="rollNumber"
-                        label="Roll Number"
-                        autoFocus
-                        helperText={this.state.isRollNumber ? '* Enter valid Roll Number' : ''}
-                        onChange={event=> this.handleRollNumberChange(event)}
-                    />
+                        <FormControl fullWidth>   
+                            <InputLabel variant="outlined" className="input-label" > 
+                                Roll Number
+                            </InputLabel>
+                            <OutlinedInput
+                                id="rollNumber"
+                                labelWidth={60} 
+                                error={this.state.isRollNumber} 
+                                required={true}
+                                fullWidth
+                                onChange={event=> this.handleRollNumberChange(event)}
+                            /> 
+                            {this.state.isRollNumber&&  
+                                <FormHelperText error={true}>* Enter valid Roll Number</FormHelperText>   
+                            } 
+                        </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={5}>
-                    <TextField
-                        variant="outlined"
-                        error={this.state.isYear}
-                        required
-                        fullWidth
-                        value={this.state.yearValue}
-                        id="year"
-                        type="number"
-                        label="Pass-out Year"
-                        name="year"
-                        autoComplete="year"
-                        helperText={this.state.isYear ? '* Enter a valid year' : ''}
-                        onChange={event=> this.handleYearChange(event)}
-                    /></Grid>
+                        <FormControl fullWidth>   
+                            <InputLabel variant="outlined" className="input-label" > 
+                                Pass-out Year
+                            </InputLabel>
+                            <OutlinedInput
+                                id="year"
+                                type="number"
+                                labelWidth={60} 
+                                error={this.state.isYear} 
+                                value={this.state.yearValue}
+                                required={true}
+                                fullWidth
+                                onChange={event=> this.handleYearChange(event)}
+                            /> 
+                            {this.state.isYear&&  
+                                <FormHelperText error={true}>* Enter a valid year</FormHelperText>   
+                            } 
+                        </FormControl>
+                    </Grid>
                     <Grid item xs={12} sm={7}>
-                    <TextField
-                        disabled
-                        id="outlined-disabled"
-                        defaultValue="Department"
-                        variant="outlined"
-                        label="Department"
-                        name="department"
-                        autoComplete="department"
-                        value={this.props.department}
-                        helperText={this.state.isYear ? '* Enter a valid year' : ''}
-                        onChange={event=> this.handleYearChange(event)}
-                    /></Grid>
+                        <FormControl fullWidth>   
+                            <InputLabel variant="outlined" className="input-label" > 
+                                Department
+                            </InputLabel>
+                            <OutlinedInput
+                                disabled
+                                labelWidth={60} 
+                                defaultValue="Department"
+                                value={this.props.department}
+                                required={true}
+                                fullWidth
+                            /> 
+                        </FormControl>
+                    </Grid>
                     <Grid item xs={12}>
                     <FormLabel component="legend">Section</FormLabel>
                         <RadioGroup aria-label="section" name="section" value={this.props.section} onChange={event=> this.handleSectionChange(event)} row>
@@ -341,33 +368,42 @@ class SignUp extends React.Component {
                         </RadioGroup>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                    <TextField
-                        variant="outlined"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        error={this.state.isPassword}
-                        helperText={this.state.isPassword ? 'Password length too short' : ''}
-                        onChange={event=> this.handlePasswordChange(event)}
-                        autoComplete="current-password"
-                    />
+                        <FormControl fullWidth>   
+                            <InputLabel variant="outlined" className="input-label" > 
+                                Password
+                            </InputLabel>
+                            <OutlinedInput
+                                id="password"
+                                type="password"
+                                labelWidth={60} 
+                                error={this.state.isPassword} 
+                                required={true}
+                                fullWidth
+                                onChange={event=> this.handlePasswordChange(event)}
+                            /> 
+                            {this.state.isPassword&&  
+                                <FormHelperText error={true}>* Password length too short</FormHelperText>   
+                            } 
+                        </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                    <TextField
-                        variant="outlined"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Confirm Password"
-                        type="password"
-                        id="confirm-password"
-                        error={this.state.confirmPassword.length < 1 ? this.state.isConfirmPassword : !this.state.isConfirmPassword}
-                        onChange={event=> this.handleConfirmPasswordChange(event)}
-                        helperText={this.checkPasswordMatch()}
-                    />
+                        <FormControl fullWidth>   
+                            <InputLabel variant="outlined" className="input-label" > 
+                                Confirm Password
+                            </InputLabel>
+                            <OutlinedInput
+                                id="confirm-password"
+                                type="password"
+                                labelWidth={60} 
+                                error={this.state.confirmPassword.length < 1 ? this.state.isConfirmPassword : !this.state.isConfirmPassword} 
+                                required={true}
+                                fullWidth
+                                onChange={event=> this.handleConfirmPasswordChange(event)}
+                            /> 
+                            {this.checkPasswordMatch()&&  
+                                <FormHelperText error={true}>Passwords do not match!</FormHelperText>   
+                            } 
+                        </FormControl>
                     </Grid>
                     <Grid item xs={12}>
                     <FormControlLabel
@@ -378,7 +414,11 @@ class SignUp extends React.Component {
                 </Grid>
                 </form>
                 {this.state.isSignup ? '' : <p style={{color: 'red'}}>{this.state.signupErrorMessage}</p>}
-                <Button
+                {  this.state.isSignup 
+                    ? 
+                <CircularProgress color="primary" />  
+                    : 
+                    <Button
                     type="submit"
                     fullWidth
                     variant="contained"
@@ -388,6 +428,7 @@ class SignUp extends React.Component {
                 >
                     Sign Up
                 </Button>
+                }
                 
                 <Grid container justify="flex-end">
                     <Grid item>

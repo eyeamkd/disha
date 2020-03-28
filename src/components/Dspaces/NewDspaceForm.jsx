@@ -156,7 +156,7 @@ addDspace = () => {
                                     required={true}
                                 /> 
                                 {this.state.isDspaceTitleInValid&&  
-                                    <FormHelperText error={true}>Title Should be of Minimum 4 Chacters</FormHelperText>   
+                                    <FormHelperText error={true}>Title should be of minimum 4 characters</FormHelperText>   
                                 } 
                         </FormControl> 
     

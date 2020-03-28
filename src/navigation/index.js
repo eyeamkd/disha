@@ -22,9 +22,6 @@ import IndividualPost from '../components/IndividualPost';
 
 
 class Navigation extends React.Component {
-    componentDidMount(){
-        console.log("userrrr", this.props);   
-    };
 
     getCurrentUserId() {
         var currentUserId = localStorage.getItem('currentUserId');
@@ -51,7 +48,7 @@ class Navigation extends React.Component {
                 <Route path="/post-submitted" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <PostSubmitted/>}/>    
                 <Route path="/new-dspace" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <NewDspaceForm/>}/>    
                 <Route path="/d-space-submitted" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <DspaceSubmitted/>}/>   
-                <Route path="/id=:id" component={ OtherUser } />
+                <Route path="/id=:id" exact component={ !this.getCurrentUserId() ? SignIn : OtherUser }/>
                 <Route path="/post=:post" component={ IndividualPost } />
                 <Route path="*"><NoMatch /></Route>
             </Switch>

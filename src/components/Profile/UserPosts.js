@@ -23,6 +23,7 @@ export class UserPosts extends Component {
     hasMore: true,
     index: 5,
     filterClicked: null,
+    noPostsYet: false,
     filterValue: "None",
     allPosts: [],
       postsArrived: false
@@ -39,6 +40,7 @@ export class UserPosts extends Component {
       .then(snapshot => {
           if (snapshot.empty) {
               console.log('No matching documents.');
+              this.setState({noPostsYet: true, postsArrived: true})
               return;
           }  
           snapshot.forEach(doc => {
@@ -57,6 +59,16 @@ export class UserPosts extends Component {
       });
       
   }
+
+    removePost=(post) => {
+        console.log('post', post)
+        console.log("deleting")
+        let arr = this.state.allPosts;
+        let index = arr.indexOf(post)
+        arr.splice(index, 1)
+        this.setState({allPosts:arr});
+        let deleteDoc = database.collection('posts').doc(post.id).delete();
+    }
 
   fetchMoreData = () => {
       if (postData.length === this.state.items.length) {
@@ -82,19 +94,14 @@ export class UserPosts extends Component {
   };
 
   filterPosts = (post) => {
+    console.log(post.authorRollNumber === this.props.currentUserRollNumber)
       if(this.state.filterValue === "None") {
         return(
           <Post 
-          title={post.title} 
-          subtitle={post.category} 
-          description={post.description} 
-          author={post.author} 
-          date={post.timeStamp}
-          rollNumber={post.authorRollNumber}
-          likes={post.likes}
-          id={post.id}
-          postUrl={post.postUrl}
-          userLikedPosts={this.props.userLikedPosts}
+          post={post}
+          userLiked={this.props.userLikedPosts.includes(post.id)}
+          postedByUser={post.authorRollNumber === this.props.currentUserRollNumber}
+          removePost={this.removePost}
           />
         )
       }
@@ -102,17 +109,10 @@ export class UserPosts extends Component {
           if(post.category === this.state.filterValue) {
             return(
               <Post 
-              title={post.title} 
-              subtitle={post.category} 
-              description={post.description} 
-              author={post.author} 
-              date={post.timeStamp}
-              rollNumber={post.authorRollNumber}
-              likes={post.likes}
-              postUrl={post.postUrl}
-              id={post.id}
-              userLikedPosts={this.props.userLikedPosts}
-
+              post={post}
+              userLiked={this.props.userLikedPosts.includes(post.id)}
+              postedByUser={post.authorRollNumber === this.props.currentUserRollNumber}
+              removePost={this.removePost}
               />
             )
           }
@@ -135,38 +135,51 @@ export class UserPosts extends Component {
               </div>
           )
       }
-      else return(  
-          <div>
-              <Box display="flex" flexDirection="row-reverse" p={1} m={1}>
-                  <Box p={1} >
-                      <Button aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}>
-                          <SortIcon/>Filter
-                      </Button>
-                  </Box>
-              </Box>
-              <Menu
-              id="simple-menu"
-              anchorEl={this.state.filterClicked}
-              keepMounted
-              open={Boolean(this.state.filterClicked)}
-              onClose={() => this.handleClose("None")}
-              >
-              <MenuItem onClick={() => this.handleClose("Events")}>Events</MenuItem>
-              <MenuItem onClick={() => this.handleClose("Internship")}>Internship</MenuItem>
-              <MenuItem onClick={() => this.handleClose("Project")}>Project</MenuItem>
-              <MenuItem onClick={() => this.handleClose("None")}>None</MenuItem>
-              </Menu>
-
-              {
-                  this.state.allPosts.map(post => {
-                      return this.filterPosts(post)
-                  })
-              }
-          </div>
-          
-          
-          
-      );
+      else {
+          if(!this.state.noPostsYet) {
+            return(  
+                <div>
+                    <Box display="flex" flexDirection="row-reverse" p={1} m={1}>
+                        <Box p={1} >
+                            <Button aria-controls="simple-menu" aria-haspopup="true" onClick={this.handleClick}>
+                                <SortIcon/>Filter
+                            </Button>
+                        </Box>
+                    </Box>
+                    <Menu
+                    id="simple-menu"
+                    anchorEl={this.state.filterClicked}
+                    keepMounted
+                    open={Boolean(this.state.filterClicked)}
+                    onClose={() => this.handleClose("None")}
+                    >
+                    <MenuItem onClick={() => this.handleClose("Events")}>Events</MenuItem>
+                    <MenuItem onClick={() => this.handleClose("Internship")}>Internship</MenuItem>
+                    <MenuItem onClick={() => this.handleClose("Project")}>Project</MenuItem>
+                    <MenuItem onClick={() => this.handleClose("None")}>None</MenuItem>
+                    </Menu>
+      
+                    {
+                        this.state.allPosts.map(post => {
+                            return this.filterPosts(post)
+                        })
+                    }
+                </div>
+                
+                
+                
+            );
+        }
+        else {
+            return <div style={{
+                position: 'absolute', left: '50%', bottom: '100%',
+                transform: 'translate()'
+                }}
+            >
+                <p>No posts yet!</p>
+            </div>
+        }
+    }
   }
 }
 
