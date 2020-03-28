@@ -10,13 +10,20 @@ import ProfileImage from "./ProfileImage";
 import UserInfo from "./UserInfo";
 import UserCommunity from "./UserCommunity";
 import UserPosts from "./UserPosts";
-
+import {database} from '../../firebase/firebase.utils';
 import { connect } from 'react-redux';
 
 export class Profile extends Component {
 
   state = {
     info: null
+  }
+
+  constructor(props) {
+    super(props);
+    let currentUserId = localStorage.getItem('currentUserId')
+    let userData = database.collection('users').doc(currentUserId);
+    this.getUserData(userData);
   }
 
   getUserData(userData) {
@@ -42,12 +49,6 @@ export class Profile extends Component {
 
 
   render() {
-    const db = firebase.firestore();
-    let currentUserId = localStorage.getItem('currentUserId')
-    let userData = db.collection('users').doc(currentUserId);
-
-    this.getUserData(userData);
-
     return (
       this.state.info ?
         <Grid item xs={12}>
@@ -65,7 +66,7 @@ export class Profile extends Component {
             </Row>
             <Divider></Divider>
             <Row>
-              <Col><UserPosts userRollNumber={this.state.info.rollNumber} userLikedPosts={this.state.info.likedPosts}/></Col>
+              <Col><UserPosts currentUserRollNumber={this.state.info.rollNumber} userRollNumber={this.state.info.rollNumber} userLikedPosts={this.state.info.likedPosts}/></Col>
               <Col><UserCommunity /></Col>
             </Row>
           </Container>

@@ -54,6 +54,16 @@ export default class HomePage extends React.Component{
         });
     }
 
+    removePost=(post) => {
+        console.log('post', post)
+        console.log("deleting")
+        let arr = this.state.allPosts;
+        let index = arr.indexOf(post)
+        arr.splice(index, 1)
+        this.setState({allPosts:arr});
+        let deleteDoc = database.collection('posts').doc(post.id).delete();
+    }
+
     getPosts=()=>{
         let postsData = database.collection('posts')
         let query = postsData.get()
@@ -108,16 +118,10 @@ export default class HomePage extends React.Component{
         if(this.state.filterValue === "None") {
             return(
                 <Post 
-                title={post.title} 
-                subtitle={post.category} 
-                description={post.description} 
-                author={post.author} 
-                date={post.timeStamp}
-                rollNumber={post.authorRollNumber}
-                likes={post.likes}
-                id={post.id}
-                postUrl={post.postUrl}
-                userLikedPosts={this.state.userInfo.likedPosts}
+                post={post}
+                userLiked={this.state.userInfo.likedPosts.includes(post.id)}
+                postedByUser={this.state.userInfo.rollNumber == post.authorRollNumber}
+                removePost={this.removePost}
                 />
             )
         }
@@ -125,16 +129,9 @@ export default class HomePage extends React.Component{
             if(post.category === this.state.filterValue) {
                 return(
                     <Post 
-                    title={post.title} 
-                    subtitle={post.category} 
-                    description={post.description} 
-                    author={post.author} 
-                    date={post.timeStamp}
-                    rollNumber={post.authorRollNumber}
-                    likes={post.likes}
-                    id={post.id}
-                    postUrl={post.postUrl}
-                    userLikedPosts={this.state.userInfo.likedPosts}
+                    post={post}
+                    userLiked={this.state.userInfo.likedPosts.includes(post.id)}
+                    postedByUser={this.state.userInfo.rollNumber == post.authorRollNumber}
                     />
                 )
             }

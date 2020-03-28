@@ -93,7 +93,7 @@ export class OtherUser extends Component {
             </Row>
             <Divider></Divider>
             <Row>
-              <Col><UserPosts userRollNumber={this.state.info.rollNumber} userLikedPosts={this.state.currentUserInfo.likedPosts}/></Col>
+              <Col><UserPosts userRollNumber={this.state.info.rollNumber} currentUserRollNumber={this.state.currentUserInfo.rollNumber} userLikedPosts={this.state.currentUserInfo.likedPosts}/></Col>
             </Row>
           </Container>
         </Grid>
