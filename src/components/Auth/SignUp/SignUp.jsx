@@ -180,7 +180,6 @@ class SignUp extends React.Component {
             this.setState({isSignup : false}, () => this.setState({signupErrorMessage: '* Please check all the fields'}));
             return;
         }
-        sessionStorage.clear();
     }
 
     checkPasswordMatch = () => {
