@@ -9,7 +9,8 @@ import sectionReducer from './signup/section-reducer';
 import departmentReducer from './signup/department-reducer';
 import passwordReducer from './signup/password-reducer';
 import isNewUserReducer from './signup/isNewUser-reducer';
-import userReducer from './user/user-reducer';
+import userReducer from './user/user-reducer'; 
+import dspaceSearchReducer from './dSpaceSearch/searchBar-reducer';
 
 export default combineReducers ({
     firstName: firstNameReducer,
@@ -21,5 +22,6 @@ export default combineReducers ({
     department: departmentReducer,
     password: passwordReducer,
     isNewUser: isNewUserReducer,
-    user: userReducer
+    user: userReducer, 
+    dSpaceSearch :dspaceSearchReducer 
 });

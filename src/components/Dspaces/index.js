@@ -1,11 +1,40 @@
 import React, { Component } from 'react'
+import DspaceHeader from './DspaceHeader'
+import { Container, Typography } from '@material-ui/core';
+import { Row, Col } from 'react-bootstrap'; 
 
+
+let dSpace = {}
 export class Dspaces extends Component {
-    render() {
-        return (
-            <div>
-                <h1>D-Space Header</h1>
-            </div>
+    constructor(props){ 
+        super(); 
+        
+    }  
+    componentWillMount(){  
+        
+        dSpace = this.props.location.state.dSpaceInfo.dSpace;
+    } 
+
+    componentDidMount(  ){ 
+        
+        
+    }
+    render() {   
+        console.log(this.props)
+        return ( 
+            <Container fluid>  
+                <Row> 
+                    <Col>
+                        <Typography variant="h1">{dSpace.title}</Typography>
+                    </Col>
+                </Row> 
+                <Row> 
+                    <Col>  
+                        <DspaceHeader dspace={dSpace}/>
+                    </Col>
+                </Row>
+            </Container>
+            
         )
     }
 }
