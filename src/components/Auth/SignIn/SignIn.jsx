@@ -15,6 +15,13 @@ import { connect } from 'react-redux';
 import { setIsNewUser } from '../../../redux/signup/isNewUser-actions';
 import Logo from '../../Logo/Logo';
 
+import { 
+    FormControl, 
+    OutlinedInput, 
+    InputLabel, 
+    CircularProgress,
+    FormHelperText} from '@material-ui/core';
+
 import './SignIn.css';
 import { auth, createUserProfileDocument } from '../../../firebase/firebase.utils';
 
@@ -27,7 +34,8 @@ class SignIn extends React.Component {
         email: '',
         password: '',
         isSignin: false,
-        signinErrorMessage: '',
+        errorMessage:'',
+        signinErrorMessage: 'Please fill all the fields',
         labelWidth: 0,
         inputLabel: null
     };
@@ -51,15 +59,19 @@ class SignIn extends React.Component {
         if (!this.state.isEmail && !this.state.isPassword) {
             try {
                 var signedIn = await auth.signInWithEmailAndPassword(email, password);
-                this.props.setIsNewUser(signedIn.additionalUserInfo.isNewUser);
-                await console.log("signedIn.additionalUserInfo.isNewUser", signedIn)
+                //this.props.setIsNewUser(signedIn.additionalUserInfo.isNewUser);
+                //console.log("signedIn.additionalUserInfo.isNewUser", signedIn)
 
                 this.setState({
                     email: '',
                     password: ''
                 });
             } catch(error) {
-                console.error(error)
+                if(error.code === "auth/user-not-found")
+                    this.setState({errorMessage: "User with this email ID does not exist. Please check!", isSignin:false})
+                else if(error.code === "auth/wrong-password")
+                    this.setState({errorMessage: "Wrong password. Please check!", isSignin:false})
+                console.error("KAUSTUBH:",error)
             }
             console.log("ok")
         }
@@ -82,35 +94,47 @@ class SignIn extends React.Component {
                 <form className="form" noValidate>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                    <TextField
-                        variant="outlined"
-                        required
-                        fullWidth
-                        id="email"
-                        error={this.state.isEmail}
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
-                        helperText={this.state.isEmail ? '* Please check the email entered' : ''}
-                        onChange={event=> this.handleEmailChange(event)}
-                    />
+                    <FormControl fullWidth>   
+                            <InputLabel variant="outlined" className="input-label" > 
+                                Email Address
+                            </InputLabel>
+                            <OutlinedInput
+                                id="email"
+                                labelWidth={60} 
+                                error={this.state.isEmail}
+                                required={true}
+                                fullWidth
+                                autoComplete="email"
+                                onChange={event=> this.handleEmailChange(event)}
+                            /> 
+                            {this.state.isEmail&&  
+                                <FormHelperText error={true}>* Please check the email entered</FormHelperText>   
+                            } 
+                    </FormControl>
                     </Grid>
                     <Grid item xs={12}>
-                    <TextField
-                        variant="outlined"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        onChange={event=> this.handlePasswordChange(event)}
-                        autoComplete="current-password"
-                    />
+                    <FormControl fullWidth>   
+                            <InputLabel variant="outlined" className="input-label" > 
+                                Password
+                            </InputLabel>
+                            <OutlinedInput
+                                id="password"
+                                type="password"
+                                labelWidth={60} 
+                                required={true}
+                                fullWidth
+                                onChange={event=> this.handlePasswordChange(event)}
+                            /> 
+                    </FormControl>
                     </Grid>
                 </Grid>
                 </form>
-                {this.state.isSignup ? '' : <p style={{color: 'red'}}>{this.state.signinErrorMessage}</p>}
+                <br/>
+                <p style={{color: 'red'}}>{this.state.errorMessage}</p>                
+                {  this.state.isSignin 
+                    ? 
+                <CircularProgress color="primary" />  
+                    : 
                 <Button
                     type="submit"
                     fullWidth
@@ -121,6 +145,7 @@ class SignIn extends React.Component {
                 >
                     Sign In
                 </Button>
+                }
                 
                 <Grid container justify="flex-end">
                     <Grid item>

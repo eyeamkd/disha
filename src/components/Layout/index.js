@@ -107,7 +107,6 @@ function Layout(props) {
     auth.signOut().then(
       changeCurrentUser()
     );
-    return (<Redirect to="/SignIn"/>)
   };
 
   const changeCurrentUser = () => {
@@ -163,8 +162,6 @@ function Layout(props) {
               >
                 <Link to="/SignIn">Sign In</Link>
               </Button>
-              
-              
             }
             
           </Grid>
