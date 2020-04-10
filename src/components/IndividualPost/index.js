@@ -85,16 +85,10 @@ export class IndividualPost extends Component {
     else return (
       this.state.info && this.state.currentUserInfo ? 
         <Post 
-          title={this.state.info.title} 
-          subtitle={this.state.info.category} 
-          description={this.state.info.description} 
-          author={this.state.info.author} 
-          date={this.state.info.timeStamp}
-          rollNumber={this.state.info.authorRollNumber}
-          likes={this.state.info.likes}
-          postUrl={this.state.info.postUrl}
-          id={this.state.info.id}
-          userLikedPosts={this.state.currentUserInfo.likedPosts}
+          post={this.state.info}
+          userLiked={this.state.currentUserInfo.likedPosts.includes(this.state.info.id)}
+          postedByUser={this.state.currentUserInfo.rollNumber == this.state.info.authorRollNumber}
+          removePost={this.removePost}
         />
         :
         <div style={{
