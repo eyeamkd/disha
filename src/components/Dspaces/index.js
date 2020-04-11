@@ -11,8 +11,9 @@ export class Dspaces extends Component {
         
     }  
     componentWillMount(){  
-        
-        dSpace = this.props.location.state.dSpaceInfo.dSpace;
+        if(!!this.props.location.state ){ 
+            dSpace = this.props.location.state.dSpaceInfo.dSpace;
+        }
     } 
 
     componentDidMount(  ){ 
