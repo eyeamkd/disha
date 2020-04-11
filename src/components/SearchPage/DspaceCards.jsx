@@ -108,6 +108,7 @@ export class DspaceCards extends Component {
                                             <DspaceCard  
                                                     className="d-space-card" 
                                                     title = { dSpace.title } 
+                                                    description = { dSpace.description } 
                                                     key={dSpace.title}
                                             />
                                             </Link> 
@@ -115,8 +116,9 @@ export class DspaceCards extends Component {
                                     }) 
                                     :  
                                     <Fragment>
-                                        <Typography variant="h4">Oof Dspace not present</Typography> 
-                                        <Typography variant="h6">how about creating now one?</Typography>
+                                        <center><Typography variant="h4">Oof, no DSpace found!</Typography></center> 
+                                        <br/>
+                                        <center><Typography variant="h6">How about creating one?</Typography></center>
                                     </Fragment>
                                     
                                     
