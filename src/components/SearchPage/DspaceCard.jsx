@@ -6,6 +6,8 @@ import { borderColor } from '@material-ui/system';
 import { Link } from 'react-router-dom';
 import Dspaces from '../Dspaces';
 
+import "./styles.css";
+
 export class DspaceCard extends Component { 
     constructor(props){ 
         super();
@@ -19,15 +21,18 @@ export class DspaceCard extends Component {
                 borderColor="primary"
                 borderRadius={16}
                 style={{ 
-                    margin: '0.5rem'
+                    margin: '0.5rem',
                 }}
                 >  
                     <Card  
                     variant="outlined"
                     style={{ 
                         width: '18rem',
-                        minHeight: '12rem'
+                        minHeight: '12rem',
+                        border: '1px solid #f57f17'
+
                     }}
+                    className="grow"
                     >  
                         <CardContent>  
                             <center><h4>{this.props.title}</h4></center>

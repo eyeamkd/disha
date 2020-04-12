@@ -67,7 +67,7 @@ export class Profile extends Component {
             <Divider></Divider>
             <Row>
               <Col><UserPosts currentUserRollNumber={this.state.info.rollNumber} userRollNumber={this.state.info.rollNumber} userLikedPosts={this.state.info.likedPosts}/></Col>
-              <Col><UserCommunity /></Col>
+              <Col><UserCommunity userInfo={this.state.info}/></Col>
             </Row>
           </Container>
         </Grid>

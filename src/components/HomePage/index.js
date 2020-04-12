@@ -46,6 +46,9 @@ export default class HomePage extends React.Component{
               console.log('No such document!');
             } else {
               this.setState({ userInfo: doc.data() })
+              let info = JSON.parse(doc.data())
+              localStorage.setItem('currentUserInfo', info)
+
               //console.log('Document data:', doc.data());
             }
           })
@@ -55,7 +58,6 @@ export default class HomePage extends React.Component{
     }
 
     removePost=(post) => {
-        console.log('post', post)
         console.log("deleting")
         let arr = this.state.allPosts;
         let index = arr.indexOf(post)
@@ -73,10 +75,8 @@ export default class HomePage extends React.Component{
                 return;
             }  
             snapshot.forEach(doc => {
-                console.log(doc.id, '=>', doc.data().firstName);
                 var a = doc.data()
                 a.id = doc.id
-                console.log('a', a)
                 posts.push(a)
             });
             posts.sort((a, b) => (a.timeStamp > b.timeStamp) ? -1 : 1);
@@ -144,7 +144,6 @@ export default class HomePage extends React.Component{
     setPostsToNull = () => posts = [];
 
     render() {
-        console.log(this.state.filterValue);
         if(this.state.postsArrived === false) {
             return(
                 <div style={{

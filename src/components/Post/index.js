@@ -93,10 +93,8 @@ export default function Post(props) {
 
   useEffect(() => {
     setLikeCount(likeCount);
-    console.log('props.post.id', props.post.id)
     // return () => {
       let setDoc = database.collection('posts').doc(props.post.id).update({likes: likeCount});
-      console.log('currentLikesCount', likeCount)
       if(likeCount > props.post.likes) {
         let currentUserId = localStorage.getItem('currentUserId')
         let setDoc = database.collection('users').doc(currentUserId).update({
@@ -130,7 +128,7 @@ export default function Post(props) {
             {props.post.description}
         </Typography>
         
-        <Col md={3}>
+        <Col md={4}>
           <Link to={`/id=${props.post.authorRollNumber}`}>
             <Typography variant="body2" color="primary" component="p" className="authorWidth">
               - {props.post.author}  
