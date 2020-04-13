@@ -15,3 +15,20 @@
     margin: 10px;
 }
 
+
+.grow {
+    -moz-osx-font-smoothing: grayscale;
+    backface-visibility: hidden;
+    transition: transform 0.5s ease-out;
+    transform: translateZ(0);
+  }
+  
+.grow:hover,
+.grow:focus {
+transform: scale(1.05);
+}
+
+.grow:active {
+transform: scale(.90);
+}
+

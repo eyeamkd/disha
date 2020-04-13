@@ -10,54 +10,72 @@ import SortIcon from '@material-ui/icons/Sort';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import postData from './postsdata.json';
 
 let posts = [];
 
 
-export class UserPosts extends Component {
+export class DspacePosts extends Component {
 
   state = {
-    items: postData.slice(0,5),
-    hasMore: true,
-    index: 5,
     filterClicked: null,
     noPostsYet: false,
     filterValue: "None",
     allPosts: [],
-      postsArrived: false
+    userInfo: null,
+    postsArrived: false
   };
 
-  constructor(props) {
+    constructor(props) {
       super(props);
+      this.getUserData();
       this.getPosts(); 
-  }
+    }
 
-  getPosts=()=>{
-      let postsData = database.collection('posts')
-      let query = postsData.where('authorRollNumber', '==', this.props.userRollNumber).get()
-      .then(snapshot => {
-          if (snapshot.empty) {
-              console.log('No matching documents.');
-              this.setState({noPostsYet: true, postsArrived: true})
-              return;
-          }  
-          snapshot.forEach(doc => {
-              //console.log(doc.id, '=>', doc.data().title); 
+    getUserData = () => {
+        let currentUserId = localStorage.getItem('currentUserId')
+        let userData = database.collection('users').doc(currentUserId);
+        var a;
+        a = userData.get()
+          .then(doc => {
+            if (!doc.exists) {
+              console.log('No such document!');
+            } else {
+              this.setState({ userInfo: doc.data() })
+              //console.log('Document data:', doc.data());
+            }
+          })
+          .catch(err => {
+            console.log('Error getting document', err);
+        });
+    }
+
+    getPosts = () => {
+        console.log('dSpace.title', this.props.dSpace.title)
+        let postsData = database.collection('posts')
+        let query = postsData.where("dSpaces", "array-contains", this.props.dSpace.title ).get()
+        .then(snapshot => {
+            if (snapshot.empty) {
+                console.log('No matching documents.');
+                this.setState({noPostsYet: true, postsArrived: true})
+                return;
+            }  
+            snapshot.forEach(doc => {
+                //console.log(doc.id, '=>', doc.data().title); 
                 var a = doc.data()
                 a.id = doc.id
                 posts.push(a)
-          });
-          posts.sort((a, b) => (a.timeStamp > b.timeStamp) ? -1 : 1);
-          this.setState({postsArrived: true, allPosts: posts})
-          posts = [];
-          //console.log('dspaces', dspaces)
-      })
-      .catch(err => {
-          console.log('Error getting documents', err);
-      });
-      
-  }
+            });
+            posts.sort((a, b) => (a.timeStamp > b.timeStamp) ? -1 : 1);
+            this.setState({postsArrived: true, allPosts: posts})
+            posts = [];
+            //console.log('dspaces', dspaces)
+        })
+        .catch(err => {
+            console.log('Error getting documents', err);
+        });
+        
+
+    }
 
     removePost=(post) => {
         console.log('post', post)
@@ -69,8 +87,6 @@ export class UserPosts extends Component {
         let deleteDoc = database.collection('posts').doc(post.id).delete();
     }
 
-  
-
   handleClick = event => {
       this.setState({filterClicked: event.currentTarget});
   };
@@ -80,13 +96,13 @@ export class UserPosts extends Component {
   };
 
   filterPosts = (post) => {
-    console.log(post.authorRollNumber === this.props.currentUserRollNumber)
+    console.log(post.authorRollNumber === this.state.currentUserInfo)
       if(this.state.filterValue === "None") {
         return(
           <Post 
           post={post}
-          userLiked={this.props.userLikedPosts.includes(post.id)}
-          postedByUser={post.authorRollNumber === this.props.currentUserRollNumber}
+          userLiked={this.state.userInfo.likedPosts.includes(post.id)}
+          postedByUser={post.authorRollNumber === this.state.userInfo.rollNumber}
           removePost={this.removePost}
           />
         )
@@ -96,8 +112,8 @@ export class UserPosts extends Component {
             return(
               <Post 
               post={post}
-              userLiked={this.props.userLikedPosts.includes(post.id)}
-              postedByUser={post.authorRollNumber === this.props.currentUserRollNumber}
+              userLiked={this.state.userInfo.likedPosts.includes(post.id)}
+              postedByUser={post.authorRollNumber === this.state.userInfo.rollNumber}
               removePost={this.removePost}
               />
             )
@@ -172,4 +188,4 @@ export class UserPosts extends Component {
   }
 }
 
-export default UserPosts;
+export default DspacePosts;

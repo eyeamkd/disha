@@ -113,7 +113,9 @@ addDspace = () => {
         title:this.state.dSpaceTitle,
         description:this.state.dSpaceDescription, 
         Category:this.state.dSpaceCategory, 
-        tags:this.state.dSpaceTags
+        tags:this.state.dSpaceTags,
+        members:[],
+        posts:[]
     }
     database.collection('d-spaces').add(newDspaceData)
     .then((docRef)=>{this.setState({dSpaceCreatedSuccessfully:true})}) 
@@ -137,12 +139,10 @@ addDspace = () => {
                             </InputLabel>
                                 <OutlinedInput
                                     id="dSpaceTitle" 
-                                    key={this.state.dSpaceTitle} 
                                     value={this.state.dSpaceTitle}
                                     onChange={this.handleChange}
                                     labelWidth={60} 
                                     error={this.state.isDspaceTitleInValid} 
-                                />   
                                     required={true}
                                 /> 
                                 {this.state.isDspaceTitleInValid&&  
@@ -156,7 +156,6 @@ addDspace = () => {
                             </InputLabel>
                                 <OutlinedInput
                                     id="dSpaceDescription" 
-                                    key={this.state.dSpaceDescription} 
                                     value={this.state.dSpaceDescription}
                                     onChange={this.handleChange}
                                     labelWidth={60} 

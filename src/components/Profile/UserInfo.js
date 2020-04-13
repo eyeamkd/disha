@@ -4,12 +4,15 @@ import { Row, Container, Col } from "react-bootstrap";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import WorkIcon from "@material-ui/icons/Work";
 import PhoneIcon from "@material-ui/icons/Phone"; 
+import MenuBookIcon from '@material-ui/icons/MenuBook';
 import DateRangeIcon from '@material-ui/icons/DateRange'; 
+import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import MailIcon from '@material-ui/icons/Mail';
 import "./style.css";
 
 export class UserInfo extends Component {
   render() {
+    let rollNumber = this.props.userInfo.rollNumber.toUpperCase();
     return (
       <div>
         <Container>
@@ -20,17 +23,17 @@ export class UserInfo extends Component {
               <Typography>Hyderabad</Typography>
             </Col>
             <Col>
-              <WorkIcon />
-              <Typography>Technovert</Typography>
-            </Col>
-            <Col>
-              <PhoneIcon />
-              <Typography>8520959114</Typography>
+              <MenuBookIcon />
+              <Typography>{this.props.userInfo.department}</Typography>
             </Col> 
             <Col>
               <DateRangeIcon />
               <Typography  >{this.props.userInfo.year}</Typography>
             </Col> 
+            <Col>
+              <FingerprintIcon />
+              <Typography>{rollNumber}</Typography>
+            </Col>
             <Col>
               <MailIcon />
               <Typography >{this.props.userInfo.email}</Typography>

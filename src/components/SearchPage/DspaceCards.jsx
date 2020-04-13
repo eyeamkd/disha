@@ -70,10 +70,23 @@ export class DspaceCards extends Component {
     }
 
     async storeDspaces(){ 
-        const dSpaces = await dSpacesReference.get(); 
-        dSpaces.docs.map(document => ( 
-            Dspaces.push(document.data())
-        )) ;  
+        const dSpaces = await dSpacesReference.get()
+        .then(snapshot => {
+            if (snapshot.empty) {
+                console.log('No matching documents.');
+                return;
+            }  
+            snapshot.forEach(doc => {
+                //console.log(doc.id, '=>', doc.data().title); 
+                  var a = doc.data()
+                  a.id = doc.id
+                  Dspaces.push(a)
+            });
+            //console.log('dspaces', dspaces)
+        })
+        .catch(err => {
+            console.log('Error getting documents', err);
+        });  
         DspacesConstant = Dspaces;
         this.setState({ dSpacesLoaded : true });
         
