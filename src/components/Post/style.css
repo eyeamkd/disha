@@ -12,7 +12,10 @@
 
 .card-footer{ 
     margin-top: 20px; 
-    
+}
+
+.coloring {
+    color: #f57f17;
 }
 
 a:hover {

@@ -13,12 +13,17 @@
         "routeName":"Search D-Spaces", 
         "endpoint":"/search-d-spaces", 
         "icon": "search" 
-    },  
+    },
     { 
-        "routeName":"Community", 
-        "endpoint":"/community", 
-        "icon": "emoji_people"
-    },  
+        "routeName":"New Post", 
+        "endpoint":"/new-post", 
+        "icon": "post_add" 
+    }, 
+    { 
+        "routeName":"New Dspace", 
+        "endpoint":"/new-dspace", 
+        "icon": "group_add" 
+    },
     { 
         "routeName":"Your D-Spaces", 
         "endpoint":"/d-spaces", 
@@ -33,15 +38,10 @@
         "routeName":"Account Requests", 
         "endpoint":"/account-requests", 
         "icon": "contacts" 
-    }, 
+    },   
     { 
-        "routeName":"New Post", 
-        "endpoint":"/new-post", 
-        "icon": "post_add" 
-    }, 
-    { 
-        "routeName":"New Dspace", 
-        "endpoint":"/new-dspace", 
-        "icon": "group_add" 
+        "routeName":"Community", 
+        "endpoint":"/community", 
+        "icon": "emoji_people"
     }
 ]

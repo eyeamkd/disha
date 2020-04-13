@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { Container, Col, Row } from "react-bootstrap";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -122,19 +123,20 @@ export default function Post(props) {
     <Card className={classes.root}>
       <Link to={`/post=${props.post.postUrl}`}>
 
-        <CardHeader title={props.post.title} subheader={props.post.subtitle} />
+        <CardHeader title={props.post.title} subheader={props.post.category} />
       
         <CardContent> 
-        
           <Typography variant="body2" color="textSecondary" component="p">
             {props.post.description}
-          </Typography>
-          
+        </Typography>
+        
+        <Col md={3}>
           <Link to={`/id=${props.post.authorRollNumber}`}>
-            <Typography variant="body2" color="primary" component="p" >
+            <Typography variant="body2" color="primary" component="p" className="authorWidth">
               - {props.post.author}  
             </Typography>
           </Link>
+        </Col>
           
     
         </CardContent>
