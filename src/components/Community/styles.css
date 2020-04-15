@@ -1,0 +1,10 @@
+/* .user-card-content-display{
+    display: inline ; 
+    flex-wrap: nowrap; 
+    flex-direction: row;
+} */
+
+.user-card-content-display{
+    display: flex; 
+    justify-content: space-evenly;
+}
