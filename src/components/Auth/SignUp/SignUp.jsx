@@ -230,10 +230,10 @@ class SignUp extends React.Component {
                 <form className="form" noValidate>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
-                        <FormControl  >   
-                            <InputLabel variant="outlined" className="input-label" > 
-                                First Name 
-                            </InputLabel>
+                    <FormControl fullWidth>   
+                        <InputLabel variant="outlined" className="input-label" > 
+                            First Year
+                        </InputLabel>
                             <OutlinedInput
                                 id="firstName"
                                 labelWidth={60} 
@@ -248,7 +248,7 @@ class SignUp extends React.Component {
                         </FormControl>                     
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <FormControl  >   
+                        <FormControl fullWidth>   
                             <InputLabel variant="outlined" className="input-label" > 
                                 Last Name 
                             </InputLabel>
