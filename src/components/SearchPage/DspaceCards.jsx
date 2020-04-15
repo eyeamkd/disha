@@ -44,6 +44,7 @@ export class DspaceCards extends Component {
     }
     
     componentDidUpdate(prevProps){  
+        console.log("Prev",prevProps.searchValue,"SV",this.props.searchValue); 
         if(prevProps.searchValue===""){
             Dspaces = DspacesConstant;
         }
@@ -78,9 +79,9 @@ export class DspaceCards extends Component {
             }  
             snapshot.forEach(doc => {
                 //console.log(doc.id, '=>', doc.data().title); 
-                  var a = doc.data()
-                  a.id = doc.id
-                  Dspaces.push(a)
+                    var a = doc.data()
+                    a.id = doc.id
+                    Dspaces.push(a)
             });
             //console.log('dspaces', dspaces)
         })

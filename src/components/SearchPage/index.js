@@ -16,7 +16,7 @@ export class SearchPage extends Component {
                         <Box  
                             boxShadow={2}
                             >
-                            <SearchBar/>
+                            <SearchBar placeholder="Search D-Spaces"/>
                         </Box>
                     </Col>
                 </Row> 
