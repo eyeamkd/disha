@@ -10,7 +10,7 @@ function SearchBar(props){
         <div>
             <TextField  
                 id="outlined-basic" 
-                placeholder="Search D-Spaces"
+                placeholder={props.placeholder}
                 variant="outlined" 
                 fullWidth 
                 onChange={event => props.onSearchValueEntered(event.target.value)}   

@@ -19,6 +19,7 @@ import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
 import OtherUser from '../components/OtherUserProfile';
 import IndividualPost from '../components/IndividualPost';
+import UserDspaces from '../components/UserDspaces';
 
 
 class Navigation extends React.Component {
@@ -42,9 +43,7 @@ class Navigation extends React.Component {
                 <Route path="/search-d-spaces" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <SearchPage/>}/>   
                 <Route path="/profile" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <Profile/>}/>   
                 <Route path="/d-spaces" exact render={(props) => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <Dspaces {...props}/>}/>  
-                 
-                {/* <Route path="/d-spaces" exact component={Dspaces}/>     */}
-
+                <Route path="/user-dspaces" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <UserDspaces/>}/>   
                 <Route path="/claim-account" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <ClaimAccountPage/>}/>    
                 <Route path="/confirm-account" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <ConfirmAccount/>}/>    
                 <Route path="/new-post" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <NewPost/>}/>    
