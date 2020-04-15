@@ -26,8 +26,8 @@
     },
     { 
         "routeName":"Your D-Spaces", 
-        "endpoint":"/d-spaces", 
-        "icon": "group" 
+        "endpoint":"/user-dspaces", 
+        "icon": "view_day" 
     }, 
     { 
         "routeName":"Claim Account Page", 
