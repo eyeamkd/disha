@@ -30,16 +30,6 @@
         "icon": "view_day" 
     }, 
     { 
-        "routeName":"Claim Account Page", 
-        "endpoint":"/claim-account", 
-        "icon": "nature_people" 
-    }, 
-    { 
-        "routeName":"Account Requests", 
-        "endpoint":"/account-requests", 
-        "icon": "contacts" 
-    },   
-    { 
         "routeName":"Community", 
         "endpoint":"/community", 
         "icon": "emoji_people"
