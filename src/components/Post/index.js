@@ -54,7 +54,7 @@ export default function Post(props) {
   const classes = useStyles();
   const [share, setShare] = React.useState(false);
   const [likeToggle, setLikeToggle] = React.useState(props.userLiked);
-  const [likeCount, setLikeCount] = React.useState(props.post.likes);
+  const [likeCount, setLikeCount] = React.useState(props.post.likes < 0 ? props.post.likes - (props.post.likes - 1) : props.post.likes);
   const [open, setOpen] = React.useState(false);
   let currentLikesCount = props.post.likes;
 
