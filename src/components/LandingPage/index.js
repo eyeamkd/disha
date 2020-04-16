@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
 import { Fade } from '@material-ui/core';
 import MapImage from './../../assets/map.jpg'
+import Grid from '@material-ui/core/Grid';
 import Logo from './../Logo/Logo';
 import './index.css';
 
@@ -27,11 +28,11 @@ class LandingPage extends Component {
         const {classes} = this.props;
         return (
             <div>
-                <div >
+                <Grid xs={12} sm={6}>
                     <center>
                         <Logo height="500" width="500"/>
                     </center>
-                </div>
+                </Grid>
                 <div >
                     <center>
                         <Link to="/SignIn">
