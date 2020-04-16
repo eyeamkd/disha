@@ -232,7 +232,7 @@ class SignUp extends React.Component {
                     <Grid item xs={12} sm={6}>
                     <FormControl fullWidth>   
                         <InputLabel variant="outlined" className="input-label" > 
-                            First Year
+                            First Name
                         </InputLabel>
                             <OutlinedInput
                                 id="firstName"
