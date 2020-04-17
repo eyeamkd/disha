@@ -9,6 +9,7 @@ import MapImage from './../../assets/map.jpg'
 import Grid from '@material-ui/core/Grid';
 import Logo from './../Logo/Logo';
 import './index.css';
+import { Row, Col } from 'react-bootstrap'; 
 
 
 var background = {
@@ -27,28 +28,32 @@ class LandingPage extends Component {
     render() {
         const {classes} = this.props;
         return (
-            <div>
-                <Grid xs={12} sm={6}>
-                    <center>
-                        <Logo height="500" width="500"/>
-                    </center>
-                </Grid>
-                <div >
-                    <center>
-                        <Link to="/SignIn">
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                color="secondary"
-                                className="submit button"
-                                size="large"
-                            >
-                                <div id="textColor">Get Started</div>
-                            </Button>
-                        </Link>
-                    </center>
-                </div>
-            </div>
+            <Col>
+                <Row>
+                    <Col>
+                        <center>
+                            <Logo height="500" width="500"/>
+                        </center>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <center>
+                            <Link to="/SignIn">
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="secondary"
+                                    className="submit button"
+                                    size="large"
+                                >
+                                    <div id="textColor">Get Started</div>
+                                </Button>
+                            </Link>
+                        </center>
+                    </Col>
+                </Row>
+            </Col>
         )
     }
 }
