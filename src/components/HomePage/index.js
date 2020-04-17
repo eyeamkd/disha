@@ -185,9 +185,7 @@ export default class HomePage extends React.Component{
                         return this.filterPosts(post)
                     })
                 }
-                <Fab color="primary" aria-label="add">
-        <AddIcon />
-      </Fab>
+                
             </div>
             
             

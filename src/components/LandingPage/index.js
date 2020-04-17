@@ -9,7 +9,6 @@ import MapImage from './../../assets/map.jpg'
 import Grid from '@material-ui/core/Grid';
 import Logo from './../Logo/Logo';
 import './index.css';
-import { Row, Col } from 'react-bootstrap'; 
 
 
 var background = {

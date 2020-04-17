@@ -148,14 +148,21 @@ getUserDetails = () => {
     });
 }
 
-getSeconds = (today) => {return (today.getSeconds().toString().length < 2 ? "0" : "" )+ today.getSeconds()}
 
 getCurrentDate = () => {
     var today = new Date();
-    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-    var time = today.getHours() + ":" + today.getMinutes() + ":" + this.getSeconds(today);
+    var date = this.doubleDigitDate(today.getFullYear())+'-'+(this.doubleDigitDate(today.getMonth()+1))+'-'+this.doubleDigitDate(today.getDate());
+    var time = this.doubleDigitDate(today.getHours()) + ":" + this.doubleDigitDate(today.getMinutes()) + ":" + this.doubleDigitDate(today.getSeconds());
     var dateTime = date+' '+time;
     return dateTime;
+}
+
+doubleDigitDate = (date) => {
+    date = date.toString()
+    if(date < 10) {
+        date = "0" + date
+    }
+    return date
 }
 
 addPostUrl = () => {
