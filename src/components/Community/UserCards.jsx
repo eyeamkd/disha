@@ -14,12 +14,17 @@ let Users = [];
 let UsersConstant = [];
 
 const updateUsersArray=(value,prevUsersArray)=>{  
-    console.log("Update Array being fired");
+    // console.log("Value is ", value);  
+    // console.log("Users Array",prevUsersArray);
+    // console.log("Update Array being fired");
     if(value===""){ 
         return UsersConstant;
     }
     else { 
-    return prevUsersArray.filter(users => users.firstName.toLowerCase().includes(value.toLowerCase()) ); 
+    return UsersConstant.filter(user => {    
+        let userFullName = user.firstName+user.lastName;
+        return (userFullName.toLowerCase().includes(value.toLowerCase()) )
+    }); 
     }
 }
 
