@@ -1,6 +1,6 @@
 {
   "short_name": "DISHA",
-  "name": "Delegation, Interaction & Scholarly Help Application",
+  "name": "Delegation Interaction & Scholarly Help Application",
   "icons": [
     {
       "src": "favicon.ico",
@@ -18,8 +18,8 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "start_url": "/",
+  "background_color": "#ffff",
+  "theme_color": "#f57f17",
+  "display": "standalone"
 }
