@@ -44,7 +44,7 @@ constructor(props){
 } 
 
 componentDidMount(){  
-    console.log("CDM fired");
+    // console.log("CDM fired");
     this.getDspaces();
     this.getUserDetails();
 } 
@@ -57,7 +57,7 @@ getDspaces=()=>{
 
     let dspaceData = database.collection('d-spaces')
     if(dspaces.length === 0) { 
-        console.log("in query function");
+        // console.log("in query function");
         let query = dspaceData.get()
         .then(snapshot => {
             if (snapshot.empty) {
@@ -65,11 +65,11 @@ getDspaces=()=>{
                 return;
             }  
             snapshot.forEach(doc => {
-                console.log(doc.id, '=>', doc.data().title);
+                // console.log(doc.id, '=>', doc.data().title);
                 dspaces.push(doc.data().title)
             });
             this.setState({dspaceListArrived: true})
-            console.log('dspaces', dspaces)
+            // console.log('dspaces', dspaces)
         })
         .catch(err => {
             console.log('Error getting documents', err);
@@ -78,7 +78,7 @@ getDspaces=()=>{
 }
 
 isFormDataValid=()=>{ 
-    console.log("in form validation");
+    // console.log("in form validation");
     if(this.state.postTitle.length<10){ 
         this.setState({isPostTitleInValid:true}); 
         return false;
@@ -181,7 +181,7 @@ getTimeCode = (dateTime) => {
 postData = () => { 
     const postUrl = this.addPostUrl()
     const name = this.state.userDetails.firstName + " " + this.state.userDetails.lastName
-    console.log('name', this.state.userDetails.rollNumber)
+    // console.log('name', this.state.userDetails.rollNumber)
     // console.log('rollNumber', rollNumber)
     const newPostData = { 
         title:this.state.postTitle, 
@@ -204,7 +204,7 @@ postData = () => {
 }
 
     render() {  
-        console.log(this.state);
+        // console.log(this.state);
         if(this.state.dataSubmittedSuccessfully){  
             return(<Redirect to="/post-submitted"/>);
         }
