@@ -17,7 +17,7 @@ import "./style.css";
 import { Redirect } from "react-router-dom";
 
 const postCategories = ["Internship", "Project", "Events"];
-let dspaces = [];
+const dspaces = []
 
 
 
@@ -39,25 +39,13 @@ constructor(props){
         dspaceListArrived: false,
         userDetails: null
     }
-//     this.getDspaces();
-//     this.getUserDetails();
-} 
-
-componentDidMount(){  
-    console.log("CDM fired");
     this.getDspaces();
     this.getUserDetails();
-} 
-
-componentWillUnmount(){ 
-    dspaces=[];
 }
 
-getDspaces=()=>{ 
-
+getDspaces=()=>{
     let dspaceData = database.collection('d-spaces')
-    if(dspaces.length === 0) { 
-        console.log("in query function");
+    if(dspaces.length === 0) {
         let query = dspaceData.get()
         .then(snapshot => {
             if (snapshot.empty) {
