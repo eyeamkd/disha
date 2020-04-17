@@ -145,8 +145,15 @@ class SignUp extends React.Component {
         this.setState({isAckChecked: this.state.isAckChecked});
     };
 
+    rollNumberExists = () => {
+
+    }
+
     handleSignupClick = async () => {
         console.log(this.props)
+        // if(rollNumberExists()) {
+        //     this.setState({signupErrorMessage: "Account with this Roll Number already exists. Contact us at help@disha.website if this was a mistake."})
+        // }
         const { firstName, lastName, email, year, section, department, password } = this.props;
         const { isAlumni, isAuthenticated } = this.state;
         console.log(department);
@@ -221,9 +228,9 @@ class SignUp extends React.Component {
     render() { 
         return (
             <Container component="main" maxWidth="xs">
-            <CssBaseline />
             <div className="paper">
-                <Logo height="150" width="150"/>
+                <Logo height="196" width="150"/>
+                <br/>
                 <Typography component="h1" variant="h5">
                 Sign up
                 </Typography>

@@ -9,6 +9,9 @@ import Box from '@material-ui/core/Box';
 import SortIcon from '@material-ui/icons/Sort';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
 import MenuItem from '@material-ui/core/MenuItem';
 import {database} from '../../firebase/firebase.utils';
 
@@ -182,6 +185,9 @@ export default class HomePage extends React.Component{
                         return this.filterPosts(post)
                     })
                 }
+                <Fab color="primary" aria-label="add">
+        <AddIcon />
+      </Fab>
             </div>
             
             

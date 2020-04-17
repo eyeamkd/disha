@@ -68,9 +68,9 @@ class SignIn extends React.Component {
                 });
             } catch(error) {
                 if(error.code === "auth/user-not-found")
-                    this.setState({errorMessage: "User with this email ID does not exist. Please check!", isSignin:false})
+                    this.setState({errorMessage: "Incorrect e-mail ID or password. Please check!", isSignin:false})
                 else if(error.code === "auth/wrong-password")
-                    this.setState({errorMessage: "Wrong password. Please check!", isSignin:false})
+                    this.setState({errorMessage: "Incorrect e-mail ID or password. Please check!", isSignin:false})
                 console.error("KAUSTUBH:",error)
             }
             console.log("ok")
@@ -87,7 +87,8 @@ class SignIn extends React.Component {
             <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className="paper">
-                <Logo height="150" width="150"/>
+                <Logo height="196" width="150"/>
+                <br/>
                 <Typography component="h1" variant="h5">
                 Sign In
                 </Typography>
