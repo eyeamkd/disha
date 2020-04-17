@@ -4,7 +4,7 @@ import { Line } from 'react-lineto';
 import FadeAnimation from 'react-fade-animation';
 import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
-import { Fade } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
 import MapImage from './../../assets/map.jpg'
 import Grid from '@material-ui/core/Grid';
 import Logo from './../Logo/Logo';
@@ -28,32 +28,31 @@ class LandingPage extends Component {
     render() {
         const {classes} = this.props;
         return (
-            <Col>
-                <Row>
-                    <Col>
-                        <center>
-                            <Logo height="500" width="500"/>
-                        </center>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <center>
-                            <Link to="/SignIn">
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    color="secondary"
-                                    className="submit button"
-                                    size="large"
-                                >
-                                    <div id="textColor">Get Started</div>
-                                </Button>
-                            </Link>
-                        </center>
-                    </Col>
-                </Row>
-            </Col>
+            <div>
+            <br/>
+            <br/>
+            <br/>
+            <Box display="flex" justifyContent="center">
+                <Logo height="327" width="250"/>
+            </Box>
+            <br/>
+            <br/>
+            <Grid container direction="row" justify="center" fullWidth>
+                <Link to="/SignIn">
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="secondary"
+                        className="button"
+                        size="large"
+                        fullWidth
+                    >
+                        <div id="textColor">Get Started</div>
+                    </Button>
+                </Link>
+            </Grid>
+
+            </div>
         )
     }
 }

@@ -1,9 +1,12 @@
 .button {
-    width: 30%;
-    margin-left: 50px;
+    width: 100%;
     color: black;
 }
 
 a, a:hover{
     color: black;
+}
+
+.logo-left {
+    margin-left: 70px;
 }
