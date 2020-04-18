@@ -32,7 +32,38 @@ ReactDOM.render(
 
 , document.getElementById('root'));
 
+Notification.requestPermission(status=>{
+    console.log("Notification Status",status);
+}) 
+
+
+const displayNotification = () => { 
+    if (Notification.permission === 'granted') {
+        navigator.serviceWorker.getRegistration().then(reg => {
+            const options = {
+                body: '',
+                icon: 'https://raw.githubusercontent.com/eyeamkd/disha/master/src/assets/DISHA%20-%20Logo%20Black.png',
+                vibrate: [100, 50, 100],
+                data: {
+                    dateOfArrival: Date.now(),
+                    primaryKey: 1
+                }, 
+                actions: [
+                        {action: 'explore', title: 'Go to the site',
+                            icon: 'images/checkmark.png'},
+                        {action: 'close', title: 'Close the notification',
+                            icon: 'images/xmark.png'},
+                        ]
+                
+                    // TODO 5.1 - add a tag to the notification
+                
+                };
+        reg.showNotification('Welcome to Disha',options);
+        });
+} 
+} 
+// displayNotification();
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+serviceWorker.register(); 
