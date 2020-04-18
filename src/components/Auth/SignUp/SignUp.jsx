@@ -86,7 +86,7 @@ class SignUp extends React.Component {
 
     handleRollNumberChange = event => {
         if(this.state.rollNumberError) this.setState({rollNumberError: false})
-        let tempRollNumber = event.target.value;
+        let tempRollNumber = event.target.value.split(" ")[0];
         let departments = {"01": "Civil", "02": "EEE", "03": "Mech", "04": "ECE", "05": "CSE", "12": "IT"};
         this.props.setRollNumber(tempRollNumber);
         let isRollNumberProper = this.validateTicketNum(tempRollNumber);
