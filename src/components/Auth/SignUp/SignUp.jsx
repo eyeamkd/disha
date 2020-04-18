@@ -108,7 +108,7 @@ class SignUp extends React.Component {
         else
             this.setState({ isYear: false});        
         if(event.target.value.length > 3) {
-            console.log(yearValue, currentYear)
+            // console.log(yearValue, currentYear)
             if (yearValue < currentYear ) {
                 this.setState({isAlumni: true})
 
@@ -150,13 +150,13 @@ class SignUp extends React.Component {
     }
 
     handleSignupClick = async () => {
-        console.log(this.props)
+        // console.log(this.props)
         // if(rollNumberExists()) {
         //     this.setState({signupErrorMessage: "Account with this Roll Number already exists. Contact us at help@disha.website if this was a mistake."})
         // }
         const { firstName, lastName, email, year, section, department, password } = this.props;
         const { isAlumni, isAuthenticated } = this.state;
-        console.log(department);
+        // console.log(department);
         if (this.state.isAckChecked 
             && this.state.isConfirmPassword
             && !this.state.isEmail

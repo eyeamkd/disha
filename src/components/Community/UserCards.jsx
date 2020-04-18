@@ -50,7 +50,7 @@ export class UserCards extends Component {
     }
     
     componentDidUpdate(prevProps){   
-        console.log("pREV",prevProps);
+        // console.log("pREV",prevProps);
         if(prevProps.searchValue===""){ 
             Users = UsersConstant;
         } 
@@ -110,7 +110,8 @@ export class UserCards extends Component {
                 </Container> 
             )
         } 
-            else{  console.log(this.props);
+            else{   
+                // console.log(this.props);
                     return (
                         <Container>   
                             <Row className="d-space-cards-display-row"> 

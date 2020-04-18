@@ -30,7 +30,7 @@ const getInitials=(fullName)=>{
 
 export default function UserCard(props) {   
         const classes = Styles();
-        console.log(getInitials(props.title))
+        // console.log(getInitials(props.title))
         return (   
                 <Box  
                 boxShadow={2}

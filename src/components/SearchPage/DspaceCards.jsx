@@ -44,7 +44,7 @@ export class DspaceCards extends Component {
     }
     
     componentDidUpdate(prevProps){  
-        console.log("Prev",prevProps.searchValue,"SV",this.props.searchValue); 
+        // console.log("Prev",prevProps.searchValue,"SV",this.props.searchValue); 
         if(prevProps.searchValue===""){
             Dspaces = DspacesConstant;
         }
@@ -74,7 +74,7 @@ export class DspaceCards extends Component {
         const dSpaces = await dSpacesReference.get()
         .then(snapshot => {
             if (snapshot.empty) {
-                console.log('No matching documents.');
+                // console.log('No matching documents.');
                 return;
             }  
             snapshot.forEach(doc => {

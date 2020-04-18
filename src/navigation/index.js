@@ -47,7 +47,7 @@ class Navigation extends React.Component {
                 <Route path="/claim-account" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <ClaimAccountPage/>}/>    
                 <Route path="/confirm-account" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <ConfirmAccount/>}/>    
                 <Route path="/new-post" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <NewPost/>}/>    
-                <Route path="/post-submitted" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <PostSubmitted/>}/>    
+                <Route path="/post-submitted" render={(props) => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <PostSubmitted {...props}/>}/>    
                 <Route path="/new-dspace" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <NewDspaceForm/>}/>    
                 <Route path="/d-space-submitted" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <DspaceSubmitted/>}/>   
                 <Route path="/id=:id" exact component={ !this.getCurrentUserId() ? SignIn : OtherUser }/>

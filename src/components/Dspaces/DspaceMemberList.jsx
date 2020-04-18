@@ -24,7 +24,7 @@ export class DspaceMemberList extends Component {
     .get()
         .then(doc => {
             if (!doc.exists) {
-                console.log('No such document!');
+                // console.log('No such document!');
             } else {
             //   this.setState({ userInfo: doc.data(), userDataReceived: true, joined: doc.data().dspaces.includes(dSpace.id) })
                 console.log('Document data:', doc.data());

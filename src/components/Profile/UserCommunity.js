@@ -31,7 +31,7 @@ export class UserCommunity extends Component {
     usersData.where('department', '==', this.props.userInfo.department).get()
       .then(snapshot => {
           if (snapshot.empty) {
-            console.log('No matching documents.');
+            // console.log('No matching documents.');
             this.setState({noUsersYet: true, usersArrived: true})
             return;
           }  

@@ -27,11 +27,11 @@ export class App extends Component {
 
   componentDidMount() {
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
-      console.log("Current user:", this.state.currentUser)
+      // console.log("Current user:", this.state.currentUser)
         if(userAuth) {
           let userRef = await createUserProfileDocument(userAuth);
           // if(this.props.isNewUser === false) {
-            console.log("Auth ", userAuth)
+            // console.log("Auth ", userAuth)
             userRef.onSnapshot(snapShot => {
               this.setState({
                 currentUser: {
@@ -73,7 +73,7 @@ export class App extends Component {
     this.setState({currentUser: null})
     this.props.setUser(null)
     localStorage.removeItem('currentUserId')
-    console.log(this.props.user)
+    // console.log(this.props.user)
   }
 
 
