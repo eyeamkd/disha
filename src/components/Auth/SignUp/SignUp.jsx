@@ -137,7 +137,7 @@ class SignUp extends React.Component {
 
     handlePasswordChange = event => {
         this.props.setPassword(event.target.value);
-        (event.target.value.length < 6) ? this.setState({ isPassword: true}) : this.setState({ isPassword: false});
+        (event.target.value.length < 8) ? this.setState({ isPassword: true}) : this.setState({ isPassword: false});
     };
 
     handleConfirmPasswordChange = event => {
@@ -146,6 +146,7 @@ class SignUp extends React.Component {
     };
 
     handleAckChange = () => {
+        console.log(this.props.rollNumber)
         this.state.isAckChecked = !this.state.isAckChecked;
         this.setState({isAckChecked: this.state.isAckChecked});
         
@@ -156,7 +157,7 @@ class SignUp extends React.Component {
     }
 
     rollNumberExists = async (rN) => {
-        if(!rN) return;
+        if(!rN) return false;
         let usersRef = database.collection('users');
         let query = await usersRef.where('rollNumber', '==', rN).get()
         .then(snapshot => {
@@ -173,7 +174,7 @@ class SignUp extends React.Component {
     }
 
     emailExists = async (email) => {
-        if(!email) return;
+        if(!email) return false;
         let usersRef = database.collection('users');
         let query = await usersRef.where('email', '==', email).get()
         .then(snapshot => {
@@ -191,6 +192,9 @@ class SignUp extends React.Component {
     }
 
     handleSignupClick = async () => {
+        // if(this.props.rollNumber === null || this.props.rollNumber.length<1) {
+        //     return;
+        // }
         if(await this.emailExists(this.props.email)) {
             this.setState({emailExistsError: true})
             return
@@ -216,6 +220,7 @@ class SignUp extends React.Component {
             && !this.state.isLastName
             && this.state.isSection
             && !this.state.isRollNumber
+            && this.props.rollNumber !== null && this.props.rollNumber.length>0
         ) 
             {
                 this.setState({isSignup : true}, () => this.setState({signupErrorMessage: ''}));
@@ -234,7 +239,7 @@ class SignUp extends React.Component {
                 }
             }
         else {
-            this.setState({isSignup : false}, () => this.setState({signupErrorMessage: '* Please check all the fields'}));
+            this.setState({isSignup : false, signupErrorMessage: '* Please check all the fields'});
             return;
         }
     }
