@@ -47,7 +47,6 @@ export class IndividualPost extends Component {
             console.log('No such document!');
           } else {
             this.setState({ currentUserInfo: doc.data() })
-            //console.log('Document data:', doc.data());
           }
         })
         .catch(err => {
@@ -55,7 +54,6 @@ export class IndividualPost extends Component {
         });
     }
     else {
-      console.log("Coming here????")
       this.setState({ currentUserInfo: {likedPosts : []} })
     }
         
@@ -69,7 +67,6 @@ export class IndividualPost extends Component {
   componentDidMount () {
     const { post } = this.props.match.params
     let postsData = database.collection('posts');
-    console.log('post', post)
     this.getPostData(postsData, post); 
     this.getCurrentUserData();
   }
@@ -78,8 +75,6 @@ export class IndividualPost extends Component {
   
   render() {
     // return(<h1>Hello</h1>)
-    console.log('this.state.info', this.state.info)
-    console.log('this.state.currentUserInfo', this.state.currentUserInfo)
     if(this.state.postNotExists)
         return(<Redirect to="/home"/>)
     else return (

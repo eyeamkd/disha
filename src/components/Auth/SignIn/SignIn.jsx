@@ -101,6 +101,7 @@ class SignIn extends React.Component {
                             </InputLabel>
                             <OutlinedInput
                                 id="email"
+                                type="email"
                                 labelWidth={60} 
                                 error={this.state.isEmail}
                                 required={true}

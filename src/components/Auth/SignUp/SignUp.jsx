@@ -58,6 +58,7 @@ class SignUp extends React.Component {
         dept: "IT",
         signupErrorMessage: '',
         rollNumberError: false,
+        emailExistsError: false,
         confirmPassword: '',
         labelWidth: 0,
         inputLabel: null
@@ -77,6 +78,7 @@ class SignUp extends React.Component {
     }
 
     handleEmailChange = event => {
+        if(this.state.emailExistsError) this.setState({emailExistsError: false})
         this.props.setEmail(event.target.value);
         let isEmailProper = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(event.target.value);
         (event.target.value.length < 1 || !isEmailProper) ? this.setState({ isEmail: true}) : this.setState({ isEmail: false});
@@ -112,7 +114,6 @@ class SignUp extends React.Component {
         else
             this.setState({ isYear: false});        
         if(event.target.value.length > 3) {
-            console.log(yearValue, currentYear)
             if (yearValue < currentYear ) {
                 this.setState({isAlumni: true})
 
@@ -156,37 +157,56 @@ class SignUp extends React.Component {
 
     rollNumberExists = async (rN) => {
         if(!rN) return;
-        console.log('rN', rN)
         let usersRef = database.collection('users');
         let query = await usersRef.where('rollNumber', '==', rN).get()
         .then(snapshot => {
             if (snapshot.empty) {
-                console.log("Empty")
                 return false;
             }  else {
-            console.log("not Empty")
             return true;
             }
         })
         .catch(err => {
             console.log('Error getting documents', err);
         });
-        console.log('query', query)
+        return query
+    }
+
+    emailExists = async (email) => {
+        if(!email) return;
+        let usersRef = database.collection('users');
+        let query = await usersRef.where('email', '==', email).get()
+        .then(snapshot => {
+            if (snapshot.empty) {
+                return false;
+            }  else {
+            return true;
+            }
+        })
+        .catch(err => {
+            console.log('Error getting documents', err);
+        });
+        console.log('email query', query)
         return query
     }
 
     handleSignupClick = async () => {
+        if(await this.emailExists(this.props.email)) {
+            this.setState({emailExistsError: true})
+            return
+        }
+        else {
+            this.setState({emailExistsError: false})
+        }
         if(await this.rollNumberExists(this.props.rollNumber)) {
             this.setState({rollNumberError: true})
-            console.log("exists")
             return
         }
         else {
             this.setState({rollNumberError: false})
         }
-        const { email, year, section, department, password } = this.props;
+        const { lastName, email, year, section, department, password } = this.props;
         const { isAlumni, isAuthenticated } = this.state;
-        console.log(department);
         if (this.state.isAckChecked 
             && this.state.isConfirmPassword
             && !this.state.isEmail
@@ -201,9 +221,7 @@ class SignUp extends React.Component {
                 this.setState({isSignup : true}, () => this.setState({signupErrorMessage: ''}));
                 try {
                     const information = await auth.createUserWithEmailAndPassword(email, password)
-                    console.log(information);
                     let firstName = this.capitalizeFirstLetter(this.props.firstName)
-                    let lastName = this.capitalizeFirstLetter(this.props.lastName)
                     var likedPosts = [];
                     var dspaces = [];
                     var rollNumber = this.props.rollNumber.toLowerCase()
@@ -310,6 +328,7 @@ class SignUp extends React.Component {
                                 </InputLabel>
                                 <OutlinedInput
                                     id="email"
+                                    type="email"
                                     labelWidth={60} 
                                     error={this.state.isEmail} 
                                     required={true}
@@ -319,6 +338,9 @@ class SignUp extends React.Component {
                                 {this.state.isEmail&&  
                                     <FormHelperText error={true}>* Please check the email entered</FormHelperText>   
                                 } 
+                                {this.state.emailExistsError&&  
+                                    <FormHelperText error={true}>* This email already exists.</FormHelperText>   
+                                }
                         </FormControl>
                     </Grid>
                     <Grid item xs={12}>
