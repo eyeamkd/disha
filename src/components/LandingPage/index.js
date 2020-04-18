@@ -7,7 +7,8 @@ import { Link } from "react-router-dom";
 import Box from '@material-ui/core/Box';
 import MapImage from './../../assets/map.jpg'
 import Grid from '@material-ui/core/Grid';
-import Logo from './../Logo/Logo';
+import Logo from './../Logo/Logo'; 
+import { NewUserAdded } from '../../utils/Notfications/newUser'
 import './index.css';
 
 
@@ -21,7 +22,7 @@ var background = {
     height: "100% !important",
   };
 
-  
+
 
 class LandingPage extends Component {
     render() {
@@ -43,14 +44,13 @@ class LandingPage extends Component {
                         variant="contained"
                         color="secondary"
                         className="button"
-                        size="large"
+                        size="large" 
                         fullWidth
                     >
-                        <div id="textColor">Get Started</div>
+                        <div id="textColor" >Get Started</div> 
                     </Button>
-                </Link>
+                </Link> 
             </Grid>
-
             </div>
         )
     }
