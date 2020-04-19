@@ -41,14 +41,14 @@ export class Dspaces extends Component {
             }
           })
           .catch(err => {
-            console.log('Error getting document', err);
+            // console.log('Error getting document', err);
         });
     }
 
     handleJoinClick = () => {
         let currentUserId = localStorage.getItem('currentUserId')
         this.setState({joined: true})
-        console.log("dspace id", dSpace.id)
+        // console.log("dspace id", dSpace.id)
         let userDoc = {name: this.state.userInfo.firstName+" "+this.state.userInfo.lastName, rollNumber: this.state.userInfo.rollNumber}
         database.collection('d-spaces').doc(dSpace.id).update({
             members: firebase.firestore.FieldValue.arrayUnion(userDoc)
@@ -60,7 +60,7 @@ export class Dspaces extends Component {
     
     handleJoinedClick = () => {
         let currentUserId = localStorage.getItem('currentUserId')
-        console.log('dSpace.members', dSpace.members)
+        // console.log('dSpace.members', dSpace.members)
         this.setState({joined: false})
         let userDoc = {
             name: this.state.userInfo.firstName
@@ -70,7 +70,7 @@ export class Dspaces extends Component {
         }
         database.collection('d-spaces').doc(dSpace.id).update({
             members: firebase.firestore.FieldValue.arrayRemove(userDoc)
-          });
+        });
         database.collection('users').doc(currentUserId).update({
             dspaces: firebase.firestore.FieldValue.arrayRemove(dSpace.id)
         });

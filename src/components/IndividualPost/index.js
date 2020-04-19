@@ -23,7 +23,7 @@ export class IndividualPost extends Component {
     let query = postsData.where('postUrl', '==', id).get()
     .then(snapshot => {
       if (snapshot.empty) {
-        console.log('No matching documents.');
+        // console.log('No matching documents.');
         this.setState({ postNotExists: true })
       }  
   
@@ -34,7 +34,7 @@ export class IndividualPost extends Component {
         });
     })
     .catch(err => {
-      console.log('Error getting documents', err);
+      // console.log('Error getting documents', err);
     });
   }
 
@@ -44,13 +44,13 @@ export class IndividualPost extends Component {
       let query = database.collection('users').doc(currentUserId).get()
         .then(doc => {
           if (!doc.exists) {
-            console.log('No such document!');
+            // console.log('No such document!');
           } else {
             this.setState({ currentUserInfo: doc.data() })
           }
         })
         .catch(err => {
-          console.log('Error getting document', err);
+          // console.log('Error getting document', err);
         });
     }
     else {

@@ -45,12 +45,12 @@ export class DspacePosts extends Component {
             }
           })
           .catch(err => {
-            console.log('Error getting document', err);
+          //  console.log('Error getting document', err);
         });
     }
 
     getPosts = () => {
-        console.log('dSpace.title', this.props.dSpace.title)
+        // console.log('dSpace.title', this.props.dSpace.title)
         let postsData = database.collection('posts')
         let query = postsData.where("dSpaces", "array-contains", this.props.dSpace.title ).get()
         .then(snapshot => {
@@ -71,15 +71,15 @@ export class DspacePosts extends Component {
             //console.log('dspaces', dspaces)
         })
         .catch(err => {
-            console.log('Error getting documents', err);
+            // console.log('Error getting documents', err);
         });
         
 
     }
 
     removePost=(post) => {
-        console.log('post', post)
-        console.log("deleting")
+        // console.log('post', post)
+        // console.log("deleting")
         let arr = this.state.allPosts;
         let index = arr.indexOf(post)
         arr.splice(index, 1)

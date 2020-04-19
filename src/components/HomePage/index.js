@@ -56,7 +56,7 @@ export default class HomePage extends React.Component{
             }
           })
           .catch(err => {
-            console.log('Error getting document', err);
+            // console.log('Error getting document', err);
         });
     }
 

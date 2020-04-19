@@ -114,6 +114,7 @@ class SignUp extends React.Component {
         else
             this.setState({ isYear: false});        
         if(event.target.value.length > 3) {
+
             if (yearValue < currentYear ) {
                 this.setState({isAlumni: true})
 
@@ -211,6 +212,7 @@ class SignUp extends React.Component {
         }
         const { lastName, email, year, section, department, password } = this.props;
         const { isAlumni, isAuthenticated } = this.state;
+
         if (this.state.isAckChecked 
             && this.state.isConfirmPassword
             && !this.state.isEmail

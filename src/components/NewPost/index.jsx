@@ -61,7 +61,7 @@ getDspaces=()=>{
         let query = dspaceData.get()
         .then(snapshot => {
             if (snapshot.empty) {
-                console.log('No matching documents.');
+                // console.log('No matching documents.');
                 return;
             }  
             snapshot.forEach(doc => {
@@ -72,7 +72,7 @@ getDspaces=()=>{
             // console.log('dspaces', dspaces)
         })
         .catch(err => {
-            console.log('Error getting documents', err);
+            // console.log('Error getting documents', err);
         });
     }
 }
@@ -138,13 +138,13 @@ getUserDetails = () => {
     let getDoc = userData.get()
     .then(doc => {
         if (!doc.exists) {
-        console.log('No such document!');
+        // console.log('No such document!');
         } else {
            this.setState({userDetails: doc.data()})
         }
     })
     .catch(err => {
-        console.log('Error getting document', err);
+        // console.log('Error getting document', err);
     });
 }
 

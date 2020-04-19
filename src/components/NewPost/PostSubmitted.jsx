@@ -9,7 +9,8 @@ export class PostSubmitted extends Component {
         super(props); 
         this.state={ 
             timeOut:false
-        }
+        } 
+        console.log("Props",props);
     }
     redirectToHomePage=()=>{ 
         this.setState({timeOut:true});
@@ -29,9 +30,9 @@ export class PostSubmitted extends Component {
             width="fit-content"
             height="fit-content"
             />
-            { this.props.message 
+            { !!this.props.location.state
                 ?
-                <Typography variant="h4" className="post-submitted-text">{this.props.message}</Typography> 
+                <Typography variant="h4" className="post-submitted-text">{!!this.props.location.state.message ? "D-Space Created Successfully" : "Post Submitted Successfully"}</Typography> 
                 : 
                 <Typography variant="h4" className="post-submitted-text">Post Submitted Successfully!</Typography> 
             } 

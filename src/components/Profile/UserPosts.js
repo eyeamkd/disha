@@ -38,7 +38,7 @@ export class UserPosts extends Component {
       let query = postsData.where('authorRollNumber', '==', this.props.userRollNumber).get()
       .then(snapshot => {
           if (snapshot.empty) {
-              console.log('No matching documents.');
+            //   console.log('No matching documents.');
               this.setState({noPostsYet: true, postsArrived: true})
               return;
           }  
@@ -54,14 +54,14 @@ export class UserPosts extends Component {
           //console.log('dspaces', dspaces)
       })
       .catch(err => {
-          console.log('Error getting documents', err);
+        //   console.log('Error getting documents', err);
       });
       
   }
 
     removePost=(post) => {
-        console.log('post', post)
-        console.log("deleting")
+        // console.log('post', post)
+        // console.log("deleting")
         let arr = this.state.allPosts;
         let index = arr.indexOf(post)
         arr.splice(index, 1)
@@ -80,7 +80,7 @@ export class UserPosts extends Component {
   };
 
   filterPosts = (post) => {
-    console.log(post.authorRollNumber === this.props.currentUserRollNumber)
+    // console.log(post.authorRollNumber === this.props.currentUserRollNumber)
       if(this.state.filterValue === "None") {
         return(
           <Post 
