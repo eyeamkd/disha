@@ -31,14 +31,14 @@ export class Profile extends Component {
     a = userData.get()
       .then(doc => {
         if (!doc.exists) {
-          console.log('No such document!');
+          // console.log('No such document!');
         } else {
           this.setState({ info: doc.data() })
           //console.log('Document data:', doc.data());
         }
       })
       .catch(err => {
-        console.log('Error getting document', err);
+        // console.log('Error getting document', err);
       });
   }
 

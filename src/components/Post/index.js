@@ -73,7 +73,7 @@ export default function Post(props) {
   };
 
   const handlePostDelete = () => {
-    console.log("post deleted")
+    // console.log("post deleted")
     props.removePost(props.post);
     setOpen(false);
   };

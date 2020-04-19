@@ -112,7 +112,7 @@ function Layout(props) {
   const changeCurrentUser = () => {
     props.setUser(null)
     localStorage.removeItem('currentUserId')
-    console.log(props.user)
+    // console.log(props.user)
   };
 
 

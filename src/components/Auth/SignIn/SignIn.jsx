@@ -73,10 +73,10 @@ class SignIn extends React.Component {
                     this.setState({errorMessage: "Incorrect e-mail ID or password. Please check!", isSignin:false})
                 console.error("KAUSTUBH:",error)
             }
-            console.log("ok")
+            // console.log("ok")
         }
         else {
-            console.log("not ok")
+            // console.log("not ok")
             this.setState({isSignin : false}, () => this.setState({signinErrorMessage: '* Please fill all the fields'}));
             return;
         }

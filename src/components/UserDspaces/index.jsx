@@ -28,9 +28,9 @@ export class UserDspaces extends Component {
     let userRefDoc = database.collection("users").doc(userId);
     let userDoc = await userRefDoc.get().then((doc) => {
       if (!doc.exists) {
-        console.log("Invalid User Document");
+        // console.log("Invalid User Document");
       } else {
-        console.log("Ids", doc.data().dspaces);
+        // console.log("Ids", doc.data().dspaces);
         this.loadUserDspaces(doc.data().dspaces);
         this.setState({
           dSpaceIds: doc.data().dspaces,
@@ -45,7 +45,7 @@ export class UserDspaces extends Component {
       let dspaceDocRef = database.collection("d-spaces").doc(id);
       dspaceDocRef.get().then((doc) => {
         if (!doc.exists) {
-          console.log("NO Dspace found with that ID");
+          // console.log("NO Dspace found with that ID");
         } else {
           this.setState({
             dspaces: [...this.state.dspaces, doc.data()],
@@ -58,7 +58,7 @@ export class UserDspaces extends Component {
     this.loadUserDspaceIds();
   }
   render() {
-    console.log(this.state);
+    // console.log(this.state);
     if (this.state.dspaces.length === 0) {
       return (
         <Container>

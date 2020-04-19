@@ -62,7 +62,7 @@ isDspaceDataValid = () => {
                 isDspaceDescriptionInValid:true 
             }); 
             return false;
-        }else if(this.state.dSpaceCategory.length<2){ 
+        }else if(this.state.dSpaceCategory.length<1){ 
             this.setState({  
                 isDspaceTitleInValid:false,
                 isDspaceDescriptionInValid:false,
@@ -73,7 +73,7 @@ isDspaceDataValid = () => {
             this.setState({  
                 isDspaceTitleInValid:false,
                 isDspaceDescriptionInValid:false,
-                isSelectedCategoryInValid:true 
+                isSelectedCategoryInValid:false 
             }); 
             return true;
         }
@@ -127,7 +127,10 @@ addDspace = () => {
 
     render() { 
         if(this.state.dSpaceCreatedSuccessfully){ 
-            return(<Redirect to="/post-submitted"/>);
+            return(<Redirect to={{
+                        pathname: '/post-submitted',
+                        state: { message: 'D-Space Created Successfully!!!' }
+                    }} />);
         }else{  
             return (
                 <Container>
@@ -161,7 +164,10 @@ addDspace = () => {
                                     labelWidth={60} 
                                     multiline 
                                     rows="5"
-                                />   
+                                /> 
+                                {this.state.isDspaceDescriptionInValid&&  
+                                    <FormHelperText error={true}>Description should be minimum 100 characters</FormHelperText>   
+                                }    
                         </FormControl> 
     
                         <div className="checkbox-section">  
@@ -178,6 +184,9 @@ addDspace = () => {
                                                     label={dspaceCategory}
                                                 />
                                 ))} 
+                                {this.state.isSelectedCategoryInValid&&  
+                                    <FormHelperText error={true}>Select atleast one category</FormHelperText>   
+                                }   
                             </FormGroup> 
                         </div>   
     

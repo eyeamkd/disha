@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import {onSearchValueEntered} from '../../redux/dSpaceSearch/searchBar-action';
 
 function SearchBar(props){    
-    console.log(props);
+    // console.log(props);
     return( 
         <div>
             <TextField  

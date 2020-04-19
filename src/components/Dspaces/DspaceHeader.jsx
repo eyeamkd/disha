@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
 export default function DspaceHeader(props) {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
-    console.log(props.dSpace.members)
+    // console.log(props.dSpace.members)
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };

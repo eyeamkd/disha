@@ -23,7 +23,7 @@ export class IndividualPost extends Component {
     let query = postsData.where('postUrl', '==', id).get()
     .then(snapshot => {
       if (snapshot.empty) {
-        console.log('No matching documents.');
+        // console.log('No matching documents.');
         this.setState({ postNotExists: true })
       }  
   
@@ -34,7 +34,7 @@ export class IndividualPost extends Component {
         });
     })
     .catch(err => {
-      console.log('Error getting documents', err);
+      // console.log('Error getting documents', err);
     });
   }
 
@@ -44,18 +44,16 @@ export class IndividualPost extends Component {
       let query = database.collection('users').doc(currentUserId).get()
         .then(doc => {
           if (!doc.exists) {
-            console.log('No such document!');
+            // console.log('No such document!');
           } else {
             this.setState({ currentUserInfo: doc.data() })
-            //console.log('Document data:', doc.data());
           }
         })
         .catch(err => {
-          console.log('Error getting document', err);
+          // console.log('Error getting document', err);
         });
     }
     else {
-      console.log("Coming here????")
       this.setState({ currentUserInfo: {likedPosts : []} })
     }
         
@@ -69,7 +67,6 @@ export class IndividualPost extends Component {
   componentDidMount () {
     const { post } = this.props.match.params
     let postsData = database.collection('posts');
-    console.log('post', post)
     this.getPostData(postsData, post); 
     this.getCurrentUserData();
   }
@@ -78,8 +75,6 @@ export class IndividualPost extends Component {
   
   render() {
     // return(<h1>Hello</h1>)
-    console.log('this.state.info', this.state.info)
-    console.log('this.state.currentUserInfo', this.state.currentUserInfo)
     if(this.state.postNotExists)
         return(<Redirect to="/home"/>)
     else return (

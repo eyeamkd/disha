@@ -50,8 +50,8 @@ export default class HomePage extends React.Component{
     };
 
     filterPosts = (element) => {
-        console.log('element.subtitle', element.subtitle)
-        console.log('this.state.filterValue', this.state.filterValue)
+        // console.log('element.subtitle', element.subtitle)
+        // console.log('this.state.filterValue', this.state.filterValue)
         if(this.state.filterValue === "") {
             return(<Post title={element.title} subtitle={element.subtitle} description={element.description}/>)
         }

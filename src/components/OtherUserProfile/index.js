@@ -25,7 +25,7 @@ export class OtherUser extends Component {
     let query = usersData.where('rollNumber', '==', id).get()
     .then(snapshot => {
       if (snapshot.empty) {
-        console.log('No matching documents.');
+        // console.log('No matching documents.');
         this.setState({ userNotExists: true })
       }  
   
@@ -34,7 +34,7 @@ export class OtherUser extends Component {
         });
     })
     .catch(err => {
-      console.log('Error getting documents', err);
+      // console.log('Error getting documents', err);
     });
   }
 
@@ -50,7 +50,7 @@ export class OtherUser extends Component {
         }
       })
       .catch(err => {
-        console.log('Error getting document', err);
+        // console.log('Error getting document', err);
       });
   }
 
