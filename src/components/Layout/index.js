@@ -14,14 +14,12 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
-//import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Icon from "@material-ui/core/Icon";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
 import Menu from "./../../navigation/menu.json";
 import Button from '@material-ui/core/Button';
 import { Redirect } from 'react-router-dom'; 
+import Box from '@material-ui/core/Box';
 
 
 import { Link } from "react-router-dom";
@@ -135,13 +133,14 @@ function Layout(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Grid item xs={12} sm={2}>
+          <Box flexGrow={1}>
           <Typography variant="h6" noWrap>
-            DISHA
-          </Typography>
-          </Grid>
-          <Grid item xs={12} sm={9}></Grid>
-          <Grid item xs={12} sm={1}>
+          <Link to="/home">
+              DISHA
+              </Link>
+            </Typography>
+          </Box>
+          <Box>
             {
               props.currentUser ?
               <Button
@@ -164,7 +163,7 @@ function Layout(props) {
               </Button>
             }
             
-          </Grid>
+          </Box>
         </Toolbar>
       </AppBar>
       <Drawer

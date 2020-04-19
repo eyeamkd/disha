@@ -13,6 +13,8 @@ import FormLabel from '@material-ui/core/FormLabel';
 import Container from '@material-ui/core/Container';
 import { connect } from 'react-redux';
 import Logo from '../../Logo/Logo';
+import {database} from '../../../firebase/firebase.utils';
+
 
 import { 
     FormControl, 
@@ -55,6 +57,8 @@ class SignUp extends React.Component {
         accountCreated: false,
         dept: "IT",
         signupErrorMessage: '',
+        rollNumberError: false,
+        emailExistsError: false,
         confirmPassword: '',
         labelWidth: 0,
         inputLabel: null
@@ -74,13 +78,15 @@ class SignUp extends React.Component {
     }
 
     handleEmailChange = event => {
+        if(this.state.emailExistsError) this.setState({emailExistsError: false})
         this.props.setEmail(event.target.value);
         let isEmailProper = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(event.target.value);
         (event.target.value.length < 1 || !isEmailProper) ? this.setState({ isEmail: true}) : this.setState({ isEmail: false});
     }
 
     handleRollNumberChange = event => {
-        let tempRollNumber = event.target.value;
+        if(this.state.rollNumberError) this.setState({rollNumberError: false})
+        let tempRollNumber = event.target.value.toLowerCase().split(" ")[0];
         let departments = {"01": "Civil", "02": "EEE", "03": "Mech", "04": "ECE", "05": "CSE", "12": "IT"};
         this.props.setRollNumber(tempRollNumber);
         let isRollNumberProper = this.validateTicketNum(tempRollNumber);
@@ -108,7 +114,7 @@ class SignUp extends React.Component {
         else
             this.setState({ isYear: false});        
         if(event.target.value.length > 3) {
-            // console.log(yearValue, currentYear)
+
             if (yearValue < currentYear ) {
                 this.setState({isAlumni: true})
 
@@ -132,7 +138,7 @@ class SignUp extends React.Component {
 
     handlePasswordChange = event => {
         this.props.setPassword(event.target.value);
-        (event.target.value.length < 6) ? this.setState({ isPassword: true}) : this.setState({ isPassword: false});
+        (event.target.value.length < 8) ? this.setState({ isPassword: true}) : this.setState({ isPassword: false});
     };
 
     handleConfirmPasswordChange = event => {
@@ -141,22 +147,72 @@ class SignUp extends React.Component {
     };
 
     handleAckChange = () => {
+        console.log(this.props.rollNumber)
         this.state.isAckChecked = !this.state.isAckChecked;
         this.setState({isAckChecked: this.state.isAckChecked});
+        
     };
 
-    rollNumberExists = () => {
+    capitalizeFirstLetter = (string) => {
+        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+    }
 
+    rollNumberExists = async (rN) => {
+        if(!rN) return false;
+        let usersRef = database.collection('users');
+        let query = await usersRef.where('rollNumber', '==', rN).get()
+        .then(snapshot => {
+            if (snapshot.empty) {
+                return false;
+            }  else {
+            return true;
+            }
+        })
+        .catch(err => {
+            console.log('Error getting documents', err);
+        });
+        return query
+    }
+
+    emailExists = async (email) => {
+        if(!email) return false;
+        let usersRef = database.collection('users');
+        let query = await usersRef.where('email', '==', email).get()
+        .then(snapshot => {
+            if (snapshot.empty) {
+                return false;
+            }  else {
+            return true;
+            }
+        })
+        .catch(err => {
+            console.log('Error getting documents', err);
+        });
+        console.log('email query', query)
+        return query
     }
 
     handleSignupClick = async () => {
-        // console.log(this.props)
-        // if(rollNumberExists()) {
-        //     this.setState({signupErrorMessage: "Account with this Roll Number already exists. Contact us at help@disha.website if this was a mistake."})
+        // if(this.props.rollNumber === null || this.props.rollNumber.length<1) {
+        //     return;
         // }
-        const { firstName, lastName, email, year, section, department, password } = this.props;
+        if(await this.emailExists(this.props.email)) {
+            this.setState({emailExistsError: true})
+            return
+        }
+        else {
+            this.setState({emailExistsError: false})
+        }
+        if(await this.rollNumberExists(this.props.rollNumber)) {
+            this.setState({rollNumberError: true})
+            return
+        }
+        else {
+            this.setState({rollNumberError: false})
+        }
+        const { lastName, email, year, section, department, password } = this.props;
         const { isAlumni, isAuthenticated } = this.state;
-        // console.log(department);
+
         if (this.state.isAckChecked 
             && this.state.isConfirmPassword
             && !this.state.isEmail
@@ -166,13 +222,13 @@ class SignUp extends React.Component {
             && !this.state.isLastName
             && this.state.isSection
             && !this.state.isRollNumber
+            && this.props.rollNumber !== null && this.props.rollNumber.length>0
         ) 
             {
                 this.setState({isSignup : true}, () => this.setState({signupErrorMessage: ''}));
                 try {
                     const information = await auth.createUserWithEmailAndPassword(email, password)
-                    console.log(information);
-                    // this.props.setIsNewUser(information.additionalUserInfo.isNewUser)
+                    let firstName = this.capitalizeFirstLetter(this.props.firstName)
                     var likedPosts = [];
                     var dspaces = [];
                     var rollNumber = this.props.rollNumber.toLowerCase()
@@ -185,7 +241,7 @@ class SignUp extends React.Component {
                 }
             }
         else {
-            this.setState({isSignup : false}, () => this.setState({signupErrorMessage: '* Please check all the fields'}));
+            this.setState({isSignup : false, signupErrorMessage: '* Please check all the fields'});
             return;
         }
     }
@@ -279,6 +335,7 @@ class SignUp extends React.Component {
                                 </InputLabel>
                                 <OutlinedInput
                                     id="email"
+                                    type="email"
                                     labelWidth={60} 
                                     error={this.state.isEmail} 
                                     required={true}
@@ -288,6 +345,9 @@ class SignUp extends React.Component {
                                 {this.state.isEmail&&  
                                     <FormHelperText error={true}>* Please check the email entered</FormHelperText>   
                                 } 
+                                {this.state.emailExistsError&&  
+                                    <FormHelperText error={true}>* This email already exists.</FormHelperText>   
+                                }
                         </FormControl>
                     </Grid>
                     <Grid item xs={12}>
@@ -298,13 +358,16 @@ class SignUp extends React.Component {
                             <OutlinedInput
                                 id="rollNumber"
                                 labelWidth={60} 
-                                error={this.state.isRollNumber} 
+                                error={this.state.isRollNumber || this.state.rollNumberError} 
                                 required={true}
                                 fullWidth
                                 onChange={event=> this.handleRollNumberChange(event)}
                             /> 
                             {this.state.isRollNumber&&  
                                 <FormHelperText error={true}>* Enter valid Roll Number</FormHelperText>   
+                            } 
+                            {this.state.rollNumberError&&  
+                                <FormHelperText error={true}>* This Roll Number already exists.</FormHelperText>   
                             } 
                         </FormControl>
                     </Grid>

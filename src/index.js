@@ -38,6 +38,7 @@ Notification.requestPermission(status=>{
 
 
 const displayNotification = () => { 
+    console.log(Notification.permission)
     if (Notification.permission === 'granted') {
         navigator.serviceWorker.getRegistration().then(reg => {
             const options = {
