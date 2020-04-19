@@ -1,5 +1,5 @@
 const INITIAL_STATE = {
-    section: null
+    section: "a"
 }// similar to first state value set
 
 const sectionReducer = (state = INITIAL_STATE, action) => {
