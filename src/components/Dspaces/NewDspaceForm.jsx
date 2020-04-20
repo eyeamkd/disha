@@ -15,7 +15,8 @@ import {
     IconButton, 
     Chip, 
     CircularProgress, 
-    FormHelperText} from '@material-ui/core';
+    FormHelperText,
+    ThemeProvider} from '@material-ui/core';
 import { Row } from 'react-bootstrap';  
 import AddIcon from '@material-ui/icons/Add'; 
 import {database} from '../../firebase/firebase.utils';
@@ -133,8 +134,8 @@ addDspace = () => {
                     }} />);
         }else{  
             return (
-                <Container>
-                    <Typography variant="h1">New D-Space</Typography> 
+                <Container> 
+                    <Typography variant="h1">New D-Space</Typography>  
                     <Row className="new-dspace-form">  
                         <FormControl style={{margin:10}} >   
                             <InputLabel variant="outlined" className="input-label" > 

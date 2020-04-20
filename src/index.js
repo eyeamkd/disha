@@ -4,12 +4,12 @@ import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { MuiThemeProvider, createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 import { Provider } from 'react-redux';
 
 import store from './redux/store';
 
-const theme = createMuiTheme({
+let theme = createMuiTheme({
     palette: {
         primary: {
             main: '#F57F17'
@@ -20,6 +20,41 @@ const theme = createMuiTheme({
         },
     }
 );
+
+theme.typography.h2 ={ 
+    '@media screen and (max-width:400px)':{ 
+        fontSize:'2.0rem',
+        fontFamily: "Roboto",
+        fontWeight: '380',  
+        lineHeight: '1.334',
+        letterSpacing: '0em'
+    },
+    '@media screen and (min-width:401px)':{ 
+        fontSize:'3.5rem',
+        fontFamily: "Roboto",
+        fontWeight: '380',  
+        lineHeight: '1.334',
+        letterSpacing: '0em'
+    }
+}  
+
+theme.typography.h1 ={ 
+    '@media screen and (max-width:400px)':{ 
+        fontSize:'2.0rem',
+        fontFamily: "Roboto",
+        fontWeight: '380',  
+        lineHeight: '1.334',
+        letterSpacing: '0em'
+    },
+    '@media screen and (min-width:401px)':{ 
+        fontSize:'3.5rem',
+        fontFamily: "Roboto",
+        fontWeight: '380',  
+        lineHeight: '1.334',
+        letterSpacing: '0em'
+    }
+} 
+
 
 ReactDOM.render(
     <Provider store={store}>

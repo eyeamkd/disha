@@ -52,12 +52,12 @@ export class Profile extends Component {
     return (
       this.state.info ?
         <Grid item xs={12}>
-          <Container style={{ maxWidth: '100%' }}>
+          <Container  className="user-profile-container">
             <Row className="user-profile-header-row">
               <Grid container spacing={2}>
                 <Grid item xs={12} md={1}><ProfileImage name={this.initials()} scale={100} variant="square" /></Grid>
-                <Grid item xs={12} md={11}>
-                  <Typography variant="h2" className = "user-name-title-style">{this.state.info.firstName + " " + this.state.info.lastName}</Typography>
+                <Grid item xs={12} md={11} style={{margin:'1px'}}  >
+                  <Typography variant="h2" classes={{ root:'user-name-title-style' }} >{this.state.info.firstName + " " + this.state.info.lastName}</Typography>
                 </Grid>
               </Grid>
             </Row>

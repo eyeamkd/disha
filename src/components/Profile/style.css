@@ -1,27 +1,53 @@
-.user-sub-heading-spacing{
-    display: flex; 
-    flex-direction: row;  
-    padding: 10px; 
+.user-sub-heading-spacing {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
     margin-top: 10px;
-} 
+}
 
-.user-community { 
-    display: flex;  
-    flex-direction: column; 
+.user-community {
+    display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
-    align-items: center; 
+    align-items: center;
     margin: 12px;
-} 
+}
 
-.user-activity-parent-div{ 
-    display: flex; 
-    flex-direction: column; 
-} 
+.user-activity-parent-div {
+    display: flex;
+    flex-direction: column;
+}
 
-.user-profile-header-row{ 
+.user-profile-header-row {
     display: inline;
-} 
+}
 
-.user-name-title-style{ 
+.user-name-title-style {
     width: max-content;
+}
+
+/* mobile view styles  */
+@media screen and (max-width: 400px) {
+    .user-profile-contianer {
+        max-width: 400px;
+    }
+
+    .user-info {
+        display: flex;
+        flex-wrap: wrap;
+        width: 350px;
+    } 
+
+    .user-name-title-style{ 
+        margin:0px;
+    }
+}
+/* desktop view styles */
+@media screen and (min-width: 410px) {
+    .user-profile-contianer {
+        max-width: 100%;
+    } 
+    .user-name-title-style{ 
+        margin: 27px;
+    }
 }
