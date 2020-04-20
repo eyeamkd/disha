@@ -67,9 +67,9 @@ ReactDOM.render(
 
 , document.getElementById('root'));
 
-Notification.requestPermission(status=>{
-    console.log("Notification Status",status);
-}) 
+// Notification.requestPermission(status=>{
+//     console.log("Notification Status",status);
+// }) 
 
 
 const displayNotification = () => { 

@@ -47,7 +47,7 @@ class SignUp extends React.Component {
         isEmail: false,
         isRollNumber: false,
         isYear: false,
-        isSection: false,
+        isSection: true,
         isPassword: false,
         isConfirmPassword: false,
         isAckChecked: false,
@@ -241,7 +241,19 @@ class SignUp extends React.Component {
                 }
             }
         else {
-            this.setState({isSignup : false, signupErrorMessage: '* Please check all the fields'});
+            console.log(
+                this.state.isAckChecked 
+            , this.state.isConfirmPassword
+            , !this.state.isEmail
+            , !this.state.isPassword
+            , !this.state.isYear
+            , !this.state.isFirstName
+            , !this.state.isLastName
+            , this.state.isSection
+            , !this.state.isRollNumber
+            , this.props.rollNumber !== null , this.props.rollNumber.length>0
+            )
+            this.setState({isSignup : false}, () => this.setState({signupErrorMessage: '* Please check all the fields'}));
             return;
         }
     }
