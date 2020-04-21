@@ -86,6 +86,22 @@ handleChange = (event) => {
         })
 }  
 
+handleDspaceDescriptionChange=(event)=>{  
+    if(event.target.value.length<100){ 
+        this.setState({ 
+            dSpaceDescription:event.target.value, 
+            isDspaceDescriptionInValid:true
+        })
+    } 
+    else { 
+        this.setState({ 
+            dSpaceDescription:event.target.value, 
+            isDspaceDescriptionInValid:false
+        })
+    }
+    
+} 
+
 handleCategorySelected = (event) => {
         this.setState({
             dSpaceCategory:event.target.value
@@ -161,7 +177,7 @@ addDspace = () => {
                                 <OutlinedInput
                                     id="dSpaceDescription" 
                                     value={this.state.dSpaceDescription}
-                                    onChange={this.handleChange}
+                                    onChange={this.handleDspaceDescriptionChange}
                                     labelWidth={60} 
                                     multiline 
                                     rows="5"
