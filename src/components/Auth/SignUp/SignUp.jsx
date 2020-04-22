@@ -154,9 +154,15 @@ class SignUp extends React.Component {
 
     beautifyName = (str) => {
         while(str[str.length - 1] === " ") str = str.slice(0, str.length - 1);
-        if(str.split(" ").length < 2)
-            return str.charAt(0).toUpperCase() + str.slice(1);
-        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+        while(str[0] === " ") str = str.slice(1, str.length);
+        let strParts = str.split(" ")
+        for(let i =0; i<strParts.length; i++) {
+            strParts[i] = strParts[i].charAt(0).toUpperCase() + strParts[i].slice(1).toLowerCase();
+
+        }
+        // if(str.split(" ").length < 2)
+        //     return str.charAt(0).toUpperCase() + str.slice(1);
+        return strParts.join(" ");
     }
 
     rollNumberExists = async (rN) => {

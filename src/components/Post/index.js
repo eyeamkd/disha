@@ -15,7 +15,7 @@ import { red } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ShareIcon from "@material-ui/icons/Share";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import parse from 'html-react-parser';
 import { Link } from "react-router-dom";
 import {database} from '../../firebase/firebase.utils';
 import firebase from 'firebase/app'
@@ -122,12 +122,9 @@ export default function Post(props) {
       <Link to={`/post=${props.post.postUrl}`}>
 
         <CardHeader title={props.post.title} subheader={props.post.category} />
-      
+      </Link>
         <CardContent> 
-          <Typography variant="body2" color="textSecondary" component="p">
-            {props.post.description}
-        </Typography>
-        
+            {parse(props.post.description)}
         <Col md={4}>
           <Link to={`/id=${props.post.authorRollNumber}`}>
             <Typography variant="body2" color="primary" component="p" className="authorWidth">
@@ -138,7 +135,8 @@ export default function Post(props) {
           
     
         </CardContent>
-      </Link>
+      
+        
 
       <CardActions disableSpacing>
         <div className={classes.verticalLine}>
@@ -181,6 +179,7 @@ export default function Post(props) {
             <SharePost url={getWebsiteUrl()}/>
           </CardContent>
       </Collapse>
+
     </Card>
 
   );
