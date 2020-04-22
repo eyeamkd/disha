@@ -124,7 +124,7 @@ export default function Post(props) {
         <CardHeader title={props.post.title} subheader={props.post.category} />
       </Link>
         <CardContent> 
-            {parse(props.post.description)}
+            <div className="link">{parse(props.post.description)}</div>
         <Col md={4}>
           <Link to={`/id=${props.post.authorRollNumber}`}>
             <Typography variant="body2" color="primary" component="p" className="authorWidth">

@@ -332,8 +332,8 @@ postData = () => {
 
 NewPost.modules = {
     toolbar: [
-      [{ 'font': [] }],
-      [{size: []}],
+      [],
+      [],
       ['bold', 'italic', 'underline', 'strike'],
       [{'list': 'ordered'}, {'list': 'bullet'}, 
        {'indent': '-1'}, {'indent': '+1'}],
