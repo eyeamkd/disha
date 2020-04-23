@@ -8,6 +8,39 @@
     margin: 10px; 
     width: 100%;
 }  
+.app {
+    margin: 20px 0.55rem 0px 0.55rem;
+    display: block;
+    border-radius: 3px;
+}
+
+.ql-container {
+    border-bottom-left-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
+    background: #fefcfc;
+}
+
+.ql-snow.ql-toolbar {
+    display: block;
+    background: #eaecec;
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+}
+
+.dspace-list {
+    max-height: 10rem;
+    overflow:auto;
+    /* width:20rem; */
+    border:1px solid darkgray;
+    padding-left: 15px;
+    border-radius: 0.3em;
+    margin-top: 10px;
+}
+
+
+  .ql-editor {
+    min-height: 18em;
+  }
 
 .form-div > * { 
     margin:10px;

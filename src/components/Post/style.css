@@ -18,6 +18,14 @@
     color: #f57f17;
 }
 
+.link a {
+    color: #ffa149;
+}
+
+.link a:hover {
+    color: #db6600;
+}
+
 a:hover {
     text-decoration: none;
 }

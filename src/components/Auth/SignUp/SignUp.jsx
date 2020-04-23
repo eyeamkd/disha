@@ -150,11 +150,19 @@ class SignUp extends React.Component {
         console.log(this.props.rollNumber)
         this.state.isAckChecked = !this.state.isAckChecked;
         this.setState({isAckChecked: this.state.isAckChecked});
-        
     };
 
-    capitalizeFirstLetter = (string) => {
-        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+    beautifyName = (str) => {
+        while(str[str.length - 1] === " ") str = str.slice(0, str.length - 1);
+        while(str[0] === " ") str = str.slice(1, str.length);
+        let strParts = str.split(" ")
+        for(let i =0; i<strParts.length; i++) {
+            strParts[i] = strParts[i].charAt(0).toUpperCase() + strParts[i].slice(1).toLowerCase();
+
+        }
+        // if(str.split(" ").length < 2)
+        //     return str.charAt(0).toUpperCase() + str.slice(1);
+        return strParts.join(" ");
     }
 
     rollNumberExists = async (rN) => {
@@ -210,7 +218,7 @@ class SignUp extends React.Component {
         else {
             this.setState({rollNumberError: false})
         }
-        const { lastName, email, year, section, department, password } = this.props;
+        const { email, year, section, department, password } = this.props;
         const { isAlumni, isAuthenticated } = this.state;
 
         if (this.state.isAckChecked 
@@ -228,7 +236,9 @@ class SignUp extends React.Component {
                 this.setState({isSignup : true}, () => this.setState({signupErrorMessage: ''}));
                 try {
                     const information = await auth.createUserWithEmailAndPassword(email, password)
-                    let firstName = this.capitalizeFirstLetter(this.props.firstName)
+                    let firstName = this.beautifyName(this.props.firstName)
+                    let lastName = this.beautifyName(this.props.lastName)
+                    
                     var likedPosts = [];
                     var dspaces = [];
                     var rollNumber = this.props.rollNumber.toLowerCase()

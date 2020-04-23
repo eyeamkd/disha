@@ -38,7 +38,6 @@ export class UserCommunity extends Component {
           snapshot.forEach(doc => {
             //console.log(doc.id, '=>', doc.data().title);
               users.push(doc.data())
-              console.log('doc.data()', doc.data())
           });
           
           this.setState({usersArrived: true, allUsers: users})

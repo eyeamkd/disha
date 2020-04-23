@@ -7,6 +7,7 @@ import {
     MenuItem,
     FormGroup,
     FormControlLabel,
+    FormHelperText,
     Checkbox,
     FormLabel,
     Button,
@@ -15,6 +16,8 @@ import { Row } from "react-bootstrap";
 import {database} from '../../firebase/firebase.utils';
 import "./style.css";
 import { Redirect } from "react-router-dom";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; 
 
 const postCategories = ["Internship", "Project", "Events"];
 let dspaces = [];
@@ -37,11 +40,21 @@ constructor(props){
         dataSubmittingError:'',
         dSpaces:[],
         dspaceListArrived: false,
-        userDetails: null
+        userDetails: null,
+        editorHtml: '',
+        theme: 'snow'
     }
+    this.handleChange = this.handleChange.bind(this)
 //     this.getDspaces();
 //     this.getUserDetails();
 } 
+
+handleChange (html) {
+    this.setState({
+        postDescription:html, editorHtml: html
+    })
+  	// this.setState({ editorHtml: html });
+  }
 
 componentDidMount(){  
     // console.log("CDM fired");
@@ -105,7 +118,7 @@ isFormDataValid=()=>{
     }
 }
 
-handleChange=(event)=>{  
+handleTextChange=(event)=>{  
     this.setState({
         [event.target.id]:event.target.value
     })
@@ -238,25 +251,25 @@ postData = () => {
                                 placeholder="Post Title"
                                 variant="outlined"
                                 required 
-                                onChange={this.handleChange} 
+                                onChange={this.handleTextChange} 
                                 value={this.state.postTitle || ""} 
                                 error={this.state.isPostTitleInValid} 
                                 helperText="Post Title should be minimum 10 characters"
                                 /> 
-        
-                                <TextField
-                                label="Description"
-                                id="postDescription"
-                                placeholder="Description"
-                                variant="outlined"
-                                required
-                                multiline
-                                rows="10"
-                                onChange={this.handleChange} 
-                                value={this.state.postDescription || ""} 
-                                error={this.state.isPostDescriptionInValid} 
-                                helperText="Post Description should be minimum 100 characters"
-                                /> 
+
+                                <div className="app">
+                                    <ReactQuill 
+                                        theme={this.state.theme}
+                                        onChange={this.handleChange}
+                                        value={this.state.editorHtml}
+                                        modules={NewPost.modules}
+                                        formats={NewPost.formats}
+                                        bounds={'.app'}
+                                        placeholder="Description here"
+                                    />
+                                    <FormHelperText error={false}>Post Description should be minimum 100 characters</FormHelperText> 
+                                </div>
+                                
         
                                 <TextField
                                 id="postCategory"
@@ -279,7 +292,8 @@ postData = () => {
                                     
                                 }
                                 <div className="checkbox-section">  
-                                    <FormLabel>Select D-Spaces in which you want this post to appear</FormLabel> 
+                                <FormLabel>Select D-Spaces in which you want this post to appear</FormLabel> 
+                                <div className="dspace-list">  
                                     <FormGroup>
                                         {dspaces.map(dspaceName => ( 
                                             <FormControlLabel 
@@ -293,6 +307,7 @@ postData = () => {
                                             />
                                         ))} 
                                     </FormGroup> 
+                                </div>  
                                 </div>  
         
                         </FormControl> 
@@ -314,5 +329,28 @@ postData = () => {
         
     }
 }
+
+NewPost.modules = {
+    toolbar: [
+      [],
+      [],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{'list': 'ordered'}, {'list': 'bullet'}, 
+       {'indent': '-1'}, {'indent': '+1'}],
+      ['link'],
+      ['clean']
+    ],
+    clipboard: {
+      // toggle to add extra line breaks when pasting HTML:
+      matchVisual: false,
+    }
+  }
+
+  NewPost.formats = [
+    'header', 'font', 'size',
+    'bold', 'italic', 'underline', 'strike', 'blockquote',
+    'list', 'bullet', 'indent',
+    'link', 'image', 'video'
+  ]
 
 export default NewPost;
