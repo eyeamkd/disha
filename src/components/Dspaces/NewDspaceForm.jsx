@@ -155,7 +155,7 @@ addDspace = () => {
                     <Row className="new-dspace-form">  
                         <FormControl style={{margin:10}} >   
                             <InputLabel variant="outlined" className="input-label" > 
-                                DSpace Name 
+                                D-Space Name 
                             </InputLabel>
                                 <OutlinedInput
                                     id="dSpaceTitle" 
