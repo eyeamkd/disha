@@ -62,7 +62,7 @@ export class UserDspaces extends Component {
     if (this.state.dspaces.length === 0) {
       return (
         <Container>
-          <Typography variant="h1"> Your D - spaces </Typography>{" "}
+          <Typography variant="h1"> Your D-Spaces </Typography>{" "}
           <Row
             style={{
               margin: "50px",

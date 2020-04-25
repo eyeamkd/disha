@@ -20,7 +20,7 @@
         "icon": "post_add" 
     }, 
     { 
-        "routeName":"New Dspace", 
+        "routeName":"New D-Space", 
         "endpoint":"/new-dspace", 
         "icon": "group_add" 
     },
