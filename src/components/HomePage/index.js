@@ -41,6 +41,7 @@ export default class HomePage extends React.Component{
 
     getUserData = () => {
         let currentUserId = localStorage.getItem('currentUserId')
+
         let userData = database.collection('users').doc(currentUserId);
         var a;
         a = userData.get()
@@ -48,9 +49,9 @@ export default class HomePage extends React.Component{
             if (!doc.exists) {
               console.log('No such document!');
             } else {
-              this.setState({ userInfo: doc.data() })
-              let info = JSON.parse(doc.data())
-              localStorage.setItem('currentUserInfo', info)
+                let info = JSON.stringify(doc.data())
+                localStorage.setItem('currentUserInfo', info)
+                this.setState({ userInfo: doc.data() })
 
               //console.log('Document data:', doc.data());
             }
