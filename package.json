@@ -30,6 +30,7 @@
     "reactstrap": "^8.4.1",
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
+    "simple-react-comments": "^1.1.0",
     "testcafe": "^1.8.3",
     "typeface-roboto": "0.0.75"
   },

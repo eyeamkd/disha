@@ -9,6 +9,7 @@ import 'firebase/auth';
 import { Typography, Divider, Grid, CircularProgress } from "@material-ui/core";
 import Post from '../Post';
 import {database} from '../../firebase/firebase.utils';
+import Comments from "../Comments";
 
 
 export class IndividualPost extends Component {
@@ -78,13 +79,16 @@ export class IndividualPost extends Component {
     if(this.state.postNotExists)
         return(<Redirect to="/home"/>)
     else return (
-      this.state.info && this.state.currentUserInfo ? 
-        <Post 
+      this.state.info && this.state.currentUserInfo ?  
+        <Fragment>  
+          <Post 
           post={this.state.info}
           userLiked={this.state.currentUserInfo.likedPosts.includes(this.state.info.id)}
           postedByUser={this.state.currentUserInfo.rollNumber == this.state.info.authorRollNumber}
           removePost={this.removePost}
-        />
+          /> 
+          <Comments/>
+        </Fragment>
         :
         <div style={{
               position: 'absolute', left: '50%', top: '50%',
