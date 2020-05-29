@@ -1,0 +1,6 @@
+.comment-box{ 
+    display: flex;
+    flex-direction: row;
+    max-width: 1000px;
+    margin: 10px !important;
+}
