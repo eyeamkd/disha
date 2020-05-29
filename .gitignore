@@ -7,6 +7,9 @@
 /src/firebase/firebase.config 
 /.npmrc
 
+# firebase cache
+/.firebase
+
 # testing
 /coverage
 

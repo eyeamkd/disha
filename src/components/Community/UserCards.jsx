@@ -6,27 +6,86 @@ import '../SearchPage/styles.css';
 import {database} from '../../firebase/firebase.utils';
 import { Link } from 'react-router-dom';
 import UserCard from './UserCard';
-
+import {FILTER_TYPES} from '../../shared/constants'
 const usersReference = database.collection('users');
 
 let Users = []; 
 
-let UsersConstant = [];
+let SearchUsers = [];
 
-const updateUsersArray=(value,prevUsersArray)=>{  
-    // console.log("Value is ", value);  
-    // console.log("Users Array",prevUsersArray);
-    // console.log("Update Array being fired");
-    if(value===""){ 
-        return UsersConstant;
+let FilteredUsers = [];
+
+let CompleteUsersArray = [];
+
+const updateUsersArray=(searchValue, filterValues)=>{  
+    if(!searchValue){ 
+        if(FilteredUsers)
+            return FilteredUsers;
+        else return CompleteUsersArray;
     }
     else { 
-    return UsersConstant.filter(user => {    
-        let userFullName = user.firstName+user.lastName;
-        return (userFullName.toLowerCase().includes(value.toLowerCase()) )
-    }); 
+        if(filterValues.length)
+            return FilteredUsers.filter(user => {  
+                let userFullName = user.firstName+user.lastName;
+                return (userFullName.toLowerCase().includes(searchValue.toLowerCase()))
+            }); 
+        else
+            return CompleteUsersArray.filter(user => {  
+                let userFullName = user.firstName+user.lastName;
+                return (userFullName.toLowerCase().includes(searchValue.toLowerCase()))
+            }); 
     }
 }
+
+const filterUsers = (searchValue, filterValues) => {
+    let currentUserInfo = JSON.parse(localStorage.getItem('currentUserInfo'))
+    if(!filterValues.length){ 
+        if(SearchUsers)
+            return SearchUsers;
+        else return CompleteUsersArray;
+    }
+    else { 
+        if(searchValue)
+            return SearchUsers.filter(user => {  
+                return (checkUserValid(user, currentUserInfo, filterValues))
+            });
+        else
+            return CompleteUsersArray.filter(user => {  
+                return (checkUserValid(user, currentUserInfo, filterValues))
+            }); 
+    }
+}
+
+const checkUserValid = (user, currentUserInfo, filterValues) => {
+    let isSameBatch = false
+    let isSameDepartment = false
+    let isSameClass = false
+    filterValues.forEach(value =>{
+        switch(value) {
+            case FILTER_TYPES.BATCH:
+                isSameBatch = isUserFromSameBatch(user, currentUserInfo)
+                break;
+            case FILTER_TYPES.DEPARTMENT:
+                isSameDepartment = isUserFromSameDepartment(user, currentUserInfo)
+                break;
+            case FILTER_TYPES.SECTION:
+                isSameClass = isUserFromSameClass(user, currentUserInfo)
+                break;
+        }
+    })
+    return isSameBatch || isSameDepartment || isSameClass
+}
+
+const isUserFromSameBatch = (user, currentUserInfo) => {
+    return(currentUserInfo.year === user.year)
+}
+const isUserFromSameDepartment = (user, currentUserInfo) => {
+    return(currentUserInfo.department === user.department)
+}
+const isUserFromSameClass = (user, currentUserInfo) => {
+    return(currentUserInfo.year === user.year && currentUserInfo.department === user.department && currentUserInfo.section === user.section)
+}
+
 
 export class UserCards extends Component {  
     constructor(props){  
@@ -46,23 +105,38 @@ export class UserCards extends Component {
     
     componentWillUnmount(){ 
         Users=[]; 
-        UsersConstant=[];
+        SearchUsers=[];
     }
     
     componentDidUpdate(prevProps){   
-        // console.log("pREV",prevProps);
-        if(prevProps.searchValue===""){ 
-            Users = UsersConstant;
-        } 
+        this.updateUsers(prevProps)
+    }    
+    
+    updateUsers(prevProps) {
         if(prevProps.searchValue!==this.props.searchValue){ 
-            Users = updateUsersArray(this.props.searchValue,Users); 
+            Users = updateUsersArray(this.props.searchValue, this.props.filterValues); 
+            SearchUsers = Users;
             if(Users.length === 0){ 
                 this.noUsersFound();
             }else { 
                 this.UserFound();
             }
         }
-    }     
+        if(prevProps.filterValues !== this.props.filterValues) {
+            Users = filterUsers(this.props.searchValue, this.props.filterValues)
+            FilteredUsers = Users;
+            if(Users.length === 0){ 
+                this.noUsersFound();
+            }else { 
+                this.UserFound();
+            }
+        } 
+        debugger
+        if(this.props.searchValue==="" && this.props.filterValues.length < 1){ 
+            Users = CompleteUsersArray;
+        } 
+        
+    }
 
     noUsersFound(){ 
         this.setState({ 
@@ -77,12 +151,12 @@ export class UserCards extends Component {
     }
 
     async storeUsers(){ 
-        const users = await usersReference.get()
+        await usersReference.get()
         .then(snapshot => {
             if (snapshot.empty) {
                 console.log('No matching documents.');
                 return;
-            }  
+            }
             snapshot.forEach(doc => {
                 //console.log(doc.id, '=>', doc.data().title); 
                     let userData = doc.data()
@@ -94,7 +168,9 @@ export class UserCards extends Component {
         .catch(err => {
             console.log('Error getting documents', err);
         });  
-        UsersConstant = Users;
+        SearchUsers = Users;
+        CompleteUsersArray = Users;
+        FilteredUsers = Users;
         this.setState({ usersLoaded : true });
     }
     
