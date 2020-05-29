@@ -20,16 +20,19 @@ export class IndividualPost extends Component {
     postNotExists: false
   }
 
-  getPostData(postsData, id) {
+  getPostData(postsData, id) { 
+    
     let query = postsData.where('postUrl', '==', id).get()
-    .then(snapshot => {
+    .then(snapshot => { 
+      console.log("Snapshots", snapshot);
       if (snapshot.empty) {
         // console.log('No matching documents.');
         this.setState({ postNotExists: true })
       }  
-  
-      snapshot.forEach(doc => {
-          var a = doc.data()
+      snapshot.forEach((doc) => {  
+        console.log("Doc is ",doc);
+          var a = doc.data() 
+          console.log("Doc Data is", a);
           a.id = doc.id
           this.setState({ info: a })
         });
@@ -39,24 +42,27 @@ export class IndividualPost extends Component {
     });
   }
 
-  getCurrentUserData = () => {
-    let currentUserId = localStorage.getItem('currentUserId')
-    if(currentUserId) {
-      let query = database.collection('users').doc(currentUserId).get()
-        .then(doc => {
-          if (!doc.exists) {
-            // console.log('No such document!');
-          } else {
-            this.setState({ currentUserInfo: doc.data() })
-          }
-        })
-        .catch(err => {
-          // console.log('Error getting document', err);
-        });
-    }
-    else {
-      this.setState({ currentUserInfo: {likedPosts : []} })
-    }
+  getCurrentUserData = () => { 
+    debugger;
+    let currentUserId = localStorage.getItem('currentUserId'); 
+    let currentUserInfo = JSON.parse(localStorage.getItem('currentUserInfo'));
+    // if(currentUserId) {
+    //   let query = database.collection('users').doc(currentUserId).get()
+    //     .then(doc => {
+    //       if (!doc.exists) {
+    //         console.log('No such document!');
+    //       } else {
+    //         this.setState({ currentUserInfo: this.currentUserInfo })
+    //       }
+    //     })
+    //     .catch(err => {
+    //       console.log('Error getting document', err);
+    //     });
+    // }
+    // else {
+    //   this.setState({ currentUserInfo: {likedPosts : []} })
+    // } 
+    this.setState({currentUserInfo: currentUserInfo});
         
   }
 
@@ -87,7 +93,7 @@ export class IndividualPost extends Component {
           postedByUser={this.state.currentUserInfo.rollNumber == this.state.info.authorRollNumber}
           removePost={this.removePost}
           /> 
-          <Comments/>
+          <Comments postInfo={this.state.info}/>
         </Fragment>
         :
         <div style={{
