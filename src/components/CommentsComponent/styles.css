@@ -1,4 +1,16 @@
 .comments-panel-display{ 
     display: flex; 
+    flex-direction: row; 
+    width: 1000px !important;
+} 
+
+.comment-input{ 
+    background-color: antiquewhite; 
+    border-radius: 50px; 
+    padding: 10px;
+} 
+
+.comments-component-display{ 
+    display: flex; 
     flex-direction: row;
 }
