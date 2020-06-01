@@ -10,6 +10,7 @@ import { Typography, Divider, Grid, CircularProgress } from "@material-ui/core";
 import Post from '../Post';
 import {database} from '../../firebase/firebase.utils';
 import Comments from "../Comments";
+import CommentsComponent from "../CommentsComponent";
 
 
 export class IndividualPost extends Component {
@@ -93,7 +94,7 @@ export class IndividualPost extends Component {
           postedByUser={this.state.currentUserInfo.rollNumber == this.state.info.authorRollNumber}
           removePost={this.removePost}
           /> 
-          <Comments postInfo={this.state.info}/>
+          <CommentsComponent/>
         </Fragment>
         :
         <div style={{
