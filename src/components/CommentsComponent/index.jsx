@@ -4,11 +4,17 @@ import './styles.css';
 import CommentsDisplay from './CommentsDisplay'; 
 import { connect } from 'react-redux';
 
-export class CommentsComponent extends Component {
+export class CommentsComponent extends Component { 
+    constructor(props){ 
+        super(props); 
+        this.state={ 
+            postInfo : this.props.postInfo
+        }
+    }
     render() {
         return (
             <div className="comments-components-display"> 
-                <CommentsDisplay comments={this.props.commentsState}/>
+                <CommentsDisplay comments={this.props.commentsState} postInfo={this.state.postInfo}/>
                 <CommentsPanel/>
             </div>
         )

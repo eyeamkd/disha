@@ -13,4 +13,25 @@
 .comments-component-display{ 
     display: flex; 
     flex-direction: row;
-}
+} 
+
+.comment-fragment-display{ 
+    display: flex;
+    flex-direction: column; 
+    background: floralwhite;
+    max-width: 1000 px !important;
+    width: 1000px !important;
+    padding: 10px;
+    margin: 10px;
+} 
+
+.comments-style{ 
+    margin-left: 10px;
+}  
+
+.comments-body{ 
+    margin: 15px;
+    padding: 10px;
+} 
+
+

@@ -38,13 +38,19 @@ export class CommentsPanel extends Component {
         }
     }; 
 
-    postComment(){  
+    postComment(){   
+        let dateString = new Date(); 
+
         const comment={ 
-            date: new Date(),
+            date: dateString.toLocaleDateString() ,
             comment: this.state.comment, 
-            userName: this.userInfo.firstName
+            userName: this.userInfo.firstName, 
+            rollNumber: this.userInfo.rollNumber
         }
-        this.props.onCommentPosted(comment);
+        this.props.onCommentPosted(comment); 
+        this.setState({ 
+            comment : ''
+        });
     }
     render() {
     return (
@@ -54,7 +60,8 @@ export class CommentsPanel extends Component {
                 <Input
                     variant="filled"
                     onChange={(e) => this.setState({ comment: e.target.value })}
-                    color="primary"
+                    color="primary" 
+                    value={this.state.comment}
                 />
             </FormControl>
             

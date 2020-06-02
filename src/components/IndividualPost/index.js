@@ -94,7 +94,7 @@ export class IndividualPost extends Component {
           postedByUser={this.state.currentUserInfo.rollNumber == this.state.info.authorRollNumber}
           removePost={this.removePost}
           /> 
-          <CommentsComponent/>
+          <CommentsComponent postInfo={this.state.info}/>
         </Fragment>
         :
         <div style={{
