@@ -55,8 +55,8 @@ export class CommentsDisplay extends Component {
     render() {
         if(this.state.comments.length === 0){ 
             return( 
-                <div>  
-                This post doesn't have any comments yet, be the first one to comment
+                <div className="comment-fragment-display">  
+                    <Typography>This post doesn't have any comments yet, be the first one to comment</Typography>
                 </div>
             )
         }else { 
@@ -69,7 +69,7 @@ export class CommentsDisplay extends Component {
                                 <Typography variant="caption">{commentData.date}</Typography> 
                             </div> 
                                 <Typography className="comment-style">{commentData.comment}</Typography> 
-                                <Divider style={{margin:'5px'}}/>
+                                {/* <Divider light style={{margin:'5px'}}/> */}
                         </div>
                     ))}
                 </div>

@@ -1,7 +1,6 @@
 .comments-panel-display{ 
     display: flex; 
     flex-direction: row; 
-    width: 1000px !important;
 } 
 
 .comment-input{ 
@@ -19,10 +18,8 @@
     display: flex;
     flex-direction: column; 
     background: floralwhite;
-    max-width: 1000 px !important;
-    width: 1000px !important;
     padding: 10px;
-    margin: 10px;
+    margin-bottom: 10px;
 } 
 
 .comments-style{ 

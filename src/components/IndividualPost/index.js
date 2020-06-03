@@ -9,7 +9,6 @@ import 'firebase/auth';
 import { Typography, Divider, Grid, CircularProgress } from "@material-ui/core";
 import Post from '../Post';
 import {database} from '../../firebase/firebase.utils';
-import Comments from "../Comments";
 import CommentsComponent from "../CommentsComponent";
 
 
@@ -88,13 +87,12 @@ export class IndividualPost extends Component {
     else return (
       this.state.info && this.state.currentUserInfo ?  
         <Fragment>  
-          <Post 
-          post={this.state.info}
-          userLiked={this.state.currentUserInfo.likedPosts.includes(this.state.info.id)}
-          postedByUser={this.state.currentUserInfo.rollNumber == this.state.info.authorRollNumber}
-          removePost={this.removePost}
+          <Post  
+            post={this.state.info}
+            userLiked={this.state.currentUserInfo.likedPosts.includes(this.state.info.id)}
+            postedByUser={this.state.currentUserInfo.rollNumber == this.state.info.authorRollNumber}
+            removePost={this.removePost}  
           /> 
-          <CommentsComponent postInfo={this.state.info}/>
         </Fragment>
         :
         <div style={{

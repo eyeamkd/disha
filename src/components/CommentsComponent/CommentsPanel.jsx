@@ -4,7 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import Snackbar, { SnackbarOrigin } from "@material-ui/core/Snackbar";
 import MuiAlert, { AlertProps } from "@material-ui/lab/Alert"; 
 import './styles.css'; 
-import { FormControl, InputLabel, Input } from "@material-ui/core"; 
+import { FormControl, InputLabel, Input, Card } from "@material-ui/core"; 
 import { database } from '../../firebase/firebase.utils'; 
 import { connect } from 'react-redux';  
 import { onCommentPosted } from '../../redux/comments/comments-action';
@@ -54,21 +54,23 @@ export class CommentsPanel extends Component {
     }
     render() {
     return (
-    <div className="comments-panel-display"> 
+    <Card className="comments-panel-display"> 
             <FormControl fullWidth className="comments-input" >
-                <InputLabel >Enter your Comment</InputLabel>
+                <InputLabel style={{ marginLeft:'10px' }} >Enter your Comment</InputLabel>
                 <Input
                     variant="filled"
                     onChange={(e) => this.setState({ comment: e.target.value })}
                     color="primary" 
-                    value={this.state.comment}
+                    value={this.state.comment} 
+                    disableUnderline
                 />
             </FormControl>
             
             <Button
             variant="outlined"
             color="primary"
-            onClick={this.onCommentClicked}
+            onClick={this.onCommentClicked} 
+            style={{margin:'10px'}}
             >
                 Comment
             </Button>
@@ -86,7 +88,7 @@ export class CommentsPanel extends Component {
                     {this.snackBarMessage}
                 </MuiAlert>
             </Snackbar>
-        </div>
+        </Card>
     );
 }
 }
