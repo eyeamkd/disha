@@ -210,7 +210,7 @@ export default function Post(props) {
         </CardContent>
       </Collapse> 
       
-      <Collapse in={comments} timeout="auto" unmountOnExit>
+      <Collapse in={comments} timeout="auto" unmountOnExit> 
         <CardContent>
           <CommentsComponent postInfo={props.post}/>
         </CardContent>

@@ -1,6 +1,8 @@
 .comments-panel-display{ 
     display: flex; 
-    flex-direction: row; 
+    flex-direction: row;  
+
+
 } 
 
 .comment-input{ 
@@ -29,6 +31,12 @@
 .comments-body{ 
     margin: 15px;
     padding: 10px;
+}  
+
+.comments-panel-display-inactive{ 
+    -webkit-filter: blur(5px);
+    pointer-events: none;
 } 
+
 
 

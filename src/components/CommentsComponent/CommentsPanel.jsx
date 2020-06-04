@@ -21,9 +21,18 @@ export class CommentsPanel extends Component {
         super(props);
         this.state = {
         comment: "",
-        open: false,
+        open: false, 
+        commentsPanelVisible : props.commentsPanelDisplay
         };
-    }
+    } 
+    getCurrentUserId() {
+        var currentUserId = localStorage.getItem('currentUserId');
+        if(currentUserId)
+            return true;
+        else   
+            return false;
+    } 
+
     onCommentClicked = () => {
         if (this.state.comment === "") {
         this.snackBarStyle = "error";
@@ -54,7 +63,7 @@ export class CommentsPanel extends Component {
     }
     render() {
     return (
-    <Card className="comments-panel-display"> 
+    <Card className={this.state.commentsPanelVisible? "comments-panel-display" : "comments-panel-display-inactive"}> 
             <FormControl fullWidth className="comments-input" >
                 <InputLabel style={{ marginLeft:'10px' }} >Enter your Comment</InputLabel>
                 <Input
