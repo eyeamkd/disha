@@ -33,18 +33,25 @@ export class CommentsPanel extends Component {
             return false;
     } 
 
-    onCommentClicked = () => {
-        if (this.state.comment === "") {
-        this.snackBarStyle = "error";
-        this.snackBarMessage = "Enter content bruh!!";
-        this.setState({ open: true }); 
-
-        } else {
-        this.snackBarStyle = "success";
-        this.snackBarMessage = "Succesfully Commented!";
-        this.setState({ open: true }); 
-        this.postComment();
+    onCommentClicked = () => { 
+        if(!this.state.commentsPanelVisible){ 
+            this.snackBarStyle = "error";
+            this.snackBarMessage = "You think you clever? Sign in farst-uuu";
+            this.setState({ open: true }); 
+        }else{ 
+            if (this.state.comment === "") {
+                this.snackBarStyle = "error";
+                this.snackBarMessage = "Enter content bruh!!";
+                this.setState({ open: true }); 
+        
+                } else {
+                this.snackBarStyle = "success";
+                this.snackBarMessage = "Succesfully Commented!";
+                this.setState({ open: true }); 
+                this.postComment();
+                }
         }
+        
     }; 
 
     postComment(){   
