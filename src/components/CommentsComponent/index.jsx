@@ -12,7 +12,11 @@ export class CommentsComponent extends Component {
             postInfo : this.props.postInfo, 
             commentsPanelDisplay: this.getCurrentUserId()
         }
-    } 
+    }  
+    componentDidUpdate(prevProps){ 
+        console.log("Prev Props", prevProps); 
+        console.log("Current Props", this.props);
+    }
     getCurrentUserId() {
         var currentUserId = localStorage.getItem('currentUserId');
         if(currentUserId)
@@ -25,17 +29,16 @@ export class CommentsComponent extends Component {
             <div className="comments-components-display"> 
                 <CommentsDisplay comments={this.props.commentsState} postInfo={this.state.postInfo}/>
                 <CommentsPanel commentsPanelDisplay={this.state.commentsPanelDisplay}/> 
-                { !this.state.commentsPanelDisplay 
-                    && 
-                    <Typography align="center" >Sign in to post a comment</Typography>
-                }
             </div>
         )
     }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = state => {   
+    console.log("State updated!!",state);
+    return{ 
     commentsState : state.comments.commentsState
-})
+    }
+}
 
 export default connect(mapStateToProps)(CommentsComponent);

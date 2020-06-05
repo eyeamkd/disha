@@ -6,10 +6,11 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 
-import { Typography, Divider, Grid, CircularProgress } from "@material-ui/core";
+import { Typography, Divider, Grid, CircularProgress, Card } from "@material-ui/core";
 import Post from '../Post';
 import {database} from '../../firebase/firebase.utils';
-import CommentsComponent from "../CommentsComponent";
+import CommentsComponent from "../CommentsComponent"; 
+import './styles.css';
 
 
 export class IndividualPost extends Component {
@@ -93,6 +94,9 @@ export class IndividualPost extends Component {
             postedByUser={this.state.currentUserInfo.rollNumber == this.state.info.authorRollNumber}
             removePost={this.removePost}  
           /> 
+          <Card className="comments-card-style">  
+            <CommentsComponent postInfo={this.state.info}/>
+          </Card> 
         </Fragment>
         :
         <div style={{

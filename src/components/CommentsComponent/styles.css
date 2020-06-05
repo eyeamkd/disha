@@ -8,7 +8,6 @@
 .comment-input{ 
     background-color: antiquewhite; 
     border-radius: 50px; 
-    padding: 10px;
 } 
 
 .comments-component-display{ 
@@ -21,7 +20,6 @@
     flex-direction: column; 
     background: floralwhite;
     padding: 10px;
-    margin-bottom: 10px;
 } 
 
 .comments-style{ 
@@ -36,7 +34,12 @@
 .comments-panel-display-inactive{ 
     -webkit-filter: blur(5px);
     pointer-events: none;
-} 
+}
+
+.input-comments-style{ 
+    margin-left: 10px !important;
+    margin-top: 10px !important;
+}
 
 
 

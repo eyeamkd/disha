@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Post(props) {
   const classes = useStyles();
   const [share, setShare] = useState(false); 
-  const [comments, setComments] = useState(false);
+  const [comments, setComments] = useState(true);
   const [likeToggle, setLikeToggle] = useState(props.userLiked);
   const [likeCount, setLikeCount] = useState(
     props.post.likes < 0
@@ -69,7 +69,7 @@ export default function Post(props) {
   }; 
 
   const handleCommentsClick = () => {
-    setComments(!comments);
+    setComments(true);
   }
 
   const handleClickOpen = () => {
@@ -149,7 +149,8 @@ export default function Post(props) {
               - {props.post.author}
             </Typography>
           </Link>
-        </Col>
+        </Col> 
+        {/* <CommentsComponent postInfo={props.post}/> */}
       </CardContent>
 
       <CardActions disableSpacing>
@@ -181,7 +182,6 @@ export default function Post(props) {
           onClick={handleCommentsClick}
           aria-expanded={comments}
         >
-          <MessageIcon/>
         </IconButton>
         <Typography variant="body2" color="textPrimary" component="p">
           {props.post.date}
@@ -212,7 +212,7 @@ export default function Post(props) {
       
       <Collapse in={comments} timeout="auto" unmountOnExit> 
         <CardContent>
-          <CommentsComponent postInfo={props.post}/>
+          
         </CardContent>
       </Collapse> 
 

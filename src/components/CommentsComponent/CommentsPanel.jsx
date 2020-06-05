@@ -7,15 +7,21 @@ import './styles.css';
 import { FormControl, InputLabel, Input, Card } from "@material-ui/core"; 
 import { database } from '../../firebase/firebase.utils'; 
 import { connect } from 'react-redux';  
-import { onCommentPosted } from '../../redux/comments/comments-action';
+import { onCommentPosted } from '../../redux/comments/comments-action'; 
+import { makeStyles } from '@material-ui/core/styles';
 // import Alert from '@material-ui/lab/Alert';
 
-export class CommentsPanel extends Component {
+
+
+export class CommentsPanel extends Component { 
+
     snackBarStyle = "";
     snackBarMessage = "";
     vertical = "top";
     horizontal = "center"; 
-    userInfo = JSON.parse(localStorage.getItem('currentUserInfo'));
+    userInfo = JSON.parse(localStorage.getItem('currentUserInfo')); 
+
+
     
     constructor(props) {
         super(props);
@@ -71,14 +77,15 @@ export class CommentsPanel extends Component {
     render() {
     return (
     <Card className={this.state.commentsPanelVisible? "comments-panel-display" : "comments-panel-display-inactive"}> 
-            <FormControl fullWidth className="comments-input" >
-                <InputLabel style={{ marginLeft:'10px' }} >Enter your Comment</InputLabel>
+            <FormControl classes={{root:'input-comments-style'}} fullWidth className="comments-input" >
                 <Input
                     variant="filled"
                     onChange={(e) => this.setState({ comment: e.target.value })}
                     color="primary" 
                     value={this.state.comment} 
-                    disableUnderline
+                    disableUnderline 
+                    inputProps={{ 'aria-label': 'description' }}  
+                    placeholder="Enter your comment"
                 />
             </FormControl>
             
