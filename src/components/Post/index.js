@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Post(props) {
   const classes = useStyles();
   const [share, setShare] = useState(false); 
-  const [comments, setComments] = useState(true);
+  const [comments, setComments] = useState(true); 
   const [likeToggle, setLikeToggle] = useState(props.userLiked);
   const [likeCount, setLikeCount] = useState(
     props.post.likes < 0
@@ -69,7 +69,7 @@ export default function Post(props) {
   }; 
 
   const handleCommentsClick = () => {
-    setComments(true);
+    
   }
 
   const handleClickOpen = () => {
@@ -176,13 +176,21 @@ export default function Post(props) {
           aria-expanded={share}
         >
           <ShareIcon />
-        </IconButton> 
+        </IconButton>  
+        {
+          console.log("IN INDI. POST",props.inIndividualpost) 
+        }
+        {props.inIndividualPost  
+          ? (<div></div>)
+          : ( 
         <IconButton  
           aria-label="comments"
-          onClick={handleCommentsClick}
-          aria-expanded={comments}
-        >
-        </IconButton>
+          onClick={handleCommentsClick} 
+          href={`/post=${props.post.postUrl}`}
+        >   
+            <MessageIcon />
+        </IconButton> )
+        }
         <Typography variant="body2" color="textPrimary" component="p">
           {props.post.date}
         </Typography>

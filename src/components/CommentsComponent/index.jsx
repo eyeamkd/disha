@@ -28,7 +28,7 @@ export class CommentsComponent extends Component {
         return (
             <div className="comments-components-display"> 
                 <CommentsDisplay comments={this.props.commentsState} postInfo={this.state.postInfo}/>
-                <CommentsPanel commentsPanelDisplay={this.state.commentsPanelDisplay}/> 
+                <CommentsPanel commentsPanelDisplay={this.state.commentsPanelDisplay} postInfo={this.state.postInfo}/> 
             </div>
         )
     }

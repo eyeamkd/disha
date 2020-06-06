@@ -125,7 +125,8 @@ export default class HomePage extends React.Component{
                 post={post}
                 userLiked={this.state.userInfo.likedPosts.includes(post.id)}
                 postedByUser={this.state.userInfo.rollNumber == post.authorRollNumber}
-                removePost={this.removePost}
+                removePost={this.removePost} 
+                inIndividualPost={false}
                 />
             )
         }
@@ -136,7 +137,8 @@ export default class HomePage extends React.Component{
                     post={post}
                     userLiked={this.state.userInfo.likedPosts.includes(post.id)}
                     postedByUser={this.state.userInfo.rollNumber == post.authorRollNumber}
-                    removePost={this.removePost}
+                    removePost={this.removePost} 
+                    inIndividualPost={false}
                     />
                 )
             }

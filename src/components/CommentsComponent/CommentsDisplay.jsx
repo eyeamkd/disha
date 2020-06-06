@@ -29,12 +29,6 @@ export class CommentsDisplay extends Component {
         }
     } 
 
-    componentWillUnmount(){ 
-        database.collection('posts').doc(this.state.postId).update({ 
-            comments : this.state.comments
-        })
-    }
-
     renderComments(){
         for (let index = 0; index < this.state.comments.length; index++) {
             const commentData = this.state.comments[index]; 

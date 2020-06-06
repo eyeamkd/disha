@@ -28,15 +28,25 @@ export class CommentsPanel extends Component {
         this.state = {
         comment: "",
         open: false, 
-        commentsPanelVisible : props.commentsPanelDisplay
+        commentsPanelVisible : props.commentsPanelDisplay,
+        postId: props.postInfo.id, 
+        initialComments:this.loadInitialComments(),
         };
-    } 
+    }  
+
     getCurrentUserId() {
         var currentUserId = localStorage.getItem('currentUserId');
         if(currentUserId)
             return true;
         else   
             return false;
+    } 
+    
+    loadInitialComments(){ 
+        if(this.props.postInfo.comments){ 
+            return this.props.postInfo.comments; 
+        }
+        else return [];
     } 
 
     onCommentClicked = () => { 
@@ -68,11 +78,15 @@ export class CommentsPanel extends Component {
             comment: this.state.comment, 
             userName: this.userInfo.firstName, 
             rollNumber: this.userInfo.rollNumber
-        }
+        } 
+        database.collection('posts').doc(this.state.postId).update({ 
+            comments : [...this.state.initialComments,comment]
+        }) 
         this.props.onCommentPosted(comment); 
         this.setState({ 
             comment : ''
-        });
+        }); 
+        
     }
     render() {
     return (

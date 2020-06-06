@@ -92,7 +92,8 @@ export class IndividualPost extends Component {
             post={this.state.info}
             userLiked={this.state.currentUserInfo.likedPosts.includes(this.state.info.id)}
             postedByUser={this.state.currentUserInfo.rollNumber == this.state.info.authorRollNumber}
-            removePost={this.removePost}  
+            removePost={this.removePost}   
+            inIndividualpost={true}
           /> 
           <Card className="comments-card-style">  
             <CommentsComponent postInfo={this.state.info}/>
