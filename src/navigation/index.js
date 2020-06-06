@@ -20,6 +20,7 @@ import { Link } from "react-router-dom";
 import OtherUser from '../components/OtherUserProfile';
 import IndividualPost from '../components/IndividualPost';
 import UserDspaces from '../components/UserDspaces';
+import EditProfile from '../components/EditProfile';
 
 
 class Navigation extends React.Component {
@@ -50,6 +51,7 @@ class Navigation extends React.Component {
                 <Route path="/post-submitted" render={(props) => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <PostSubmitted {...props}/>}/>    
                 <Route path="/new-dspace" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <NewDspaceForm/>}/>    
                 <Route path="/d-space-submitted" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <DspaceSubmitted/>}/>   
+                <Route path="/edit-profile" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <EditProfile/>}/>   
                 <Route path="/id=:id" exact component={ !this.getCurrentUserId() ? SignIn : OtherUser }/>
                 <Route path="/post=:post" component={ IndividualPost } />
                 <Route path="*"><NoMatch /></Route>
