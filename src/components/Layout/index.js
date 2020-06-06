@@ -192,6 +192,7 @@ function Layout(props) {
               to={menuItem.endpoint}
               button
               key={menuItem.routeName}
+              onClick={handleDrawerClose}
             >
               <Icon>{menuItem.icon}</Icon>
               <ListItemText
