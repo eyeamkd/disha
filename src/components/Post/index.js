@@ -55,6 +55,7 @@ export default function Post(props) {
   const classes = useStyles();
   const [share, setShare] = useState(false); 
   const [comments, setComments] = useState(true); 
+  const [displayComments, setdisplayComments] = useState(!props.inIndividualpost)
   const [likeToggle, setLikeToggle] = useState(props.userLiked);
   const [likeCount, setLikeCount] = useState(
     props.post.likes < 0
@@ -130,9 +131,9 @@ export default function Post(props) {
     websiteUrl += "/post=" + props.post.postUrl;
     return websiteUrl;
   };
-
-  return (
-    <Card className={classes.root}>
+  if(displayComments){
+    return ( 
+      <Card className={classes.root}>
       <Link to={`/post=${props.post.postUrl}`}>
         <CardHeader title={props.post.title} subheader={props.post.category} />
       </Link>
@@ -152,7 +153,7 @@ export default function Post(props) {
         </Col> 
         {/* <CommentsComponent postInfo={props.post}/> */}
       </CardContent>
-
+      {console.log("State", displayComments)}
       <CardActions disableSpacing>
         <div className={classes.verticalLine}>
           {localStorage.getItem("currentUserId") ? (
@@ -177,20 +178,31 @@ export default function Post(props) {
         >
           <ShareIcon />
         </IconButton>  
-        {
-          console.log("IN INDI. POST",props.inIndividualpost) 
-        }
-        {props.inIndividualPost  
-          ? (<div></div>)
-          : ( 
         <IconButton  
-          aria-label="comments"
-          onClick={handleCommentsClick} 
-          href={`/post=${props.post.postUrl}`}
-        >   
-            <MessageIcon />
-        </IconButton> )
-        }
+                  aria-label="comments"
+                  onClick={handleCommentsClick} 
+                  href={`/post=${props.post.postUrl}`}
+                >   
+                <MessageIcon />
+        </IconButton>   
+        {/* <div class="message-box">  
+          { 
+            displayComments
+            ?  
+            (<div>Shoudn't be here </div>)
+            :  
+            ( <div>  
+              <IconButton  
+                aria-label="comments"
+                onClick={handleCommentsClick} 
+                href={`/post=${props.post.postUrl}`}
+              >   
+              <MessageIcon />
+            </IconButton>  
+            </div> 
+          )
+          }
+        </div>  */}
         <Typography variant="body2" color="textPrimary" component="p">
           {props.post.date}
         </Typography>
@@ -226,4 +238,106 @@ export default function Post(props) {
 
     </Card>
   );
+  }else { 
+    return (
+      <Card className={classes.root}>
+        <Link to={`/post=${props.post.postUrl}`}>
+          <CardHeader title={props.post.title} subheader={props.post.category} />
+        </Link>
+        <CardContent>
+          <div className="link">{parse(props.post.description)}</div>
+          <Col md={4}>
+            <Link to={`/id=${props.post.authorRollNumber}`}>
+              <Typography
+                variant="body2"
+                color="primary"
+                component="p"
+                className="authorWidth"
+              >
+                - {props.post.author}
+              </Typography>
+            </Link>
+          </Col> 
+          {/* <CommentsComponent postInfo={props.post}/> */}
+        </CardContent>
+        {console.log("State", displayComments)}
+        <CardActions disableSpacing>
+          <div className={classes.verticalLine}>
+            {localStorage.getItem("currentUserId") ? (
+              <div>
+                <IconButton
+                  aria-label="add to favorites"
+                  color={likeToggle ? "primary" : ""}
+                  onClick={handleLikeClick}
+                >
+                  <FavoriteIcon />
+                </IconButton>
+                {likeCount}
+              </div>
+            ) : (
+              <div></div>
+            )}
+          </div>
+          <IconButton
+            aria-label="share"
+            onClick={handleShareClick}
+            aria-expanded={share}
+          >
+            <ShareIcon />
+          </IconButton>  
+          {/* <div class="message-box">  
+            { 
+              displayComments
+              ?  
+              (<div>Shoudn't be here </div>)
+              :  
+              ( <div>  
+                <IconButton  
+                  aria-label="comments"
+                  onClick={handleCommentsClick} 
+                  href={`/post=${props.post.postUrl}`}
+                >   
+                <MessageIcon />
+              </IconButton>  
+              </div> 
+            )
+            }
+          </div>  */}
+          <Typography variant="body2" color="textPrimary" component="p">
+            {props.post.date}
+          </Typography>
+          {props.postedByUser ? (
+            <IconButton
+              aria-label="share"
+              onClick={handleClickOpen}
+              aria-expanded={share}
+              className={classes.expand}
+            >
+              <DeleteIcon />
+            </IconButton>
+          ) : (
+            <div></div>
+          )}
+          <DialogBox
+            open={open}
+            handleDialogClose={handleDialogClose}
+            handlePostDelete={handlePostDelete}
+          />
+        </CardActions>
+        <Collapse in={share} timeout="auto" unmountOnExit>
+          <CardContent>
+            <SharePost url={getWebsiteUrl()} />
+          </CardContent>
+        </Collapse> 
+        
+        <Collapse in={comments} timeout="auto" unmountOnExit> 
+          <CardContent>
+            
+          </CardContent>
+        </Collapse> 
+  
+      </Card>
+    );
+  }
+
 }
