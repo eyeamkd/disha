@@ -17,7 +17,7 @@ export class CommentsPanel extends Component {
 
     snackBarStyle = "";
     snackBarMessage = "";
-    vertical = "top";
+    vertical = "bottom";
     horizontal = "center"; 
     userInfo = JSON.parse(localStorage.getItem('currentUserInfo')); 
 
@@ -52,12 +52,12 @@ export class CommentsPanel extends Component {
     onCommentClicked = () => { 
         if(!this.state.commentsPanelVisible){ 
             this.snackBarStyle = "error";
-            this.snackBarMessage = "You think you clever? Sign in farst-uuu";
+            this.snackBarMessage = "You think you're clever? Sign in farst-uuu";
             this.setState({ open: true }); 
         }else{ 
             if (this.state.comment === "") {
                 this.snackBarStyle = "error";
-                this.snackBarMessage = "Enter content bruh!!";
+                this.snackBarMessage = "Enter some content!";
                 this.setState({ open: true }); 
         
                 } else {
