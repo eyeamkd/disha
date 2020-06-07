@@ -13,7 +13,8 @@ import FormLabel from '@material-ui/core/FormLabel';
 import Container from '@material-ui/core/Container';
 import { connect } from 'react-redux';
 import { setIsNewUser } from '../../redux/signup/isNewUser-actions';
-import Logo from '../Logo/Logo';
+import Logo from '../Logo/Logo'; 
+import  {firebaseAdmin} from '../../firebase/firebase.utils';
 
 import { 
     FormControl, 
@@ -24,21 +25,27 @@ import {
 
 import '../Auth/SignIn/SignIn.css';
 import { auth, createUserProfileDocument } from '../../firebase/firebase.utils';
+import AdminDashboard from './AdminDashboard';
 
 
 class AdminSignIn extends React.Component {
 
-    state = {
-        isEmail: false,
-        isPassword: false,
-        email: '',
-        password: '',
-        isSignin: false,
-        errorMessage:'',
-        signinErrorMessage: 'Please fill all the fields',
-        labelWidth: 0,
-        inputLabel: null
-    };
+    constructor(props){ 
+        super(props);  
+        this.state  = {
+            isEmail: false,
+            isPassword: false,
+            email: '',
+            password: '',
+            isSignin: false,
+            errorMessage:'',
+            signinErrorMessage: 'Please fill all the fields',
+            labelWidth: 0,
+            inputLabel: null
+        }; 
+    
+        
+    }
 
     handleEmailChange = event => {
         let isEmailProper = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(event.target.value);
@@ -46,7 +53,6 @@ class AdminSignIn extends React.Component {
         this.setState({email: event.target.value});           
     }
 
-   
 
     handlePasswordChange = event => {
         this.setState({password: event.target.value});
@@ -55,17 +61,15 @@ class AdminSignIn extends React.Component {
 
     handleSigninClick = async () => {
         this.setState({isSignin : true}, () => this.setState({signinErrorMessage: ''}));
-        const { email, password } = this.state;
+        const { email, password } = this.state; 
         if (!this.state.isEmail && !this.state.isPassword) {
             try {
                 var signedIn = await auth.signInWithEmailAndPassword(email, password);
-                //this.props.setIsNewUser(signedIn.additionalUserInfo.isNewUser);
-                //console.log("signedIn.additionalUserInfo.isNewUser", signedIn)
-
                 this.setState({
                     email: '',
                     password: ''
-                });
+                }); 
+                return <AdminDashboard/>;
             } catch(error) {
                 if(error.code === "auth/user-not-found")
                     this.setState({errorMessage: "Incorrect e-mail ID or password. Please check!", isSignin:false})
@@ -80,7 +84,8 @@ class AdminSignIn extends React.Component {
             this.setState({isSignin : false}, () => this.setState({signinErrorMessage: '* Please fill all the fields'}));
             return;
         }
-    }
+    } 
+
 
     render() { 
         return (
@@ -97,7 +102,7 @@ class AdminSignIn extends React.Component {
                     <Grid item xs={12}>
                     <FormControl fullWidth>   
                             <InputLabel variant="outlined" className="input-label" > 
-                                Email Address
+                                Enter Admin Email 
                             </InputLabel>
                             <OutlinedInput
                                 id="email"
@@ -117,7 +122,7 @@ class AdminSignIn extends React.Component {
                     <Grid item xs={12}>
                     <FormControl fullWidth>   
                             <InputLabel variant="outlined" className="input-label" > 
-                                Password
+                                Enter Admin Password
                             </InputLabel>
                             <OutlinedInput
                                 id="password"
