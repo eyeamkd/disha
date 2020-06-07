@@ -4,6 +4,7 @@ import './styles.css';
 import CommentsDisplay from './CommentsDisplay'; 
 import { connect } from 'react-redux';
 import { Typography } from '@material-ui/core';
+import { Link } from "react-router-dom";
 
 export class CommentsComponent extends Component { 
     constructor(props){ 
@@ -31,7 +32,16 @@ export class CommentsComponent extends Component {
                 <CommentsPanel commentsPanelDisplay={this.state.commentsPanelDisplay} postInfo={this.state.postInfo}/>  
                 { !this.state.commentsPanelDisplay 
                     && 
-                    <Typography align="center" >Sign in to post a comment</Typography>
+                    <div>
+                        <Link to="/SignIn">
+                            <Typography align="center" color="primary" >
+                                Sign in 
+                            </Typography>
+                        </Link>
+                        <Typography align="center">
+                            to post a comment
+                        </Typography>
+                    </div>
                 }
             </div>
         )
