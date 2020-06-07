@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Post(props) {
   const classes = useStyles();
   const [share, setShare] = useState(false); 
-  const [comments, setComments] = useState(true); 
+  const [comments, setComments] = useState(false); 
   const [displayComments, setdisplayComments] = useState(!props.inIndividualpost)
   const [likeToggle, setLikeToggle] = useState(props.userLiked);
   const [likeCount, setLikeCount] = useState(
@@ -328,14 +328,7 @@ export default function Post(props) {
           <CardContent>
             <SharePost url={getWebsiteUrl()} />
           </CardContent>
-        </Collapse> 
-        
-        <Collapse in={comments} timeout="auto" unmountOnExit> 
-          <CardContent>
-            
-          </CardContent>
-        </Collapse> 
-  
+        </Collapse>  
       </Card>
     );
   }
