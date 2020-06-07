@@ -54,7 +54,7 @@ export class IndividualPost extends Component {
           if (!doc.exists) {
             console.log('No such document!');
           } else {
-            this.setState({ currentUserInfo: this.currentUserInfo })
+            this.setState({ currentUserInfo: doc.data() })
           }
         })
         .catch(err => {
