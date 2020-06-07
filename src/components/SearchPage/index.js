@@ -30,8 +30,9 @@ export class SearchPage extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-    searchValue : state.dSpaceSearch.searchValue
-})
+const mapStateToProps = state => { 
+    console.log("State Updated!!", state);
+   return {searchValue : state.dSpaceSearch.searchValue}
+}
 
 export default connect(mapStateToProps)(SearchPage);

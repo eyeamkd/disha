@@ -10,7 +10,8 @@ import departmentReducer from './signup/department-reducer';
 import passwordReducer from './signup/password-reducer';
 import isNewUserReducer from './signup/isNewUser-reducer';
 import userReducer from './user/user-reducer'; 
-import dspaceSearchReducer from './dSpaceSearch/searchBar-reducer';
+import dspaceSearchReducer from './dSpaceSearch/searchBar-reducer'; 
+import commentsReducer from './comments/comments-reducer';
 
 export default combineReducers ({
     firstName: firstNameReducer,
@@ -23,5 +24,6 @@ export default combineReducers ({
     password: passwordReducer,
     isNewUser: isNewUserReducer,
     user: userReducer, 
-    dSpaceSearch :dspaceSearchReducer 
+    dSpaceSearch: dspaceSearchReducer,
+    comments: commentsReducer
 });
