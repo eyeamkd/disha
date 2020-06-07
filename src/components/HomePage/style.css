@@ -4,3 +4,13 @@
     justify-content: center; 
     align-items: center;
 }
+
+.fab-icon { 
+   position: fixed !important;
+   right: 50px;
+   bottom: 50px;
+}
+
+.add-icon {
+    color: black !important;
+}
