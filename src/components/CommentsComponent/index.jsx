@@ -28,7 +28,11 @@ export class CommentsComponent extends Component {
         return (
             <div className="comments-components-display"> 
                 <CommentsDisplay comments={this.props.commentsState} postInfo={this.state.postInfo}/>
-                <CommentsPanel commentsPanelDisplay={this.state.commentsPanelDisplay} postInfo={this.state.postInfo}/> 
+                <CommentsPanel commentsPanelDisplay={this.state.commentsPanelDisplay} postInfo={this.state.postInfo}/>  
+                { !this.state.commentsPanelDisplay 
+                    && 
+                    <Typography align="center" >Sign in to post a comment</Typography>
+                }
             </div>
         )
     }

@@ -13,14 +13,16 @@ import CommentsComponent from "../CommentsComponent";
 import './styles.css';
 
 
-export class IndividualPost extends Component {
-
-  state = {
-    info: null,
-    currentUserInfo: null,
-    postNotExists: false
-  }
-
+export class IndividualPost extends Component { 
+  
+    constructor(props) {
+      super(props); 
+      this.state = {
+        info: null,
+        currentUserInfo: null,
+        postNotExists: false
+      }
+    }
   getPostData(postsData, id) { 
     
     let query = postsData.where('postUrl', '==', id).get()
@@ -46,42 +48,36 @@ export class IndividualPost extends Component {
   getCurrentUserData = () => { 
     debugger;
     let currentUserId = localStorage.getItem('currentUserId'); 
-    let currentUserInfo = JSON.parse(localStorage.getItem('currentUserInfo'));
-    // if(currentUserId) {
-    //   let query = database.collection('users').doc(currentUserId).get()
-    //     .then(doc => {
-    //       if (!doc.exists) {
-    //         console.log('No such document!');
-    //       } else {
-    //         this.setState({ currentUserInfo: this.currentUserInfo })
-    //       }
-    //     })
-    //     .catch(err => {
-    //       console.log('Error getting document', err);
-    //     });
-    // }
-    // else {
-    //   this.setState({ currentUserInfo: {likedPosts : []} })
-    // } 
-    this.setState({currentUserInfo: currentUserInfo});
-        
+    if(currentUserId) {
+      let query = database.collection('users').doc(currentUserId).get()
+        .then(doc => {
+          if (!doc.exists) {
+            console.log('No such document!');
+          } else {
+            this.setState({ currentUserInfo: this.currentUserInfo })
+          }
+        })
+        .catch(err => {
+          console.log('Error getting document', err);
+        });
+    }
+    else {
+      this.setState({ currentUserInfo: {likedPosts : []} })
+    } 
   }
 
-
-  constructor(props) {
-    super(props);
-  }
 
   componentDidMount () {
     const { post } = this.props.match.params
     let postsData = database.collection('posts');
     this.getPostData(postsData, post); 
-    this.getCurrentUserData();
+    this.getCurrentUserData(); 
   }
 
 
   
-  render() {
+  render() { 
+    console.log("STATE", this.state);
     // return(<h1>Hello</h1>)
     if(this.state.postNotExists)
         return(<Redirect to="/home"/>)
