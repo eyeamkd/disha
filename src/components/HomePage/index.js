@@ -1,6 +1,6 @@
 import React from 'react' ;  
-import InfiniteScroll from "react-infinite-scroll-component";
-
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 import Post from '../Post';
 import './style.css';
 
@@ -9,11 +9,9 @@ import Box from '@material-ui/core/Box';
 import SortIcon from '@material-ui/icons/Sort';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import EditIcon from '@material-ui/icons/Edit';
 import MenuItem from '@material-ui/core/MenuItem';
 import {database} from '../../firebase/firebase.utils';
+import Link from '@material-ui/core/Link';
 
 
 import postData from './postsdata.json';
@@ -125,7 +123,8 @@ export default class HomePage extends React.Component{
                 post={post}
                 userLiked={this.state.userInfo.likedPosts.includes(post.id)}
                 postedByUser={this.state.userInfo.rollNumber == post.authorRollNumber}
-                removePost={this.removePost}
+                removePost={this.removePost} 
+                inIndividualPost={false}
                 />
             )
         }
@@ -136,7 +135,8 @@ export default class HomePage extends React.Component{
                     post={post}
                     userLiked={this.state.userInfo.likedPosts.includes(post.id)}
                     postedByUser={this.state.userInfo.rollNumber == post.authorRollNumber}
-                    removePost={this.removePost}
+                    removePost={this.removePost} 
+                    inIndividualPost={false}
                     />
                 )
             }
@@ -180,7 +180,11 @@ export default class HomePage extends React.Component{
                 <MenuItem onClick={() => this.handleClose("Project")}>Project</MenuItem>
                 <MenuItem onClick={() => this.handleClose("None")}>None</MenuItem>
                 </Menu>
-
+                <Fab color="primary" aria-label="add" className="fab-icon">
+                    <Link href="/new-post" variant="body2">
+                        <AddIcon className="add-icon"/>
+                    </Link>
+                </Fab>
                 {
                     this.state.allPosts.map(post => {
                         return this.filterPosts(post)
@@ -188,9 +192,6 @@ export default class HomePage extends React.Component{
                 }
                 
             </div>
-            
-            
-            
         );
     }
 }
