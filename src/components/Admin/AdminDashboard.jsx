@@ -22,13 +22,15 @@ export class AdminDashboard extends Component {
     this.getUsersData();
   } 
 
-  getUsersData(){  
+  getUsersData(){   
+    let usersDataArray = []
     database.collection('users').where("isAuthenticated","==",false)  
     .get() 
     .then( (querySnapshot)=>{ 
       querySnapshot.forEach( (doc)=>{ 
-        this.setState({ usersData : [...this.state.usersData, doc.data()], dataLoaded: true })
-      } )
+        usersDataArray.push(doc.data())
+      }) 
+      this.setState({ usersData : usersDataArray, dataLoaded: true })
     }) 
     .catch((err)=> { 
       console.log("Error in getting not verified users");
@@ -60,7 +62,7 @@ export class AdminDashboard extends Component {
     this.setState({ usersData: usersArray }) 
     this.snackBarStyle = "error";
     this.snackBarMessage = `${userData.firstName} Rejected!`;
-    this.setState({ open: true }); 
+    this.setState({ open: true });
   }
 
   render() { 
@@ -98,7 +100,7 @@ export class AdminDashboard extends Component {
             {
               icon: "clear",
               tooltip: "Reject",
-              onClick: (event, rowData) => this.state.userRejected(rowData,this.state.usersData),
+              onClick: (event, rowData) => this.userRejected(rowData,this.state.usersData),
               color: "primary",
               iconProps: { style: { color: "red" } }
             }
