@@ -32,6 +32,7 @@ import { setUser } from './../../redux/user/user-actions';
 
 const drawerWidth = 240;
 
+
 const useStyles = makeStyles(theme => ({
   root: {
     display: "flex"
@@ -92,7 +93,14 @@ function Layout(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+ 
+  const menuDisplayHandle=()=>{  
+    console.log("Props is ", props); 
+    if(props.userInfo!== null)
+    return !props.userInfo.isAdmin; 
+    else 
+    return false;
+  }
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -109,7 +117,9 @@ function Layout(props) {
 
   const changeCurrentUser = () => {
     props.setUser(null)
-    localStorage.removeItem('currentUserId')
+    // localStorage.clear(); 
+    localStorage.removeItem('currentUserId'); 
+    localStorage.removeItem('currentUserInfo');
     // console.log(props.user)
   };
 
@@ -122,9 +132,12 @@ function Layout(props) {
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open
         })}
-      >
+      > 
+      {console.log("User info is ", menuDisplayHandle())}
         <Toolbar>
-          <IconButton
+          { menuDisplayHandle() 
+            &&
+            <IconButton
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
@@ -132,7 +145,8 @@ function Layout(props) {
             className={clsx(classes.menuButton, open && classes.hide)}
           >
             <MenuIcon />
-          </IconButton>
+          </IconButton> 
+          }
           <Box flexGrow={1}>
           <Typography variant="h6" noWrap>
           <Link to="/home">

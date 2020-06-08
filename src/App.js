@@ -20,7 +20,7 @@ export class App extends Component {
   unsubscribeFromAuth = null
 
   setUserId() {
-    localStorage.setItem('currentUserId', this.state.currentUser.id)
+    localStorage.setItem('currentUserId', this.state.currentUser.id) 
     this.props.setUser(this.state.currentUser.id)
 
   }
@@ -76,10 +76,14 @@ export class App extends Component {
 
 
   render() {
-    var currentUserId = localStorage.getItem('currentUserId')
+    var currentUserId = localStorage.getItem('currentUserId'); 
 
     return (
-      <Layout currentUser={this.props.isNewUser ? null : currentUserId} changeCurrentUser>  
+      <Layout  
+        currentUser={this.props.isNewUser ? null : currentUserId} 
+        changeCurrentUser 
+        userInfo= {this.state.currentUser}  
+        >
           <Navigation/>
       </Layout>
     )
