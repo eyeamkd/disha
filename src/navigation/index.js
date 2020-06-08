@@ -20,21 +20,51 @@ import { Link } from "react-router-dom";
 import OtherUser from '../components/OtherUserProfile';
 import IndividualPost from '../components/IndividualPost';
 import UserDspaces from '../components/UserDspaces'; 
-import Admin from '../components/Admin';
+import AdminDashboard from '../components/Admin/AdminDashboard';
 
 
 class Navigation extends React.Component {
+    constructor(props){ 
+       super(props); 
+       this.state={ 
+         userInfo: null
+       }
+    } 
+
+    componentWillReceiveProps(){ 
+        this.setState({userInfo:this.props.userInfo})
+    } 
 
     getCurrentUserId() {
-        var currentUserId = localStorage.getItem('currentUserId');
+        let currentUserId = localStorage.getItem('currentUserId');
         if(currentUserId)
             return true;
         else   
             return false;
-    }
-    render() {
+    } 
+    isAdminCheck(){  
+        //returns true if admin
+        console.log("state is ", this.state);  
+        console.log("props are ", this.props);  
+        if(this.state.userInfo !== null)
+        return this.state.userInfo.isAdmin; 
+        else 
+        return false;
+        
+    } 
+    render() {  
+        console.log("Is Admin Check is ", this.isAdminCheck());
+        if(this.isAdminCheck()){ 
+                return( 
+                    <Switch>
+                        <Route path="/" exact component={ AdminDashboard }/>  
+                        <Route path="/SignIn" exact render={() => this.getCurrentUserId() ? (<Redirect to="/"/>) : <SignIn/>}/> 
+                        <Route path="*"><NoMatch /></Route>
+                    </Switch>
+                )
+        }else{ 
         return (
-            <Switch> 
+            <Switch>  
                 <Route path="/" exact render={() => <LandingPage/>}/>
                 <Route path="/home" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <HomePage/>}/>
                 <Route path="/SignUp" exact render={() => this.getCurrentUserId() ? (<Redirect to="/home"/>) : <SignUp/>}/>     
@@ -53,10 +83,10 @@ class Navigation extends React.Component {
                 <Route path="/d-space-submitted" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <DspaceSubmitted/>}/>   
                 <Route path="/id=:id" exact component={ !this.getCurrentUserId() ? SignIn : OtherUser }/>
                 <Route path="/post=:post" component={ IndividualPost } /> 
-                <Route path="/admin" component={ Admin } />
                 <Route path="*"><NoMatch /></Route>
             </Switch>
-        )
+        ) 
+    }
     }
 }
 

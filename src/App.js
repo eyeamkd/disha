@@ -84,10 +84,11 @@ export class App extends Component {
         changeCurrentUser 
         userInfo= {this.state.currentUser}  
         >
-          <Navigation/>
+          <Navigation userInfo={this.state.currentUser}/>
       </Layout>
     )
-  }
+  } 
+
 }   
 
 const mapStateToProps = state => ({

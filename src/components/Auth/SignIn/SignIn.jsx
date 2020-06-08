@@ -46,7 +46,6 @@ class SignIn extends React.Component {
         this.setState({email: event.target.value});           
     }
 
-   
 
     handlePasswordChange = event => {
         this.setState({password: event.target.value});
@@ -59,9 +58,6 @@ class SignIn extends React.Component {
         if (!this.state.isEmail && !this.state.isPassword) {
             try {
                 var signedIn = await auth.signInWithEmailAndPassword(email, password);
-                //this.props.setIsNewUser(signedIn.additionalUserInfo.isNewUser);
-                //console.log("signedIn.additionalUserInfo.isNewUser", signedIn)
-
                 this.setState({
                     email: '',
                     password: ''
