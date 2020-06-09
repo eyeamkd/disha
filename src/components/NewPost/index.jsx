@@ -42,7 +42,8 @@ constructor(props){
         dspaceListArrived: false,
         userDetails: null,
         editorHtml: '',
-        theme: 'snow'
+        theme: 'snow', 
+        isAuthenticated:false
     }
     this.handleChange = this.handleChange.bind(this)
 //     this.getDspaces();
@@ -54,7 +55,7 @@ handleChange (html) {
         postDescription:html, editorHtml: html
     })
   	// this.setState({ editorHtml: html });
-  }
+}
 
 componentDidMount(){  
     // console.log("CDM fired");
@@ -152,8 +153,9 @@ getUserDetails = () => {
     .then(doc => {
         if (!doc.exists) {
         // console.log('No such document!');
-        } else {
-           this.setState({userDetails: doc.data()})
+        } else { 
+            
+           this.setState({userDetails: doc.data(), isAuthenticated : !!doc.data().isAuthenticated })
         }
     })
     .catch(err => {
@@ -240,8 +242,8 @@ postData = () => {
             )
         }
         else{ 
-            return ( 
-                <Container> 
+            return (  
+                <Container className={this.state.isAuthenticated? '' : 'display-inactive'}> 
                     <Typography variant="h1">New Post</Typography>
                     <Row className="form-div"> 
                         <FormControl > 

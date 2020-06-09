@@ -36,6 +36,7 @@ const dSpaceCategories = [
 
 export class NewDspaceForm extends Component {   
 
+    
 constructor(props){ 
         super(props); 
         this.state={ 
@@ -49,8 +50,10 @@ constructor(props){
             currentTag:'', 
             onDspaceAdding:false, 
             dSpaceCreatedSuccessfully:false, 
-            dSpaceAddingError:'', 
-        }
+            dSpaceAddingError:'',  
+            isAuthenticated: !!localStorage.getItem('currentUserInfo').isAuthenticated
+        } 
+        
 } 
     
 isDspaceDataValid = () => {  
@@ -78,7 +81,9 @@ isDspaceDataValid = () => {
             }); 
             return true;
         }
-}
+} 
+
+
 
 handleChange = (event) => {
         this.setState({
@@ -150,7 +155,7 @@ addDspace = () => {
                     }} />);
         }else{  
             return (
-                <Container> 
+                <Container className={this.state.isAuthenticated? '' : 'display-inactive'}> 
                     <Typography variant="h1">New D-Space</Typography>  
                     <Row className="new-dspace-form">  
                         <FormControl style={{margin:10}} >   
