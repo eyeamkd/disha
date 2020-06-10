@@ -46,7 +46,7 @@ constructor(props){
         userDetails: null,
         editorHtml: '',
         theme: 'snow', 
-        isAuthenticated:!! localStorage.getItem('currentUserInfo').isAuthenticated
+        isAuthenticated: !!localStorage.getItem('currentUserInfo').isAuthenticated
     }
     this.handleChange = this.handleChange.bind(this)
 //     this.getDspaces();
@@ -326,8 +326,9 @@ postData = () => {
                     </Button> 
                     } 
                     
-                        <Typography color="error">{this.state.dataSubmittingError}</Typography>
-                        <Dialog 
+                    <Typography color="error">{this.state.dataSubmittingError}</Typography>
+                    
+                    <Dialog 
                         open={!this.state.isAuthenticated} 
                         onClose={this.handleModalClose} 
                         
@@ -335,13 +336,12 @@ postData = () => {
                     <DialogTitle>Account Approval Pending</DialogTitle>
                     <Card className="modal-card">
                         <CardContent>
-                            <Typography> 
-                            Your Account is yet to be approved by the Admin  
-                            </Typography>
+                            <Typography variant="body1">Your Account is yet to be approved by the Admin</Typography> 
                             <Typography variant="caption">For more information regarding your account contact admin@disha.website</Typography>
                         </CardContent>
                     </Card> 
-                    </Dialog>
+                    </Dialog> 
+
                 </Container>
                 );
         }

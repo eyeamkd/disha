@@ -88,6 +88,10 @@ constructor(props){
             isAuthenticated: !!localStorage.getItem('currentUserInfo').isAuthenticated
         }  
 } 
+
+componentDidMount(){ 
+    this.getUserDetails();
+}
     
 isDspaceDataValid = () => {  
         if(this.state.dSpaceTitle.length<2){ 
@@ -124,14 +128,22 @@ handleChange = (event) => {
         })
 }  
 
-body= () => (
-    <div style={getModalStyle} className={this.classes.paper}>
-      <h2 id="simple-modal-title">Text in a modal</h2>
-      <p id="simple-modal-description">
-        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-      </p>
-    </div>
-);
+getUserDetails = () => {
+    const currentUserId = localStorage.getItem('currentUserId');
+    let userData = database.collection('users').doc(currentUserId);
+    let getDoc = userData.get()
+    .then(doc => {
+        if (!doc.exists) {
+        // console.log('No such document!');
+        } else { 
+            
+            this.setState({userDetails: doc.data(), isAuthenticated : !!doc.data().isAuthenticated })
+        }
+    })
+    .catch(err => {
+        // console.log('Error getting document', err);
+    });
+}
 
 handleDspaceDescriptionChange=(event)=>{  
     if(event.target.value.length<100){ 

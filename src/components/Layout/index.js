@@ -131,7 +131,8 @@ function Layout(props) {
         position="fixed"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open
-        })}
+        })} 
+        style={{zIndex:1400}}
       > 
       {console.log("User info is ", menuDisplayHandle())}
         <Toolbar>
@@ -179,7 +180,10 @@ function Layout(props) {
             
           </Box>
         </Toolbar>
-      </AppBar>
+      </AppBar> 
+      {  
+        menuDisplayHandle() 
+        &&
       <Drawer
         className={classes.drawer}
         variant="persistent"
@@ -187,7 +191,8 @@ function Layout(props) {
         open={open}
         classes={{
           paper: classes.drawerPaper
-        }}
+        }} 
+        style={{zIndex:1350}}
       >
         <div className={classes.drawerHeader}>
           <IconButton onClick={handleDrawerClose}>
@@ -217,7 +222,8 @@ function Layout(props) {
           ))}
         </List>
         <Divider />
-      </Drawer>
+      </Drawer> 
+      }
       <main
         className={clsx(classes.content, {
           [classes.contentShift]: open

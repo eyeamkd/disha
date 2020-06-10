@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import MaterialTable from "material-table";
 import { database } from '../../firebase/firebase.utils';
-import { CircularProgress, Typography } from "@material-ui/core"; 
+import { CircularProgress, Typography, Container } from "@material-ui/core"; 
 import Snackbar, { SnackbarOrigin } from "@material-ui/core/Snackbar"; 
 import MuiAlert, { AlertProps } from "@material-ui/lab/Alert"; 
 import './style.css';
@@ -71,28 +71,29 @@ export class AdminDashboard extends Component {
       return(  
         <div className="dashboard-loader-style">  
             <CircularProgress  size={100} thickness={2} /> 
-            <Typography>Loading Data, This Might take a While..</Typography>
+            <Typography style={{marginTop:'10px'}}>Loading Data, This Might take a While..</Typography>
         </div>
       );
     }else { 
-    return (
-      <div>
+    return ( 
+      <Container>
         <MaterialTable
           title="Confirm Account Requests"
           columns={[
             { title: "Name", field: "firstName" },
-            { title: "Batch", field: "batch" },
+            { title: "Batch", field: "year" },
             { title: "Roll Number", field: "rollNumber" },
-            { title: "Phone Number", field: "phoneNumber" },
+            { title: "Department", field: "department" },
             { title: "Email", field: "email" }
-          ]}
+          ]} 
+          style={{marginLeft:'50px'}}
           data={this.state.usersData.filter(user => !user.verified)}
           actions={[
             {
               icon: "check",
               tooltip: "Accept",
               onClick: (event, rowData) => { 
-                this.verifyUser(rowData, this.state.usersData);
+               return this.verifyUser(rowData, this.state.usersData);
               },
               color: "primary",
               iconProps: { style: { color: "green" } }
@@ -119,8 +120,9 @@ export class AdminDashboard extends Component {
                 <MuiAlert severity={this.snackBarStyle}>
                     {this.snackBarMessage}
                 </MuiAlert>
-            </Snackbar>
-      </div>
+        </Snackbar>  
+        </Container>
+
     );
   } 
 }
