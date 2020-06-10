@@ -16,12 +16,19 @@ import {
     Chip, 
     CircularProgress, 
     FormHelperText,
-    ThemeProvider} from '@material-ui/core';
+    ThemeProvider,
+    Modal,
+    Card,
+    CardContent,
+    Dialog,
+    DialogTitle} from '@material-ui/core';
 import { Row } from 'react-bootstrap';  
 import AddIcon from '@material-ui/icons/Add'; 
 import {database} from '../../firebase/firebase.utils';
 import './style.css';
-import { Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom'; 
+import {withStyles} from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 
 const dSpaceCategories = [ 
                             "Tech",  
@@ -32,11 +39,38 @@ const dSpaceCategories = [
                             "MBA", 
                             "MTech", 
                             "Engineering", 
-                        ];
+]; 
+
+function rand() {
+    return Math.round(Math.random() * 20) - 10;
+    }
+    
+    function getModalStyle() {
+        const top = 50 + rand();
+        const left = 50 + rand();
+    
+        return {
+        top: `${top}%`,
+        left: `${left}%`,
+        transform: `translate(-${top}%, -${left}%)`,
+        };
+}
+
+const styles = (theme) =>({ 
+    paper: {
+        position: 'absolute',
+        width: 400,
+        backgroundColor: theme.palette.background.paper,
+        border: '2px solid #000',
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing(2, 4, 3),
+      },
+})
+
 
 export class NewDspaceForm extends Component {   
 
-    
+classes;
 constructor(props){ 
         super(props); 
         this.state={ 
@@ -52,8 +86,7 @@ constructor(props){
             dSpaceCreatedSuccessfully:false, 
             dSpaceAddingError:'',  
             isAuthenticated: !!localStorage.getItem('currentUserInfo').isAuthenticated
-        } 
-        
+        }  
 } 
     
 isDspaceDataValid = () => {  
@@ -90,6 +123,15 @@ handleChange = (event) => {
             [event.target.id]:event.target.value
         })
 }  
+
+body= () => (
+    <div style={getModalStyle} className={this.classes.paper}>
+      <h2 id="simple-modal-title">Text in a modal</h2>
+      <p id="simple-modal-description">
+        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+      </p>
+    </div>
+);
 
 handleDspaceDescriptionChange=(event)=>{  
     if(event.target.value.length<100){ 
@@ -128,6 +170,10 @@ handleCreateDspace = (event) => {
                 onDspaceAdding:true
             })
         }
+}  
+
+handleModalClose=()=>{ 
+    console.log("Modal closed");
 } 
 
 addDspace = () => {  
@@ -257,12 +303,31 @@ addDspace = () => {
                     }  
 
                     <Typography color="error">{this.state.dSpaceAddingError}</Typography> 
-
+                    <Dialog  
+                        open={!this.state.isAuthenticated} 
+                        onClose={this.handleModalClose}  
+                        fullScreen={false}
+                        
+                    > 
+                    <DialogTitle>Account Approval Pending</DialogTitle>
+                    <Card className="modal-card">
+                        <CardContent>
+                            <Typography> 
+                            Your Account is yet to be approved by the Admin  
+                            </Typography>
+                            <Typography variant="caption">For more information regarding your account contact admin@disha.website</Typography>
+                        </CardContent>
+                    </Card> 
+                    </Dialog>
                 </Container>
             )
         }
         
     }
-}
+} 
 
-export default NewDspaceForm
+NewDspaceForm.propTypes = { 
+    classes : PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(NewDspaceForm);

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container } from "react-bootstrap";
+import { Container, Card } from "react-bootstrap";
 import {
     Typography,
     FormControl,
@@ -11,7 +11,10 @@ import {
     Checkbox,
     FormLabel,
     Button,
-    CircularProgress } from "@material-ui/core";
+    CircularProgress, 
+    Dialog,
+    DialogTitle,
+    CardContent} from "@material-ui/core";
 import { Row } from "react-bootstrap"; 
 import {database} from '../../firebase/firebase.utils';
 import "./style.css";
@@ -43,7 +46,7 @@ constructor(props){
         userDetails: null,
         editorHtml: '',
         theme: 'snow', 
-        isAuthenticated:false
+        isAuthenticated:!! localStorage.getItem('currentUserInfo').isAuthenticated
     }
     this.handleChange = this.handleChange.bind(this)
 //     this.getDspaces();
@@ -324,7 +327,21 @@ postData = () => {
                     } 
                     
                         <Typography color="error">{this.state.dataSubmittingError}</Typography>
-                    
+                        <Dialog 
+                        open={!this.state.isAuthenticated} 
+                        onClose={this.handleModalClose} 
+                        
+                    > 
+                    <DialogTitle>Account Approval Pending</DialogTitle>
+                    <Card className="modal-card">
+                        <CardContent>
+                            <Typography> 
+                            Your Account is yet to be approved by the Admin  
+                            </Typography>
+                            <Typography variant="caption">For more information regarding your account contact admin@disha.website</Typography>
+                        </CardContent>
+                    </Card> 
+                    </Dialog>
                 </Container>
                 );
         }
