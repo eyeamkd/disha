@@ -76,7 +76,7 @@ export class AdminDashboard extends Component {
       );
     }else { 
     return ( 
-      <Container>
+      <Container >
         <MaterialTable
           title="Confirm Account Requests"
           columns={[
@@ -86,7 +86,7 @@ export class AdminDashboard extends Component {
             { title: "Department", field: "department" },
             { title: "Email", field: "email" }
           ]} 
-          style={{marginLeft:'50px'}}
+          
           data={this.state.usersData.filter(user => !user.verified)}
           actions={[
             {

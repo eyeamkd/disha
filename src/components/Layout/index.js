@@ -30,10 +30,26 @@ import { connect } from "react-redux";
 import { setUser } from './../../redux/user/user-actions';
 
 
-const drawerWidth = 240;
+const getdrawerWidth = () => {     
+  let userInfo = localStorage.getItem('currentUserInfo')
+  if(userInfo!=null){ 
+    if(!userInfo.isAdmin){ 
+      return 240; 
+    } 
+    else { 
+      return 0;
+    }
+  }  
+  else 
+    return 0;
+} 
 
 
-const useStyles = makeStyles(theme => ({
+
+const drawerWidth = getdrawerWidth(); 
+console.log("Drawer width is ", drawerWidth);
+
+const useStyles = makeStyles( theme => ({
   root: {
     display: "flex"
   },
@@ -90,7 +106,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Layout(props) {
-  const classes = useStyles();
+  const classes = useStyles(  );
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
  
