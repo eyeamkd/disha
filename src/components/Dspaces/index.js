@@ -5,6 +5,7 @@ import { Container, Typography, CircularProgress } from '@material-ui/core';
 import { Row, Col } from 'react-bootstrap'; 
 import {database} from '../../firebase/firebase.utils';
 import firebase from 'firebase/app'
+import UploadModal from '../UploadModal';
 
 
 let dSpace = {}
@@ -16,7 +17,8 @@ export class Dspaces extends Component {
         filterValue: "None",
         userInfo: null,
         joined: false,
-        userDataReceived: false
+        userDataReceived: false,
+        editModalOpen : false
       };
 
     constructor(props){ 
@@ -74,6 +76,10 @@ export class Dspaces extends Component {
         database.collection('users').doc(currentUserId).update({
             dspaces: firebase.firestore.FieldValue.arrayRemove(dSpace.id)
         });
+    } 
+
+    handleEditClick(){ 
+        this.setState({ editModalOpen:true })
     }
 
     componentDidMount(  ){ 
@@ -111,14 +117,24 @@ export class Dspaces extends Component {
                             >
                                 Joined
                             </Button>
-                        }
+                        } 
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            color="secondary"
+                            className="submit"
+                            onClick={() => this.handleEditClick()}
+                            >
+                                EDIT
+                            </Button>
                     </Col>
                 </Row> 
                 <Row> 
                     <Col>  
                         <DspaceHeader dSpace={dSpace}/>
                     </Col>
-                </Row>
+                </Row> 
+                <UploadModal open={this.state.editModalOpen} />
             </Container>
             
         )
