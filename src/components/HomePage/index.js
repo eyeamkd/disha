@@ -180,11 +180,11 @@ export default class HomePage extends React.Component{
                 <MenuItem onClick={() => this.handleClose("Project")}>Project</MenuItem>
                 <MenuItem onClick={() => this.handleClose("None")}>None</MenuItem>
                 </Menu>
-                <Fab color="primary" aria-label="add" className="fab-icon">
-                    <Link href="/new-post" variant="body2">
+                <Link href="/new-post" variant="body2">
+                    <Fab color="primary" aria-label="add" className="fab-icon">
                         <AddIcon className="add-icon"/>
-                    </Link>
-                </Fab>
+                    </Fab>
+                </Link>
                 {
                     this.state.allPosts.map(post => {
                         return this.filterPosts(post)
