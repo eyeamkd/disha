@@ -11,10 +11,9 @@ import Profile from '../components/Profile';
 import SignUp from '../components/Auth/SignUp/SignUp';
 import SignIn from '../components/Auth/SignIn/SignIn'; 
 import NewPost from '../components/NewPost';
-import PostSubmitted from '../components/NewPost/PostSubmitted';
+import DataUpdated from '../shared/DataUpdated';
 import LandingPage from '../components/LandingPage';
 import NewDspaceForm from '../components/Dspaces/NewDspaceForm';
-import DspaceSubmitted from '../components/Dspaces/DspaceSubmitted';
 import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
 import OtherUser from '../components/OtherUserProfile';
@@ -48,9 +47,8 @@ class Navigation extends React.Component {
                 <Route path="/claim-account" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <ClaimAccountPage/>}/>    
                 <Route path="/confirm-account" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <ConfirmAccount/>}/>    
                 <Route path="/new-post" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <NewPost/>}/>    
-                <Route path="/post-submitted" render={(props) => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <PostSubmitted {...props}/>}/>    
+                <Route path="/data-updated" render={(props) => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <DataUpdated {...props}/>}/>    
                 <Route path="/new-dspace" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <NewDspaceForm/>}/>    
-                <Route path="/d-space-submitted" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <DspaceSubmitted/>}/>   
                 <Route path="/edit-profile" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <EditProfile/>}/>   
                 <Route path="/id=:id" exact component={ !this.getCurrentUserId() ? SignIn : OtherUser }/>
                 <Route path="/post=:post" component={ IndividualPost } />

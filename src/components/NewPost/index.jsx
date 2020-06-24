@@ -226,7 +226,7 @@ postData = () => {
     render() {  
         // console.log(this.state);
         if(this.state.dataSubmittedSuccessfully){  
-            return(<Redirect to="/post-submitted"/>);
+            return(<Redirect to={{pathname:"/data-updated", state: {message: "Post Submitted Successfully"}}} />);
         }
         else if(this.state.dspaceListArrived === false) {
             return(
