@@ -47,7 +47,9 @@ export default class HomePage extends React.Component{
             if (!doc.exists) {
               console.log('No such document!');
             } else {
-                let info = JSON.stringify(doc.data())
+                let data = doc.data()
+                data.password = "[hidden]"
+                let info = JSON.stringify(data)
                 localStorage.setItem('currentUserInfo', info)
                 this.setState({ userInfo: doc.data() })
 
