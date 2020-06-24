@@ -48,7 +48,7 @@ export default class HomePage extends React.Component{
               console.log('No such document!');
             } else {
                 let data = doc.data()
-                data.password = "[hidden]"
+                if (data.password) data.password = "[hidden]"
                 let info = JSON.stringify(data)
                 localStorage.setItem('currentUserInfo', info)
                 this.setState({ userInfo: doc.data() })
@@ -86,12 +86,10 @@ export default class HomePage extends React.Component{
             posts.sort((a, b) => (a.timeStamp > b.timeStamp) ? -1 : 1);
             this.setState({postsArrived: true, allPosts: posts})
             posts = [];
-            //console.log('dspaces', dspaces)
         })
         .catch(err => {
             console.log('Error getting documents', err);
         });
-        
     }
 
     fetchMoreData = () => {
