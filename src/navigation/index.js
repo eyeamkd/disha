@@ -20,6 +20,7 @@ import OtherUser from '../components/OtherUserProfile';
 import IndividualPost from '../components/IndividualPost';
 import UserDspaces from '../components/UserDspaces';
 import EditProfile from '../components/EditProfile';
+import Reauthentication from '../components/Reauthentication';
 
 
 class Navigation extends React.Component {
@@ -49,7 +50,8 @@ class Navigation extends React.Component {
                 <Route path="/new-post" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <NewPost/>}/>    
                 <Route path="/data-updated" render={(props) => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <DataUpdated {...props}/>}/>    
                 <Route path="/new-dspace" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <NewDspaceForm/>}/>    
-                <Route path="/edit-profile" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <EditProfile/>}/>   
+                <Route path="/edit-profile" exact render={(props) => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <EditProfile {...props}/>}/>   
+                <Route path="/reauth" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) : <Reauthentication/>}/>   
                 <Route path="/id=:id" exact component={ !this.getCurrentUserId() ? SignIn : OtherUser }/>
                 <Route path="/post=:post" component={ IndividualPost } />
                 <Route path="*"><NoMatch /></Route>

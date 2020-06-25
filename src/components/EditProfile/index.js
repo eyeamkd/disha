@@ -14,11 +14,13 @@ import {
     CircularProgress
 } from "@material-ui/core";
 import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 import { Row } from "react-bootstrap";
 import { database } from '../../firebase/firebase.utils';
 import "./style.css";
 import { Redirect } from "react-router-dom";
 import 'react-quill/dist/quill.snow.css';
+import firebase from 'firebase/app';
 
 const postCategories = ["Internship", "Project", "Events"];
 let posts = [];
@@ -32,23 +34,18 @@ export default class EditProfile extends Component {
         this.state = {
             firstName: null,
             lastName: null,
-            password: null,
+            currentPassword: null,
+            newPassword: null,
             confirmPassword: null,
-            postTitle: '',
-            isPostTitleInValid: false,
-            postDescription: '',
-            isPostDescriptionInValid: false,
-            postCategory: '',
             onDataSubmitting: false,
-            isSelectedCategoryInValid: false,
-            nameUpdatedSuccessfully: false,
-            dataSubmittingError: '',
-            dSpaces: [],
-            dspaceListArrived: false,
+            detailsUpdatedSuccessfully: false,
             currentUserInfo: null,
             userDataReceived: false,
             postsUpdated: false,
-            theme: 'snow'
+            isPasswordTab: false,
+            isCurrentPasswordValid: true,
+            isNewPasswordValid: true,
+            isConfirmPasswordValid: true,
         }
 
     }
@@ -99,6 +96,30 @@ export default class EditProfile extends Component {
     handleLastNameChange = (event) => {
         this.setState({ lastName: event.target.value })
     }
+    handleNewPasswordChange = (event) => {
+        if (event.target.value.length < 8) {
+            this.setState({ isNewPasswordValid: false })
+        }
+        else {
+            this.setState({ isNewPasswordValid: true })
+        }
+        if (this.state.confirmPassword && event.target.value !== this.state.confirmPassword) {
+            this.setState({ isConfirmPasswordValid: false })
+        }
+        else {
+            this.setState({ isConfirmPasswordValid: true })
+        }
+        this.setState({ newPassword: event.target.value })
+    }
+    handleConfirmPasswordChange = (event) => {
+        if (event.target.value !== this.state.newPassword) {
+            this.setState({ isConfirmPasswordValid: false })
+        }
+        else {
+            this.setState({ isConfirmPasswordValid: true })
+        }
+        this.setState({ confirmPassword: event.target.value })
+    }
 
     isNameChanged = () => {
         if (this.state.firstName === this.state.currentUserInfo.firstName && this.state.lastName === this.state.currentUserInfo.lastName) {
@@ -115,7 +136,7 @@ export default class EditProfile extends Component {
                 });
             }
         })
-        this.setState({ nameUpdatedSuccessfully: true });
+        this.setState({ detailsUpdatedSuccessfully: true });
     }
 
     updateUserDetails = () => {
@@ -132,9 +153,8 @@ export default class EditProfile extends Component {
     }
 
 
-    handleSubmit = () => {
+    handleDetailsSubmit = () => {
         debugger;
-        console.log("CLLL")
         if (this.isNameChanged()) {
             this.setState({ postsUpdated: false })
             this.updateUserDetails();
@@ -145,17 +165,45 @@ export default class EditProfile extends Component {
         }
     }
 
+    handlePasswordSubmit = () => {
+        if (this.state.isNewPasswordValid && this.state.isConfirmPasswordValid){
+            let result;
+            let user = firebase.auth().currentUser;
+            try {
+                result = user.updatePassword(this.state.newPassword)
+            } catch (error) {
+                if (error.code === "auth/user-not-found")
+                    this.setState({ errorMessage: "Incorrect Password. Please check!", isSignin: false })
+                else if (error.code === "auth/wrong-password")
+                    this.setState({ errorMessage: "Incorrect Password. Please check!", isSignin: false })
+                console.error(error)
+            }
+            finally {
+                if(result) {
+                    this.setState({ detailsUpdatedSuccessfully: true })
+                }
+            }
+        }
+    }
+
     getUserDetails = () => {
         let currentUserInfo = localStorage.getItem('currentUserInfo');
         let userData = JSON.parse(currentUserInfo);
         this.setState({ currentUserInfo: userData, userDataReceived: true, firstName: userData.firstName, lastName: userData.lastName })
     }
 
+    handleTabSwitch = () => {
+        this.setState({ isPasswordTab: !this.state.isPasswordTab, currentPassword: null, firstName: null })
+    }
+
 
     render() {
         // console.log(this.state);
-        if (this.state.nameUpdatedSuccessfully) {
+        if (this.state.detailsUpdatedSuccessfully) {
             return (<Redirect to={{ pathname: "/data-updated", state: { message: "Details Updated Successfully" } }} />);
+        }
+        else if (!this.props.location.state) {
+            return (<Redirect to={{ pathname: "/" }} />);
         }
         else if (this.state.userDataReceived === false || this.state.postsUpdated === false) {
             return (
@@ -178,6 +226,7 @@ export default class EditProfile extends Component {
                                 <TextField
                                     label="First Name"
                                     id="firstName"
+                                    defaultValue={this.state.currentUserInfo.firstName}
                                     placeholder={this.state.currentUserInfo.firstName}
                                     variant="outlined"
                                     required
@@ -191,6 +240,7 @@ export default class EditProfile extends Component {
                                 <TextField
                                     label="Last Name"
                                     id="lastName"
+                                    defaultValue={this.state.currentUserInfo.lastName}
                                     placeholder={this.state.currentUserInfo.lastName}
                                     variant="outlined"
                                     required
@@ -200,20 +250,6 @@ export default class EditProfile extends Component {
                             </FormControl>
                         </Grid>
                     </Grid>
-                    <br/>
-                    <Grid container direction="row" justify="center">
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            className="button"
-                            size="medium"
-                            onClick={this.handleSubmit}
-                        >
-                            <div id="textColor" >Change Password</div>
-                        </Button>
-                    </Grid>
-                    <br/>
                     <Grid container direction="row" justify="center">
                         <Button
                             type="submit"
@@ -221,11 +257,68 @@ export default class EditProfile extends Component {
                             color="secondary"
                             className="button"
                             size="large"
-                            onClick={this.handleSubmit}
+                            onClick={this.handleDetailsSubmit}
                         >
                             <div id="textColor" >Save Changes</div>
                         </Button>
                     </Grid>
+                    <br />
+                    <Box justifyContent="center">
+
+                        <form className="form" noValidate>
+
+                            <Grid container>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl fullWidth>
+                                        <TextField
+                                            label="New Password"
+                                            id="NewPassword"
+                                            placeholder="New Password"
+                                            variant="outlined"
+                                            required
+                                            type="password"
+                                            onChange={this.handleNewPasswordChange}
+                                            error={!this.state.isNewPasswordValid}
+                                        />
+                                    </FormControl>
+                                    {!this.state.isNewPasswordValid &&
+                                        <FormHelperText error={true}>* Password too short!</FormHelperText>
+                                    }
+                                </Grid>
+                            </Grid>
+                            <Grid container>
+                                <Grid item xs={12} sm={6}>
+                                    <FormControl fullWidth>
+                                        <TextField
+                                            label="Confirm Password"
+                                            id="ConfirmPassword"
+                                            placeholder="Confirm Password"
+                                            variant="outlined"
+                                            required
+                                            type="password"
+                                            onChange={this.handleConfirmPasswordChange}
+                                            error={!this.state.isConfirmPasswordValid}
+                                        />
+                                    </FormControl>
+                                    {!this.state.isConfirmPasswordValid &&
+                                        <FormHelperText error={true}>Passwords do not match!</FormHelperText>
+                                    }
+                                </Grid>
+                            </Grid>
+                            <Grid container direction="row" justify="center">
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="secondary"
+                                    className="button"
+                                    size="medium"
+                                    onClick={this.handlePasswordSubmit}
+                                >
+                                    <div id="textColor" >Change Password</div>
+                                </Button>
+                            </Grid>
+                        </form>
+                    </Box>
                 </Container>
             );
         }
