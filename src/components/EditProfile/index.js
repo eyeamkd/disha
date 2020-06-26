@@ -21,6 +21,7 @@ import "./style.css";
 import { Redirect } from "react-router-dom";
 import 'react-quill/dist/quill.snow.css';
 import firebase from 'firebase/app';
+import LocationSearch from './LocationSearch';
 
 const postCategories = ["Internship", "Project", "Events"];
 let posts = [];
@@ -34,6 +35,8 @@ export default class EditProfile extends Component {
         this.state = {
             firstName: null,
             lastName: null,
+            location: "",
+            company: "",
             currentPassword: null,
             newPassword: null,
             confirmPassword: null,
@@ -46,6 +49,8 @@ export default class EditProfile extends Component {
             isCurrentPasswordValid: true,
             isNewPasswordValid: true,
             isConfirmPasswordValid: true,
+            isConfirmPasswordValid: true,
+
         }
 
     }
@@ -128,6 +133,13 @@ export default class EditProfile extends Component {
         else return true
     }
 
+    isOtherDetailsChanged = () => {
+        if (this.state.location === this.state.currentUserInfo.location && this.state.company === this.state.currentUserInfo.company) {
+            return false
+        }
+        else return true
+    }
+
     updatePostData = () => {
         this.state.allPosts.forEach(post => {
             if (post.authorRollNumber === this.state.currentUserInfo.rollNumber) {
@@ -136,7 +148,6 @@ export default class EditProfile extends Component {
                 });
             }
         })
-        this.setState({ detailsUpdatedSuccessfully: true });
     }
 
     updateUserDetails = () => {
@@ -145,11 +156,18 @@ export default class EditProfile extends Component {
         let userData = this.state.currentUserInfo
         userData.firstName = this.state.firstName
         userData.lastName = this.state.lastName
+        if(this.state.location)
+            userData.location = this.state.location
+        if(this.state.company)
+            userData.company = this.state.company
         localStorage.setItem("currentUserInfo", JSON.stringify(userData))
         database.collection("users").doc(currentUserId).update({
             firstName: this.state.firstName,
             lastName: this.state.lastName,
+            location: userData.location,
+            company: userData.company,
         });
+        this.setState({ detailsUpdatedSuccessfully: true });
     }
 
 
@@ -157,8 +175,10 @@ export default class EditProfile extends Component {
         debugger;
         if (this.isNameChanged()) {
             this.setState({ postsUpdated: false })
-            this.updateUserDetails();
             this.updatePostData();
+        }
+        if (this.isNameChanged() || this.isOtherDetailsChanged()) {
+            this.updateUserDetails();
             this.setState({
                 onDataSubmitting: true
             })
@@ -166,7 +186,7 @@ export default class EditProfile extends Component {
     }
 
     handlePasswordSubmit = () => {
-        if (this.state.isNewPasswordValid && this.state.isConfirmPasswordValid){
+        if (this.state.isNewPasswordValid && this.state.isConfirmPasswordValid) {
             let result;
             let user = firebase.auth().currentUser;
             try {
@@ -179,7 +199,7 @@ export default class EditProfile extends Component {
                 console.error(error)
             }
             finally {
-                if(result) {
+                if (result) {
                     this.setState({ detailsUpdatedSuccessfully: true })
                 }
             }
@@ -189,11 +209,26 @@ export default class EditProfile extends Component {
     getUserDetails = () => {
         let currentUserInfo = localStorage.getItem('currentUserInfo');
         let userData = JSON.parse(currentUserInfo);
-        this.setState({ currentUserInfo: userData, userDataReceived: true, firstName: userData.firstName, lastName: userData.lastName })
+        this.setState({ 
+            currentUserInfo: userData, 
+            userDataReceived: true, 
+            firstName: userData.firstName, 
+            lastName: userData.lastName,
+            company: userData.company,
+            location: userData.location,
+        })
     }
 
     handleTabSwitch = () => {
         this.setState({ isPasswordTab: !this.state.isPasswordTab, currentPassword: null, firstName: null })
+    }
+
+    handleLocationChange = (event) => {
+        this.state.location = event.target.value
+    }
+
+    handleCompanyChange = (event) => {
+        this.state.company = event.target.value
     }
 
 
@@ -246,6 +281,34 @@ export default class EditProfile extends Component {
                                     required
                                     onChange={this.handleLastNameChange}
                                     error={this.state.isLastNameInvalid}
+                                />
+                            </FormControl>
+                        </Grid>
+                    </Grid>
+                    <Grid container>
+                        <Grid item xs={12} sm={6}>
+                            <FormControl fullWidth>
+                                <TextField
+                                    label="Location"
+                                    id="location"
+                                    defaultValue={this.state.currentUserInfo.location || ""}
+                                    placeholder={this.state.currentUserInfo.location || ""}
+                                    variant="outlined"
+                                    onChange={this.handleLocationChange}
+                                    error={this.state.isLocationInvalid}
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <FormControl fullWidth>
+                                <TextField
+                                    label="Company"
+                                    id="company"
+                                    defaultValue={this.state.currentUserInfo.company || ""}
+                                    placeholder={this.state.currentUserInfo.company || ""}
+                                    variant="outlined"
+                                    onChange={this.handleCompanyChange}
+                                    error={this.state.isCompanyInvalid}
                                 />
                             </FormControl>
                         </Grid>

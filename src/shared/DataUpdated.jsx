@@ -28,15 +28,18 @@ export class DataUpdated extends Component {
                         this.props.location.state
                             ?
                             <div className="post-submitted-div">
+                                <br></br>
                                 <img
                                     alt="post-submitted"
                                     src={Tick}
                                     width="fit-content"
                                     height="fit-content"
                                 />
+                                <br></br>
+                                <br></br>
                                 <Typography variant="h4" className="post-submitted-text">{this.props.location.state.message}</Typography>
                             </div>
-                            : 
+                            :
                             <Typography variant="h4" className="post-submitted-div">Loading HomePage...</Typography>
                     }
                 </div>

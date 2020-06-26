@@ -93,20 +93,6 @@ export default class HomePage extends React.Component {
             });
     }
 
-    fetchMoreData = () => {
-        if (postData.length === this.state.items.length) {
-            this.setState({ hasMore: false });
-            return;
-        }
-        // a fake async api call like which sends
-        // 20 more records in .5 secs
-        setTimeout(() => {
-            this.setState({
-                items: this.state.items.concat(postData.slice(this.state.index, this.state.index + 5)),
-                index: this.state.index + 5
-            });
-        }, 500);
-    };
 
     handleClick = event => {
         this.setState({ filterClicked: event.currentTarget });
