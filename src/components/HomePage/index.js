@@ -84,6 +84,7 @@ export default class HomePage extends React.Component {
                     a.id = doc.id
                     posts.push(a)
                 });
+
                 posts.sort((a, b) => (a.timeStamp > b.timeStamp) ? -1 : 1);
                 this.setState({ postsArrived: true, allPosts: posts })
                 posts = [];
@@ -108,6 +109,7 @@ export default class HomePage extends React.Component {
             return (
                 <Post
                     post={post}
+                    key={post.id}
                     userLiked={this.state.userInfo.likedPosts.includes(post.id)}
                     postedByUser={this.state.userInfo.rollNumber == post.authorRollNumber}
                     removePost={this.removePost}
@@ -120,6 +122,7 @@ export default class HomePage extends React.Component {
                 return (
                     <Post
                         post={post}
+                        key={post.id}
                         userLiked={this.state.userInfo.likedPosts.includes(post.id)}
                         postedByUser={this.state.userInfo.rollNumber == post.authorRollNumber}
                         removePost={this.removePost}
