@@ -26,7 +26,8 @@ import {
 
 import { Redirect } from 'react-router-dom';
 
-
+import {ROLL_NUMBER_CONFIG, DEPARTMENT_CODES} from '../../../shared/constants'
+ 
 import './SignUp.css';
 import { setFirstName } from './../../../redux/signup/firstName-actions';
 import { setLastName } from './../../../redux/signup/lastName-actions';
@@ -88,7 +89,7 @@ class SignUp extends React.Component {
     handleRollNumberChange = event => {
         if (this.state.rollNumberError) this.setState({ rollNumberError: false })
         let tempRollNumber = event.target.value.toLowerCase().split(" ")[0];
-        let departments = { "01": "Civil", "02": "EEE", "03": "Mech", "04": "ECE", "05": "CSE", "12": "IT" };
+        let departments = DEPARTMENT_CODES;
         this.props.setRollNumber(tempRollNumber);
         let isRollNumberProper = this.validateTicketNum(tempRollNumber);
         (tempRollNumber.length < 1 || !isRollNumberProper) ? this.setState({ isRollNumber: true }) : this.setState({ isRollNumber: false });
@@ -276,25 +277,25 @@ class SignUp extends React.Component {
         }
     }
 
-    validateTicketNum(numb) {
-        numb = numb.toLowerCase();
-        var first = ["0", "1", "2"];
-        var second = ["1a", "5a"];
-        var third = ["01", "02", "03", "04", "05", "12"]; // Add other branches
+    validateTicketNum(rollNumber) {
+        rollNumber = rollNumber.toLowerCase();
+        var year = ROLL_NUMBER_CONFIG.YEAR;
+        var studentType = ROLL_NUMBER_CONFIG.STUDENT_TYPE;
+        var branch = ROLL_NUMBER_CONFIG.BRANCH; 
 
-        if (numb.length !== 10) {
+        if (rollNumber.length !== 10) {
             return false;
         }
-        if (first.indexOf(numb.substring(0, 1)) === -1) {
+        if (year.indexOf(rollNumber.substring(0, 1)) === -1) {
             return false;
         }
-        if (numb.substring(2, 4) !== 'p6') {
+        if (rollNumber.substring(2, 4) !== 'p6') {
             return false;
         }
-        if (second.indexOf(numb.substring(4, 6)) === -1) {
+        if (studentType.indexOf(rollNumber.substring(4, 6)) === -1) {
             return false;
         }
-        if (third.indexOf(numb.substring(6, 8)) === -1) {
+        if (branch.indexOf(rollNumber.substring(6, 8)) === -1) {
             return false;
         }
         return true;

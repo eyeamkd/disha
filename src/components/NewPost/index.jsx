@@ -212,8 +212,8 @@ postData = () => {
         author:name,
         postUrl:postUrl,
         authorRollNumber:this.state.userDetails.rollNumber,
-        likes:0
-        
+        likes:0,
+        isAdminPost: this.state.userDetails.isAdmin
     }
     database.collection('posts').add(newPostData)
     .then((docRef)=>{this.setState({dataSubmittedSuccessfully:true})}) 

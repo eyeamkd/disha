@@ -13,7 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { database } from '../../firebase/firebase.utils';
 import Link from '@material-ui/core/Link';
 import Tooltip from '@material-ui/core/Tooltip';
-
+import { POST_SCORES, POST_CATEGORIES, POST_SCORE_THRESHOLD } from '../../shared/constants'
 
 import postData from './postsdata.json';
 
@@ -26,40 +26,74 @@ export default class HomePage extends React.Component {
         hasMore: true,
         index: 5,
         filterClicked: null,
-        filterValue: "None",
+        filterValue: POST_CATEGORIES.NONE,
         allPosts: [],
         postsArrived: false,
-        userInfo: null
+        userDspaces: [],
+        userDspacesArrived: false,
+        userInfo: null,
+        userInfoReceived: false
     };
 
     constructor(props) {
         super(props);
+    }
+
+    componentDidMount() {
         this.getUserData();
         this.getPosts();
     }
 
     getUserData = () => {
-        let currentUserId = localStorage.getItem('currentUserId')
+        let currentUserInfo = JSON.parse(localStorage.getItem('currentUserInfo'))
+        debugger;
+        if (currentUserInfo) {
+            this.setState({ userInfo: currentUserInfo, userInfoReceived: true })
+            this.getUserDspaces(currentUserInfo);
+        }
+        else {
+            let currentUserId = localStorage.getItem('currentUserId')
+            let userData = database.collection('users').doc(currentUserId);
+            var a;
+            a = userData.get()
+                .then(doc => {
+                    if (!doc.exists) {
+                        console.log('No such document!');
+                    } else {
+                        let data = doc.data()
+                        if (data.password) data.password = "[hidden]"
+                        let info = JSON.stringify(data)
+                        localStorage.setItem('currentUserInfo', info)
+                        this.setState({ userInfo: doc.data(), userInfoReceived: true })
+                        this.getUserDspaces(doc.data());
+                    }
+                })
+                .catch(err => {
+                    console.log('Error getting document', err);
+                });
+        }
+    }
 
-        let userData = database.collection('users').doc(currentUserId);
-        var a;
-        a = userData.get()
-            .then(doc => {
-                if (!doc.exists) {
-                    console.log('No such document!');
-                } else {
-                    let data = doc.data()
-                    if (data.password) data.password = "[hidden]"
-                    let info = JSON.stringify(data)
-                    localStorage.setItem('currentUserInfo', info)
-                    this.setState({ userInfo: doc.data() })
-
-                    //console.log('Document data:', doc.data());
+    getUserDspaces = (userInfo) => {
+        let postsData = database.collection('d-spaces')
+        let query = postsData.get()
+            .then(snapshot => {
+                if (snapshot.empty) {
+                    console.log('No matching documents.');
+                    return;
                 }
+                let a = []
+                snapshot.forEach(doc => {
+                    userInfo.dspaces.forEach((dspaceId) => {
+                        if (dspaceId === doc.id) {
+                            a.push(doc.data().title)
+                        }
+                    })
+                });
+                // let dspaceInfo = snapshot.data()
+                this.setState({ userDspaces: a, userDspacesArrived: true })
+                console.log(this.state.userDspaces)
             })
-            .catch(err => {
-                // console.log('Error getting document', err);
-            });
     }
 
     removePost = (post) => {
@@ -82,16 +116,79 @@ export default class HomePage extends React.Component {
                 snapshot.forEach(doc => {
                     var a = doc.data()
                     a.id = doc.id
+                    a.score = 0
+                    a.userLiked = this.state.userInfo.likedPosts.includes(doc.id)
                     posts.push(a)
                 });
-
-                posts.sort((a, b) => (a.timeStamp > b.timeStamp) ? -1 : 1);
+                posts = this.sortPosts(posts)
                 this.setState({ postsArrived: true, allPosts: posts })
                 posts = [];
             })
             .catch(err => {
                 console.log('Error getting documents', err);
             });
+    }
+
+    sortPosts = (posts) => {
+        let importantPosts = [];
+        let unimportantPosts = [];
+        posts.forEach((post) => {
+            post = this.isPostByCollegeAdmin(post)
+            post = this.isPostInternshipOrProject(post)
+            post = this.isPostJoinedDspace(post)
+            post = this.isPostNotLiked(post)
+            if (post.score > POST_SCORE_THRESHOLD) {
+                importantPosts.push(post)
+            }
+            else {
+                unimportantPosts.push(post)
+            }
+        })
+        importantPosts.sort((a, b) => (a.score > b.score) ? -1 : 1);
+        unimportantPosts.sort((a, b) => (a.score > b.score) ? -1 : 1);
+        posts = importantPosts.concat(unimportantPosts);
+        console.log(posts)
+        return posts
+    }
+
+    isPostByCollegeAdmin = (post) => {
+        if (post.isAdminPost) {
+            post.score = post.score + POST_SCORES.ADMIN
+        }
+        return post
+    }
+
+    isPostInternshipOrProject = (post) => {
+        if (post.category === POST_CATEGORIES.PROJECT || post.category === POST_CATEGORIES.INTERNSHIP) {
+            post.score = post.score + POST_SCORES.INTERNSHIP_PROJECT
+        }
+        return post
+    }
+
+    isPostNotLiked = (post) => {
+        if (!post.userLiked) {
+            post.score = post.score + POST_SCORES.NOT_LIKED
+        }
+        return post
+    }
+
+    isPostSameYearOrBranch = (post) => {
+        let authorRollNumber = post.authorRollNumber
+        let userRollNumber = this.state.userInfo.rollNumber
+        if (authorRollNumber.substring(0, 1) === userRollNumber.substring(0, 1)
+            || authorRollNumber.substring(4, 6) === userRollNumber.substring(4, 6)) {
+            post.score = post.score + POST_SCORES.YEAR_BRANCH
+        }
+        return post
+    }
+
+    isPostJoinedDspace = (post) => {
+        post.dSpaces.forEach(dspace => {
+            if (this.state.userDspaces.includes(dspace)) {
+                post.score = post.score + POST_SCORES.SUBSCRIBED_DSPACE
+            }
+        })
+        return post
     }
 
 
@@ -105,7 +202,7 @@ export default class HomePage extends React.Component {
 
 
     filterPosts = (post) => {
-        if (this.state.filterValue === "None") {
+        if (this.state.filterValue === POST_CATEGORIES.NONE) {
             return (
                 <Post
                     post={post}
@@ -138,7 +235,7 @@ export default class HomePage extends React.Component {
     setPostsToNull = () => posts = [];
 
     render() {
-        if (this.state.postsArrived === false) {
+        if (this.state.postsArrived === false || this.state.userDspacesArrived === false || !this.state.userInfo) {
             return (
                 <div style={{
                     position: 'absolute', left: '50%', top: '50%',
@@ -163,12 +260,13 @@ export default class HomePage extends React.Component {
                     anchorEl={this.state.filterClicked}
                     keepMounted
                     open={Boolean(this.state.filterClicked)}
-                    onClose={() => this.handleClose("None")}
+                    onClose={() => this.handleClose(POST_CATEGORIES.NONE)}
                 >
-                    <MenuItem onClick={() => this.handleClose("Events")}>Events</MenuItem>
-                    <MenuItem onClick={() => this.handleClose("Internship")}>Internship</MenuItem>
-                    <MenuItem onClick={() => this.handleClose("Project")}>Project</MenuItem>
-                    <MenuItem onClick={() => this.handleClose("None")}>None</MenuItem>
+                    {
+                        Object.keys(POST_CATEGORIES).map(function (key) {
+                            return (<MenuItem key={key} onClick={() => this.handleClose(POST_CATEGORIES[key])}>{POST_CATEGORIES[key]}</MenuItem>)
+                        }, this)
+                    }
                 </Menu>
                 <Link href="/new-post" variant="body2">
                     <Tooltip title="New Post" aria-label="add">
