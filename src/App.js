@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import Layout from './components/Layout';
-import HomePage from './components/HomePage'; 
+import HomePage from './components/HomePage';
 import Navigation from './navigation/index';
 import { connect } from 'react-redux';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
@@ -29,38 +29,38 @@ export class App extends Component {
 
   componentDidMount() {
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
-        if(userAuth) {
-          let userRef = await createUserProfileDocument(userAuth);
+      if (userAuth) {
+        let userRef = await createUserProfileDocument(userAuth);
 
-            userRef.onSnapshot(snapShot => {
-              this.setState({
-                currentUser: {
-                  id: snapShot.id,
-                  ...snapShot.data()
-                }
-              }, () => {
-                this.state.currentUser ? 
-                this.setUserId()
-                :
-                this.props.setUser(null)
-              })
-              //console.log(this.state)
-            })
-          // }
-          // else if(this.props.isNewUser === true){
-            // userRef = null;
-            // this.setState({ currentUser: null }, () => {
-            //   this.props.setUser(null)
-            // })
-          // }
-        }
-        else {
-          this.setState({ currentUser: userAuth }, () => {
-            this.props.setUser(null)
+        userRef.onSnapshot(snapShot => {
+          this.setState({
+            currentUser: {
+              id: snapShot.id,
+              ...snapShot.data()
+            }
+          }, () => {
+            this.state.currentUser ?
+              this.setUserId()
+              :
+              this.props.setUser(null)
           })
-        }
-      
-      
+          //console.log(this.state)
+        })
+        // }
+        // else if(this.props.isNewUser === true){
+        // userRef = null;
+        // this.setState({ currentUser: null }, () => {
+        //   this.props.setUser(null)
+        // })
+        // }
+      }
+      else {
+        this.setState({ currentUser: userAuth }, () => {
+          this.props.setUser(null)
+        })
+      }
+
+
 
     });
   }
@@ -70,7 +70,7 @@ export class App extends Component {
   } 
 
   changeCurrentUser() {
-    this.setState({currentUser: null})
+    this.setState({ currentUser: null })
     this.props.setUser(null)
     localStorage.removeItem('currentUserId')
     // console.log(this.props.user)
@@ -95,8 +95,7 @@ export class App extends Component {
       </Layout>
     )
   } 
-
-}   
+}  
 
 const mapStateToProps = state => ({
   isNewUser: state.isNewUser.isNewUser,

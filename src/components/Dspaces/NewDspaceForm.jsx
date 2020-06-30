@@ -208,8 +208,8 @@ addDspace = () => {
     render() { 
         if(this.state.dSpaceCreatedSuccessfully){ 
             return(<Redirect to={{
-                        pathname: '/post-submitted',
-                        state: { message: 'D-Space Created Successfully!!!' }
+                        pathname: '/data-updated',
+                        state: { message: 'D-Space Created Successfully!' }
                     }} />);
         }else{  
             return (
