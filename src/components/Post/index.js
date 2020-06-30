@@ -161,7 +161,7 @@ export default function Post(props) {
             <div>
               <IconButton
                 aria-label="add to favorites"
-                color={likeToggle ? "primary" : ""}
+                color={likeToggle ? "primary" : "default"}
                 onClick={handleLikeClick}
               >
                 <Tooltip title={likeToggle ? "Unike" : "Like"} aria-label="add">

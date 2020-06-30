@@ -85,6 +85,7 @@ export class UserPosts extends Component {
         return(
           <Post 
           post={post}
+          key={post.id}
           userLiked={this.props.userLikedPosts.includes(post.id)}
           postedByUser={post.authorRollNumber === this.props.currentUserRollNumber}
           removePost={this.removePost}
@@ -96,6 +97,7 @@ export class UserPosts extends Component {
             return(
               <Post 
               post={post}
+              key={post.id}
               userLiked={this.props.userLikedPosts.includes(post.id)}
               postedByUser={post.authorRollNumber === this.props.currentUserRollNumber}
               removePost={this.removePost}
