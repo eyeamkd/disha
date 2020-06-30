@@ -23,11 +23,8 @@ import 'react-quill/dist/quill.snow.css';
 import firebase from 'firebase/app';
 import LocationSearch from './LocationSearch';
 
-const postCategories = ["Internship", "Project", "Events"];
-let posts = [];
 
-
-
+let posts = []
 export default class EditProfile extends Component {
 
     constructor(props) {
@@ -50,7 +47,7 @@ export default class EditProfile extends Component {
             isNewPasswordValid: true,
             isConfirmPasswordValid: true,
             isConfirmPasswordValid: true,
-
+            cities: null,
         }
 
     }
@@ -59,6 +56,7 @@ export default class EditProfile extends Component {
     componentDidMount() {
         this.getUserDetails();
         this.getPosts()
+        this.getCities()
     }
 
     componentWillUnmount() {
@@ -87,6 +85,20 @@ export default class EditProfile extends Component {
             });
     }
 
+    getCities = () => {
+        var proxyUrl = 'https://cors-anywhere.herokuapp.com/',
+            targetUrl = 'https://pkgstore.datahub.io/core/world-cities/world-cities_json/data/5b3dd46ad10990bca47b04b4739a02ba/world-cities_json.json'
+        fetch(proxyUrl + targetUrl)
+            .then(blob => blob.json())
+            .then(data => {
+                this.setState({cities: data})
+                return data;
+            })
+            .catch(e => {
+                console.log(e);
+                return e;
+            });
+    }
 
     handleTextChange = (event) => {
         this.setState({
@@ -156,9 +168,9 @@ export default class EditProfile extends Component {
         let userData = this.state.currentUserInfo
         userData.firstName = this.state.firstName
         userData.lastName = this.state.lastName
-        if(this.state.location)
+        if (this.state.location)
             userData.location = this.state.location
-        if(this.state.company)
+        if (this.state.company)
             userData.company = this.state.company
         localStorage.setItem("currentUserInfo", JSON.stringify(userData))
         database.collection("users").doc(currentUserId).update({
@@ -209,10 +221,10 @@ export default class EditProfile extends Component {
     getUserDetails = () => {
         let currentUserInfo = localStorage.getItem('currentUserInfo');
         let userData = JSON.parse(currentUserInfo);
-        this.setState({ 
-            currentUserInfo: userData, 
-            userDataReceived: true, 
-            firstName: userData.firstName, 
+        this.setState({
+            currentUserInfo: userData,
+            userDataReceived: true,
+            firstName: userData.firstName,
             lastName: userData.lastName,
             company: userData.company,
             location: userData.location,
@@ -287,6 +299,7 @@ export default class EditProfile extends Component {
                     </Grid>
                     <Grid container>
                         <Grid item xs={12} sm={6}>
+                            <LocationSearch />
                             <FormControl fullWidth>
                                 <TextField
                                     label="Location"
