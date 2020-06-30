@@ -20,7 +20,7 @@ export class UserInfo extends Component {
           <Row className="user-info">
             <Col>
               <LocationOnIcon />
-              <Typography>{this.props.userInfo.location || "Earth"}</Typography>
+              <Typography>{ this.props.userInfo.location ? `${this.props.userInfo.location.name}, ${this.props.userInfo.location.subcountry}` : "Earth"}</Typography>
             </Col>
             <Col>
               <MenuBookIcon />

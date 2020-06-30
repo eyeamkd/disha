@@ -47,7 +47,7 @@ export default class EditProfile extends Component {
             isNewPasswordValid: true,
             isConfirmPasswordValid: true,
             isConfirmPasswordValid: true,
-            cities: null,
+            cities: []
         }
 
     }
@@ -55,50 +55,14 @@ export default class EditProfile extends Component {
 
     componentDidMount() {
         this.getUserDetails();
-        this.getPosts()
-        this.getCities()
+        this.getCities();
     }
 
     componentWillUnmount() {
         posts = [];
     }
 
-    getPosts = () => {
-        let postsData = database.collection('posts')
-        let query = postsData.get()
-            .then(snapshot => {
-                if (snapshot.empty) {
-                    console.log('No matching documents.');
-                    return;
-                }
-                snapshot.forEach(doc => {
-                    var a = doc.data()
-                    a.id = doc.id
-                    posts.push(a)
-                });
-                posts.sort((a, b) => (a.timeStamp > b.timeStamp) ? -1 : 1);
-                this.setState({ postsUpdated: true, allPosts: posts })
-                posts = [];
-            })
-            .catch(err => {
-                console.log('Error getting documents', err);
-            });
-    }
-
-    getCities = () => {
-        var proxyUrl = 'https://cors-anywhere.herokuapp.com/',
-            targetUrl = 'https://pkgstore.datahub.io/core/world-cities/world-cities_json/data/5b3dd46ad10990bca47b04b4739a02ba/world-cities_json.json'
-        fetch(proxyUrl + targetUrl)
-            .then(blob => blob.json())
-            .then(data => {
-                this.setState({cities: data})
-                return data;
-            })
-            .catch(e => {
-                console.log(e);
-                return e;
-            });
-    }
+    
 
     handleTextChange = (event) => {
         this.setState({
@@ -231,16 +195,35 @@ export default class EditProfile extends Component {
         })
     }
 
+    getCities = () => {
+        let c;
+        var proxyUrl = 'https://cors-anywhere.herokuapp.com/',
+            targetUrl = 'https://pkgstore.datahub.io/core/world-cities/world-cities_json/data/5b3dd46ad10990bca47b04b4739a02ba/world-cities_json.json'
+        c = fetch(proxyUrl + targetUrl)
+            .then(blob => blob.json())
+            .then(data => {
+                console.log(data)
+                this.setState({cities: data})
+                return data;
+            })
+            .catch(e => {
+                console.log(e);
+                return e;
+            });
+        console.log(c)
+        // setCities(c)
+    }
+
     handleTabSwitch = () => {
         this.setState({ isPasswordTab: !this.state.isPasswordTab, currentPassword: null, firstName: null })
     }
 
-    handleLocationChange = (event) => {
-        this.state.location = event.target.value
-    }
-
     handleCompanyChange = (event) => {
         this.state.company = event.target.value
+    }
+
+    handleSearchChange = (value) => {
+        this.state.location = value
     }
 
 
@@ -252,7 +235,7 @@ export default class EditProfile extends Component {
         else if (!this.props.location.state) {
             return (<Redirect to={{ pathname: "/" }} />);
         }
-        else if (this.state.userDataReceived === false || this.state.postsUpdated === false) {
+        else if (this.state.userDataReceived === false || this.state.cities.length < 1) {
             return (
                 <div style={{
                     position: 'absolute', left: '50%', top: '50%',
@@ -299,18 +282,7 @@ export default class EditProfile extends Component {
                     </Grid>
                     <Grid container>
                         <Grid item xs={12} sm={6}>
-                            <LocationSearch />
-                            <FormControl fullWidth>
-                                <TextField
-                                    label="Location"
-                                    id="location"
-                                    defaultValue={this.state.currentUserInfo.location || ""}
-                                    placeholder={this.state.currentUserInfo.location || ""}
-                                    variant="outlined"
-                                    onChange={this.handleLocationChange}
-                                    error={this.state.isLocationInvalid}
-                                />
-                            </FormControl>
+                            <LocationSearch defaultCity={this.state.currentUserInfo.location} cities={this.state.cities} handleSearchChange={this.handleSearchChange}/>
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <FormControl fullWidth>
