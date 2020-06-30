@@ -1,25 +1,9 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom'; 
 import { connect } from "react-redux";
-
-import HomePage from '../components/HomePage'; 
-import ClaimAccountPage, { ConfirmAccount } from '../components/ConfirmAccountPage'; 
-import CommunityPage from '../components/Community';  
-import SearchPage from '../components/SearchPage';
-import Dspaces from '../components/Dspaces';
-import Profile from '../components/Profile';
-import SignUp from '../components/Auth/SignUp/SignUp';
-import SignIn from '../components/Auth/SignIn/SignIn'; 
-import NewPost from '../components/NewPost';
-import PostSubmitted from '../components/NewPost/PostSubmitted';
-import LandingPage from '../components/LandingPage';
-import NewDspaceForm from '../components/Dspaces/NewDspaceForm';
-import DspaceSubmitted from '../components/Dspaces/DspaceSubmitted';
+import SignIn from '../components/Auth/SignIn/SignIn';
 import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
-import OtherUser from '../components/OtherUserProfile';
-import IndividualPost from '../components/IndividualPost';
-import UserDspaces from '../components/UserDspaces'; 
 import AdminDashboard from '../components/Admin/AdminDashboard';
 
 
