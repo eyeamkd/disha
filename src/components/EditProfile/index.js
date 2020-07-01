@@ -23,11 +23,8 @@ import 'react-quill/dist/quill.snow.css';
 import firebase from 'firebase/app';
 import LocationSearch from './LocationSearch';
 
-const postCategories = ["Internship", "Project", "Events"];
-let posts = [];
 
-
-
+let posts = []
 export default class EditProfile extends Component {
 
     constructor(props) {
@@ -50,7 +47,7 @@ export default class EditProfile extends Component {
             isNewPasswordValid: true,
             isConfirmPasswordValid: true,
             isConfirmPasswordValid: true,
-
+            cities: []
         }
 
     }
@@ -58,35 +55,14 @@ export default class EditProfile extends Component {
 
     componentDidMount() {
         this.getUserDetails();
-        this.getPosts()
+        this.getCities();
     }
 
     componentWillUnmount() {
         posts = [];
     }
 
-    getPosts = () => {
-        let postsData = database.collection('posts')
-        let query = postsData.get()
-            .then(snapshot => {
-                if (snapshot.empty) {
-                    console.log('No matching documents.');
-                    return;
-                }
-                snapshot.forEach(doc => {
-                    var a = doc.data()
-                    a.id = doc.id
-                    posts.push(a)
-                });
-                posts.sort((a, b) => (a.timeStamp > b.timeStamp) ? -1 : 1);
-                this.setState({ postsUpdated: true, allPosts: posts })
-                posts = [];
-            })
-            .catch(err => {
-                console.log('Error getting documents', err);
-            });
-    }
-
+    
 
     handleTextChange = (event) => {
         this.setState({
@@ -156,9 +132,9 @@ export default class EditProfile extends Component {
         let userData = this.state.currentUserInfo
         userData.firstName = this.state.firstName
         userData.lastName = this.state.lastName
-        if(this.state.location)
+        if (this.state.location)
             userData.location = this.state.location
-        if(this.state.company)
+        if (this.state.company)
             userData.company = this.state.company
         localStorage.setItem("currentUserInfo", JSON.stringify(userData))
         database.collection("users").doc(currentUserId).update({
@@ -209,26 +185,45 @@ export default class EditProfile extends Component {
     getUserDetails = () => {
         let currentUserInfo = localStorage.getItem('currentUserInfo');
         let userData = JSON.parse(currentUserInfo);
-        this.setState({ 
-            currentUserInfo: userData, 
-            userDataReceived: true, 
-            firstName: userData.firstName, 
+        this.setState({
+            currentUserInfo: userData,
+            userDataReceived: true,
+            firstName: userData.firstName,
             lastName: userData.lastName,
             company: userData.company,
             location: userData.location,
         })
     }
 
+    getCities = () => {
+        let c;
+        var proxyUrl = 'https://cors-anywhere.herokuapp.com/',
+            targetUrl = 'https://pkgstore.datahub.io/core/world-cities/world-cities_json/data/5b3dd46ad10990bca47b04b4739a02ba/world-cities_json.json'
+        c = fetch(proxyUrl + targetUrl)
+            .then(blob => blob.json())
+            .then(data => {
+                console.log(data)
+                this.setState({cities: data})
+                return data;
+            })
+            .catch(e => {
+                console.log(e);
+                return e;
+            });
+        console.log(c)
+        // setCities(c)
+    }
+
     handleTabSwitch = () => {
         this.setState({ isPasswordTab: !this.state.isPasswordTab, currentPassword: null, firstName: null })
     }
 
-    handleLocationChange = (event) => {
-        this.state.location = event.target.value
-    }
-
     handleCompanyChange = (event) => {
         this.state.company = event.target.value
+    }
+
+    handleSearchChange = (value) => {
+        this.state.location = value
     }
 
 
@@ -240,7 +235,7 @@ export default class EditProfile extends Component {
         else if (!this.props.location.state) {
             return (<Redirect to={{ pathname: "/" }} />);
         }
-        else if (this.state.userDataReceived === false || this.state.postsUpdated === false) {
+        else if (this.state.userDataReceived === false || this.state.cities.length < 1) {
             return (
                 <div style={{
                     position: 'absolute', left: '50%', top: '50%',
@@ -287,17 +282,7 @@ export default class EditProfile extends Component {
                     </Grid>
                     <Grid container>
                         <Grid item xs={12} sm={6}>
-                            <FormControl fullWidth>
-                                <TextField
-                                    label="Location"
-                                    id="location"
-                                    defaultValue={this.state.currentUserInfo.location || ""}
-                                    placeholder={this.state.currentUserInfo.location || ""}
-                                    variant="outlined"
-                                    onChange={this.handleLocationChange}
-                                    error={this.state.isLocationInvalid}
-                                />
-                            </FormControl>
+                            <LocationSearch defaultCity={this.state.currentUserInfo.location} cities={this.state.cities} handleSearchChange={this.handleSearchChange}/>
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <FormControl fullWidth>

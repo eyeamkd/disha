@@ -75,13 +75,13 @@ export class Profile extends Component {
               <Col><UserCommunity userInfo={this.state.info} /></Col>
             </Row>
           </Container>
-          <Tooltip title="Edit Profile" aria-label="add">
-            <Fab color="primary" aria-label="add" className="fab-icon">
-              <Link href="/reauth" variant="body2">
+          <Link href="/reauth" variant="body2">
+            <Tooltip title="Edit Profile" aria-label="add">
+              <Fab color="primary" aria-label="add" className="fab-icon">
                 <EditIcon className="add-icon" />
-              </Link>
-            </Fab>
-          </Tooltip>
+              </Fab>
+            </Tooltip>
+          </Link>
         </Grid>
         :
         <div style={{

@@ -42,11 +42,17 @@ export default class HomePage extends React.Component {
     componentDidMount() {
         this.getUserData();
         this.getPosts();
+        console.log(this.state.allPosts)
+    }
+
+    componentWillUnmount() {
+        this.setState({allPosts: null});
+        console.log(this.state.allPosts)
+        posts = []
     }
 
     getUserData = () => {
         let currentUserInfo = JSON.parse(localStorage.getItem('currentUserInfo'))
-        debugger;
         if (currentUserInfo) {
             this.setState({ userInfo: currentUserInfo, userInfoReceived: true })
             this.getUserDspaces(currentUserInfo);
@@ -133,10 +139,7 @@ export default class HomePage extends React.Component {
         let importantPosts = [];
         let unimportantPosts = [];
         posts.forEach((post) => {
-            post = this.isPostByCollegeAdmin(post)
-            post = this.isPostInternshipOrProject(post)
-            post = this.isPostJoinedDspace(post)
-            post = this.isPostNotLiked(post)
+            post = this.calculatePostScored(post)
             if (post.score > POST_SCORE_THRESHOLD) {
                 importantPosts.push(post)
             }
@@ -144,45 +147,33 @@ export default class HomePage extends React.Component {
                 unimportantPosts.push(post)
             }
         })
-        importantPosts.sort((a, b) => (a.score > b.score) ? -1 : 1);
-        unimportantPosts.sort((a, b) => (a.score > b.score) ? -1 : 1);
+        importantPosts.sort((a, b) => (a.timeStamp > b.timeStamp) ? -1 : 1);
+        unimportantPosts.sort((a, b) => (a.timeStamp > b.timeStamp) ? -1 : 1);
         posts = importantPosts.concat(unimportantPosts);
+        posts.forEach((post, index) => {
+            post.score = 0
+            posts[index] = post
+        })
         console.log(posts)
         return posts
     }
 
-    isPostByCollegeAdmin = (post) => {
+    calculatePostScored = (post) => {
         if (post.isAdminPost) {
             post.score = post.score + POST_SCORES.ADMIN
         }
-        return post
-    }
-
-    isPostInternshipOrProject = (post) => {
         if (post.category === POST_CATEGORIES.PROJECT || post.category === POST_CATEGORIES.INTERNSHIP) {
             post.score = post.score + POST_SCORES.INTERNSHIP_PROJECT
         }
-        return post
-    }
-
-    isPostNotLiked = (post) => {
         if (!post.userLiked) {
             post.score = post.score + POST_SCORES.NOT_LIKED
         }
-        return post
-    }
-
-    isPostSameYearOrBranch = (post) => {
         let authorRollNumber = post.authorRollNumber
         let userRollNumber = this.state.userInfo.rollNumber
         if (authorRollNumber.substring(0, 1) === userRollNumber.substring(0, 1)
             || authorRollNumber.substring(4, 6) === userRollNumber.substring(4, 6)) {
             post.score = post.score + POST_SCORES.YEAR_BRANCH
         }
-        return post
-    }
-
-    isPostJoinedDspace = (post) => {
         post.dSpaces.forEach(dspace => {
             if (this.state.userDspaces.includes(dspace)) {
                 post.score = post.score + POST_SCORES.SUBSCRIBED_DSPACE
@@ -190,7 +181,6 @@ export default class HomePage extends React.Component {
         })
         return post
     }
-
 
     handleClick = event => {
         this.setState({ filterClicked: event.currentTarget });
