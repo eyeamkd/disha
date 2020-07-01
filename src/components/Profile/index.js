@@ -18,12 +18,13 @@ import { connect } from 'react-redux';
 
 export class Profile extends Component {
 
-  state = {
-    info: null
-  }
+  
 
-  constructor(props) {
-    super(props);
+  constructor(props) { 
+    super(props); 
+    this.state = {
+      info: null
+    }
     let currentUserId = localStorage.getItem('currentUserId')
     let userData = database.collection('users').doc(currentUserId);
     this.getUserData(userData);
@@ -45,7 +46,8 @@ export class Profile extends Component {
       });
   }
 
-  initials() {
+  initials() { 
+    // console.log("State from profile",this.state);
     return this.state.info.firstName[0].toUpperCase() + this.state.info.lastName[0].toUpperCase()
   }
 

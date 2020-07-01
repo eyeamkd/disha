@@ -14,4 +14,9 @@ code {
 
 body:focus,:active { 
   outline: none;
+} 
+
+.display-inactive{ 
+  -webkit-filter: blur(3px);
+  pointer-events: none;
 }

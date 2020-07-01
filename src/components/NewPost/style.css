@@ -63,4 +63,9 @@
 
 .checkbox-section{ 
     margin: 5px;
+} 
+
+.new-post-display-inactive{ 
+    -webkit-filter: blur(3px);
+    pointer-events: none;
 }

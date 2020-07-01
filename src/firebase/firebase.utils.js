@@ -1,7 +1,8 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
-import firebaseConfig from './firebase.config.json';
+import firebaseConfig from './firebase.config.json'; 
+
 
 const config = firebaseConfig;
 
@@ -50,4 +51,4 @@ export async function getUserDocument(userId) {
 firebase.initializeApp(config);
 
 export const auth = firebase.auth();
-export const database = firebase.firestore();
+export const database = firebase.firestore(); 

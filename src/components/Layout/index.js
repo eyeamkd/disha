@@ -30,9 +30,26 @@ import { connect } from "react-redux";
 import { setUser } from './../../redux/user/user-actions';
 
 
-const drawerWidth = 240;
+const getdrawerWidth = () => {     
+  let userInfo = localStorage.getItem('currentUserInfo')
+  if(userInfo!=null){ 
+    if(!userInfo.isAdmin){ 
+      return 240; 
+    } 
+    else { 
+      return 0;
+    }
+  }  
+  else 
+    return 0;
+} 
 
-const useStyles = makeStyles(theme => ({
+
+
+const drawerWidth = getdrawerWidth(); 
+console.log("Drawer width is ", drawerWidth);
+
+const useStyles = makeStyles( theme => ({
   root: {
     display: "flex"
   },
@@ -89,10 +106,17 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Layout(props) {
-  const classes = useStyles();
+  const classes = useStyles(  );
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+ 
+  const menuDisplayHandle=()=>{  
+    console.log("Props is ", props); 
+    if(props.userInfo!== null)
+    return !props.userInfo.isAdmin; 
+    else 
+    return false;
+  }
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -101,16 +125,23 @@ function Layout(props) {
     setOpen(false);
   };
 
+  const redirect = ()=>{ 
+
+    return (<Redirect to="/SignIn" />)
+  }
+
   const handleSignOut = () => {
     auth.signOut().then(
+      redirect()
+    ).then(  
       changeCurrentUser()
-    );
+    )
   };
 
-  const changeCurrentUser = () => {
-    props.setUser(null)
+  const changeCurrentUser = () => { 
+    
     localStorage.removeItem('currentUserId')
-    localStorage.removeItem('currentUserInfo')
+    localStorage.removeItem('currentUserInfo')  
     // console.log(props.user)
   };
 
@@ -122,10 +153,14 @@ function Layout(props) {
         position="fixed"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open
-        })}
-      >
+        })} 
+        style={{zIndex:1400}}
+      > 
+      {console.log("User info is ", menuDisplayHandle())}
         <Toolbar>
-          <IconButton
+          { menuDisplayHandle() 
+            &&
+            <IconButton
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
@@ -133,7 +168,8 @@ function Layout(props) {
             className={clsx(classes.menuButton, open && classes.hide)}
           >
             <MenuIcon />
-          </IconButton>
+          </IconButton> 
+          }
           <Box flexGrow={1}>
           <Typography variant="h6" noWrap>
           <Link to="/home">
@@ -166,7 +202,10 @@ function Layout(props) {
             
           </Box>
         </Toolbar>
-      </AppBar>
+      </AppBar> 
+      {  
+        menuDisplayHandle() 
+        &&
       <Drawer
         className={classes.drawer}
         variant="persistent"
@@ -174,7 +213,8 @@ function Layout(props) {
         open={open}
         classes={{
           paper: classes.drawerPaper
-        }}
+        }} 
+        style={{zIndex:1350}}
       >
         <div className={classes.drawerHeader}>
           <IconButton onClick={handleDrawerClose}>
@@ -204,7 +244,8 @@ function Layout(props) {
           ))}
         </List>
         <Divider />
-      </Drawer>
+      </Drawer> 
+      }
       <main
         className={clsx(classes.content, {
           [classes.contentShift]: open
