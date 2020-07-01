@@ -21,6 +21,14 @@ export class AdminDashboard extends Component {
     } 
     this.getUsersData();
   } 
+  
+  componentWillUnmount(){ 
+    this.setState({ 
+      userData:[],
+      dataLoaded:false,
+      open:false
+    })
+  }
 
   getUsersData(){   
     let usersDataArray = []

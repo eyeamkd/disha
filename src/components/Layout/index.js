@@ -125,16 +125,23 @@ function Layout(props) {
     setOpen(false);
   };
 
+  const redirect = ()=>{ 
+
+    return (<Redirect to="/SignIn" />)
+  }
+
   const handleSignOut = () => {
     auth.signOut().then(
+      redirect()
+    ).then(  
       changeCurrentUser()
-    );
+    )
   };
 
-  const changeCurrentUser = () => {
-    props.setUser(null)
+  const changeCurrentUser = () => { 
+    
     localStorage.removeItem('currentUserId')
-    localStorage.removeItem('currentUserInfo')
+    localStorage.removeItem('currentUserInfo')  
     // console.log(props.user)
   };
 

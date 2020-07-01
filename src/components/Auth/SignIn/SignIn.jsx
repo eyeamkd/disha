@@ -12,7 +12,8 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormLabel from '@material-ui/core/FormLabel';
 import Container from '@material-ui/core/Container';
 import { connect } from 'react-redux';
-import { setIsNewUser } from '../../../redux/signup/isNewUser-actions';
+import { setIsNewUser } from '../../../redux/signup/isNewUser-actions';  
+import { setUser } from '../../../redux/user/user-actions';
 import Logo from '../../Logo/Logo';
 
 import { 
@@ -28,6 +29,10 @@ import { auth, createUserProfileDocument } from '../../../firebase/firebase.util
 
 class SignIn extends React.Component {
 
+    constructor(props){ 
+        super(props);  
+        props.setUser(null);
+    } 
     state = {
         isEmail: false,
         isPassword: false,
@@ -38,7 +43,7 @@ class SignIn extends React.Component {
         signinErrorMessage: 'Please fill all the fields',
         labelWidth: 0,
         inputLabel: null
-    };
+    }; 
 
     handleEmailChange = event => {
         let isEmailProper = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(event.target.value);
@@ -160,7 +165,10 @@ class SignIn extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    setIsNewUser: isNewUser => dispatch(setIsNewUser(isNewUser))
+    setIsNewUser: isNewUser => dispatch(setIsNewUser(isNewUser)), 
+    setUser: user => dispatch(setUser(user))
+
 });
 
 export default connect(null, mapDispatchToProps)(SignIn);
+

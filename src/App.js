@@ -15,7 +15,7 @@ export class App extends Component {
 
     this.state = {
       currentUser: null, 
-      admin:true
+      admin:false
     }
   }
 
@@ -79,7 +79,9 @@ export class App extends Component {
 
   render() {
     var currentUserId = localStorage.getItem('currentUserId'); 
-    return (
+    return (  
+      !!this.state.currentUser 
+      ? 
       <Layout  
         currentUser={this.props.isNewUser ? null : currentUserId} 
         changeCurrentUser 
@@ -93,8 +95,14 @@ export class App extends Component {
           <Navigation userInfo={this.state.currentUser}/>
         }
       </Layout>
-    )
-  } 
+      :  
+        this.state.admin
+        ? 
+        <AdminNavigation /> 
+        : 
+        <Navigation userInfo={this.state.currentUser}/>
+    ) 
+  }
 }  
 
 const mapStateToProps = state => ({

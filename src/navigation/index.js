@@ -54,7 +54,7 @@ class Navigation extends React.Component {
                 <Route path="/reauth" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <Reauthentication />} />
                 <Route path="/id=:id" exact component={!this.getCurrentUserId() ? SignIn : OtherUser} />
                 <Route path="/post=:post" component={IndividualPost} />
-                <Route path="*"><NoMatch /></Route>
+                <Route path="*" render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) :<NoMatch/> }/>
             </Switch>
         )
     }
