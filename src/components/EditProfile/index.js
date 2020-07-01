@@ -21,7 +21,8 @@ import "./style.css";
 import { Redirect } from "react-router-dom";
 import 'react-quill/dist/quill.snow.css';
 import firebase from 'firebase/app';
-import LocationSearch from './LocationSearch';
+import LocationSearch from './LocationSearch'; 
+import { ImageUploadComponent } from "../../shared/ImageUploadComponent";
 
 
 let posts = []
@@ -366,7 +367,8 @@ export default class EditProfile extends Component {
                                 </Button>
                             </Grid>
                         </form>
-                    </Box>
+                    </Box> 
+                    <ImageUploadComponent/>
                 </Container>
             );
         }
