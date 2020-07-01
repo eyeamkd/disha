@@ -37,7 +37,9 @@ export class UserCommunity extends Component {
           }  
           snapshot.forEach(doc => {
             //console.log(doc.id, '=>', doc.data().title);
-              users.push(doc.data())
+              let user = doc.data()
+              user.id = doc.id
+              users.push(user)
           });
           
           this.setState({usersArrived: true, allUsers: users})
@@ -68,18 +70,18 @@ export class UserCommunity extends Component {
             <Typography variant="h6">Your Community</Typography>
             <List>
             {
-              this.state.allUsers.map((member) => {
+              this.state.allUsers.map((user) => {
               return (
-                <div>
-                  <ListItem alignItems="flex-start">
-                    <Link to={`/id=${member.rollNumber}`}>
+                <div key={user.id}>
+                  <ListItem  alignItems="flex-start">
+                    <Link to={`/id=${user.rollNumber}`}>
                       <ListItemAvatar>
-                        <ProfileImage name={member.firstName[0] + " " + member.lastName[0]} scale="50" variant="circle" />
+                        <ProfileImage name={user.firstName[0] + " " + user.lastName[0]} scale="50" variant="circle" />
                       </ListItemAvatar>
                     </Link>
-                    <Link to={`/id=${member.rollNumber}`}>
+                    <Link to={`/id=${user.rollNumber}`}>
                       <ListItem button>
-                        <ListItemText primary={member.firstName + " " + member.lastName} />
+                        <ListItemText primary={user.firstName + " " + user.lastName} />
                       </ListItem>
                     </Link>
                   </ListItem>

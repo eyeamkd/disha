@@ -1,0 +1,15 @@
+.button {
+    width: 200px !important;
+}
+
+.align-center {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form {
+    width: 100%;
+    margin-top: 30px;
+  }

@@ -1,0 +1,15 @@
+
+.post-submitted-div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+} 
+
+.post-submitted-text{
+    color: green;
+}
+
+.checkbox-section{ 
+    margin: 5px;
+}
