@@ -5,6 +5,7 @@ import SignIn from '../components/Auth/SignIn/SignIn';
 import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
 import AdminDashboard from '../components/Admin/AdminDashboard';
+import LandingPage from '../components/LandingPage';
 
 
 class AdminNavigation extends React.Component {
@@ -31,9 +32,10 @@ class AdminNavigation extends React.Component {
    
     render() {  
                 return( 
-                    <Switch>
-                        <Route path="/" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) :  <AdminDashboard/> }/>  
-                        <Route path="/SignIn" exact render={() => this.getCurrentUserId() ? (<Redirect to="/"/>) : <SignIn/>}/> 
+                    <Switch> 
+                        <Route path="/" exact render={() => <LandingPage />} />
+                        <Route path="/dashboard" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) :  <AdminDashboard/> }/>  
+                        <Route path="/SignIn" exact render={() => this.getCurrentUserId() ? (<Redirect to="/dashboard"/>) : <SignIn/>}/> 
                         <Route path="*"><NoMatch /></Route>
                     </Switch>
                 )
