@@ -34,8 +34,8 @@ class AdminNavigation extends React.Component {
                 return( 
                     <Switch> 
                         <Route path="/" exact render={() => <LandingPage />} />
-                        <Route path="/dashboard" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) :  <AdminDashboard/> }/>  
-                        <Route path="/SignIn" exact render={() => this.getCurrentUserId() ? (<Redirect to="/dashboard"/>) : <SignIn/>}/> 
+                        <Route path="/home" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) :  <AdminDashboard/> }/>  
+                        <Route path="/SignIn" exact render={() => this.getCurrentUserId() ? (<Redirect to="/home"/>) : <SignIn/>}/> 
                         <Route path="*"><NoMatch /></Route>
                     </Switch>
                 )
