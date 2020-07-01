@@ -26,6 +26,16 @@
     width: max-content;
 }
 
+.fab-icon { 
+    position: fixed !important;
+    right: 50px  !important;
+    bottom: 50px  !important;
+ }
+ 
+ .add-icon {
+     color: black !important;
+ }
+
 /* mobile view styles  */
 @media screen and (max-width: 400px) {
     .user-profile-contianer {
