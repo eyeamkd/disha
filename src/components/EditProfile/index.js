@@ -22,7 +22,8 @@ import { Redirect } from "react-router-dom";
 import 'react-quill/dist/quill.snow.css';
 import firebase from 'firebase/app';
 import LocationSearch from './LocationSearch'; 
-import { ImageUploadComponent } from "../../shared/ImageUploadComponent";
+import { ImageUploadComponent } from "../../shared/ImageUploadComponent"; 
+import { ProfileImage} from '../Profile/ProfileImage';
 
 
 let posts = []
@@ -299,6 +300,15 @@ export default class EditProfile extends Component {
                             </FormControl>
                         </Grid>
                     </Grid>
+                    <Typography style={{margin:'10px'}} >Upload New Display Picture</Typography> 
+                    <Grid container> 
+                        <Grid item xs={12} sm={6} style={{maxWidth:'250px',margin:'15px'}}>
+                            <ProfileImage  name={"K E"} scale={250} variant="square"/>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <ImageUploadComponent/>
+                        </Grid>
+                    </Grid>
                     <Grid container direction="row" justify="center">
                         <Button
                             type="submit"
@@ -313,9 +323,7 @@ export default class EditProfile extends Component {
                     </Grid>
                     <br />
                     <Box justifyContent="center">
-
                         <form className="form" noValidate>
-
                             <Grid container>
                                 <Grid item xs={12} sm={6}>
                                     <FormControl fullWidth>
@@ -368,7 +376,6 @@ export default class EditProfile extends Component {
                             </Grid>
                         </form>
                     </Box> 
-                    <ImageUploadComponent/>
                 </Container>
             );
         }

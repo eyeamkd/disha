@@ -1,13 +1,20 @@
-import React, { Component, useState } from 'react'
-import { DropzoneArea } from 'material-ui-dropzone'
-
+import React, { Component, useState, Fragment } from 'react'
+import { DropzoneArea } from 'material-ui-dropzone'; 
+import styled from 'styled-components'
+const ImageWrapper = styled.div` 
+        height:200px; 
+        width:250px; 
+        margin:15px;
+    `
 export const ImageUploadComponent = (props) => {  
     const [files, setfiles] = useState([])
 
-        return(
-            <DropzoneArea 
+        return( 
+            <ImageWrapper>  
+                <DropzoneArea  
                 onChange={(files)=>setfiles(files)}
-            />
+                />
+            </ImageWrapper>
         )
 }
 
