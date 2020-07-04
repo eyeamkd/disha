@@ -5,24 +5,26 @@ import HomePage from './components/HomePage';
 import Navigation from './navigation/index';
 import { connect } from 'react-redux';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
-import { setUser } from './redux/user/user-actions';
+import { setUser } from './redux/user/user-actions'; 
+import AdminNavigation from './navigation/admin-nav'
 
 
 export class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
-      currentUser: null,
+      currentUser: null, 
+      admin:false
     }
   }
 
   unsubscribeFromAuth = null
 
   setUserId() {
-    localStorage.setItem('currentUserId', this.state.currentUser.id)
-    this.props.setUser(this.state.currentUser.id)
-
+    localStorage.setItem('currentUserId', this.state.currentUser.id) 
+    this.props.setUser(this.state.currentUser.id) 
+    this.setState({admin: !!this.state.currentUser.isAdmin})
   }
 
   componentDidMount() {
@@ -65,7 +67,7 @@ export class App extends Component {
 
   componentWillUnmount() {
     this.unsubscribeFromAuth();
-  }
+  } 
 
   changeCurrentUser() {
     this.setState({ currentUser: null })
@@ -76,15 +78,32 @@ export class App extends Component {
 
 
   render() {
-    var currentUserId = localStorage.getItem('currentUserId')
-
-    return (
-      <Layout currentUser={this.props.isNewUser ? null : currentUserId} changeCurrentUser>
-        <Navigation />
+    var currentUserId = localStorage.getItem('currentUserId'); 
+    return (  
+      !!this.state.currentUser 
+      ? 
+      <Layout  
+        currentUser={this.props.isNewUser ? null : currentUserId} 
+        changeCurrentUser 
+        userInfo= {this.state.currentUser}  
+        >
+        { 
+          this.state.admin
+          ? 
+          <AdminNavigation /> 
+          : 
+          <Navigation userInfo={this.state.currentUser}/>
+        }
       </Layout>
-    )
+      :  
+        this.state.admin
+        ? 
+        <AdminNavigation /> 
+        : 
+        <Navigation userInfo={this.state.currentUser}/>
+    ) 
   }
-}
+}  
 
 const mapStateToProps = state => ({
   isNewUser: state.isNewUser.isNewUser,
