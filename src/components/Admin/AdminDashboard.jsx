@@ -10,7 +10,7 @@ export class AdminDashboard extends Component {
   snackBarStyle = "";
   snackBarMessage = "";
   vertical = "bottom";
-  horizontal = "center"; 
+  horizontal = "center";  
 
   constructor(props){ 
     super(props); 
@@ -28,6 +28,12 @@ export class AdminDashboard extends Component {
       dataLoaded:false,
       open:false
     })
+  } 
+
+  checkAdmin() {
+    localStorage.setItem('currentUserId', this.state.currentUser.id) 
+    this.props.setUser(this.state.currentUser.id) 
+    this.setState({admin: !!this.state.currentUser.isAdmin})
   }
 
   getUsersData(){   
