@@ -49,7 +49,9 @@ export default class EditProfile extends Component {
             isNewPasswordValid: true,
             isConfirmPasswordValid: true,
             isConfirmPasswordValid: true,
-            cities: []
+            cities: [], 
+            uploadImageString:'',
+            imageUploaded:false
         }
 
     }
@@ -150,7 +152,6 @@ export default class EditProfile extends Component {
 
 
     handleDetailsSubmit = () => {
-        debugger;
         if (this.isNameChanged()) {
             this.setState({ postsUpdated: false })
             this.updatePostData();
@@ -161,6 +162,10 @@ export default class EditProfile extends Component {
                 onDataSubmitting: true
             })
         }
+    } 
+
+    handleImageUpload = (base64string) => {
+        this.setState({uploadImageString:base64string, imageUploaded:true})
     }
 
     handlePasswordSubmit = () => {
@@ -303,10 +308,10 @@ export default class EditProfile extends Component {
                     <Typography style={{margin:'10px'}} >Upload New Display Picture</Typography> 
                     <Grid container> 
                         <Grid item xs={12} sm={6} style={{maxWidth:'250px',margin:'15px'}}>
-                            <ProfileImage  name={"K E"} scale={250} variant="square"/>
+                            <ProfileImage  name={"K E"} scale={250} variant="square" image={this.state.imageUploaded} imagesrc={this.state.uploadImageString}/>
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <ImageUploadComponent/>
+                            <ImageUploadComponent onImageUpload={this.handleImageUpload}/>
                         </Grid>
                     </Grid>
                     <Grid container direction="row" justify="center">

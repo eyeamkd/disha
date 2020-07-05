@@ -16,8 +16,15 @@ export class ProfileImage extends Component {
             width: scale,
             height: scale
           })}
-        >
+        > 
+        { 
+          !!this.props.image 
+          ? 
+          <img src={this.props.imagesrc} alt="profile pic" />
+          : 
           <Typography>{this.props.name}</Typography>
+        }
+          
         </Avatar>
       </div>
     );
