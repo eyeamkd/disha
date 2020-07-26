@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Container, Col, Row } from "react-bootstrap";
 import { borderColor } from '@material-ui/system';
 import { Link } from 'react-router-dom';
-import Dspaces from '../Dspaces';
+import Dspace from '../Dspace';
 
 import "./styles.css";
 

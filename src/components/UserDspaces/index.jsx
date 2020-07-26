@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { database } from "./../../firebase/firebase.utils";
-import { Container, Col } from "reactstrap";
+import { Container, Col, Row } from "reactstrap";
 import {
   Typography,
   CircularProgress,
@@ -11,8 +11,11 @@ import {
   ListItemIcon,
 } from "@material-ui/core";
 import { Group } from "@material-ui/icons";
-import { Row } from "react-bootstrap";
+import { Link } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import firebase from 'firebase/app'
 import "./style.css";
+
 
 const userId = localStorage.getItem("currentUserId");
 
@@ -20,26 +23,55 @@ export class UserDspaces extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dspaces: [],
+      userInfo: null,
+      dSpaces: [],
       dSpaceIds: [],
     };
   }
-  async loadUserDspaceIds() {
+  async loadUserData() {
     let userRefDoc = database.collection("users").doc(userId);
     let userDoc = await userRefDoc.get().then((doc) => {
       if (!doc.exists) {
         // console.log("Invalid User Document");
       } else {
         // console.log("Ids", doc.data().dspaces);
+        let a = doc.data();
+        a.docId = doc.id;
         this.loadUserDspaces(doc.data().dspaces);
         this.setState({
+          userInfo: a,
           dSpaceIds: doc.data().dspaces,
         });
-        
+
       }
     });
-    
   }
+
+  handleJoinedClick = (id) => {
+    let userDoc = {
+      name: this.state.userInfo.firstName
+        + " " +
+        this.state.userInfo.lastName,
+      rollNumber: this.state.userInfo.rollNumber
+    }
+    database.collection('d-spaces').doc(id).update({
+      members: firebase.firestore.FieldValue.arrayRemove(userDoc)
+    });
+    database.collection('users').doc(this.state.userInfo.docId).update({
+      dspaces: firebase.firestore.FieldValue.arrayRemove(id)
+    });
+    this.removeFromDspaceList(id)
+  }
+
+  removeFromDspaceList = (id) => {
+    this.state.dSpaces.forEach((dSpace, index) => {
+      if(id === dSpace.docId) {
+        this.state.dSpaces.splice(index, 1);
+        this.setState({dSpaces: this.state.dSpaces})
+      }
+    })
+  }
+
   loadUserDspaces = (ids) => {
     ids.map((id) => {
       let dspaceDocRef = database.collection("d-spaces").doc(id);
@@ -47,19 +79,21 @@ export class UserDspaces extends Component {
         if (!doc.exists) {
           // console.log("NO Dspace found with that ID");
         } else {
+          let a = doc.data();
+          a.docId = doc.id;
           this.setState({
-            dspaces: [...this.state.dspaces, doc.data()],
+            dSpaces: [...this.state.dSpaces, a],
           });
         }
       });
     });
   };
   componentDidMount() {
-    this.loadUserDspaceIds();
+    this.loadUserData();
   }
   render() {
     // console.log(this.state);
-    if (this.state.dspaces.length === 0) {
+    if (this.state.dSpaces.length === 0) {
       return (
         <Container>
           <Typography variant="h1"> Your D-Spaces </Typography>{" "}
@@ -83,19 +117,39 @@ export class UserDspaces extends Component {
     } else {
       return (
         <Container>
-          <Typography variant="h1"> Your D - spaces </Typography>{" "}
+          <Typography variant="h1"> Your D-Spaces </Typography>{" "}
           <Row>
             <Col className="user-dspaces">
               <List>
                 {" "}
-                {this.state.dspaces.map((dspace) => (
+                {this.state.dSpaces.map((dSpace) => (
                   <div>
-                    <ListItem>
-                      <ListItemIcon>
-                        <Group color="primary" />
-                      </ListItemIcon>{" "}
-                      <ListItemText primary={dspace.title} />{" "}
-                    </ListItem>{" "}
+                    <Row>
+                      <Col md={10}>
+                        <Link to={{
+                          pathname: `/dspace=${dSpace.id}`
+                        }}>
+                          <ListItem>
+                            <ListItemIcon>
+                              <Group color="primary" />
+                            </ListItemIcon>{" "}
+                            <ListItemText primary={dSpace.title} />{" "}
+                          </ListItem>
+                        </Link>
+                      </Col>
+                      <Col md={2}>
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          color="secondary"
+                          className="submit"
+                          onClick={() => this.handleJoinedClick(dSpace.docId)}
+                        >
+                          Joined
+                      </Button>
+                      </Col>
+                      {" "}
+                    </Row>
                     <Divider />
                   </div>
                 ))}{" "}

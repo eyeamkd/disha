@@ -80,7 +80,7 @@ export class DspaceCards extends Component {
             snapshot.forEach(doc => {
                 //console.log(doc.id, '=>', doc.data().title); 
                     var a = doc.data()
-                    a.id = doc.id
+                    a.docId = doc.id
                     Dspaces.push(a)
             });
             //console.log('dspaces', dspaces)
@@ -116,14 +116,14 @@ export class DspaceCards extends Component {
                                     Dspaces.map(dSpace => {  
                                         return(  
                                             <Link to={{ 
-                                                pathname:'/d-spaces', 
+                                                pathname:`/dspace=${dSpace.id}`, 
                                                 state:{ dSpaceInfo : {dSpace} }
                                             }}>
                                             <DspaceCard  
                                                     className="d-space-card" 
                                                     title = { dSpace.title } 
                                                     description = { dSpace.description } 
-                                                    key={dSpace.title}
+                                                    key={dSpace.id}
                                             />
                                             </Link> 
                                         );

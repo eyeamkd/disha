@@ -6,14 +6,13 @@ import HomePage from '../components/HomePage';
 import ClaimAccountPage, { ConfirmAccount } from '../components/ConfirmAccountPage';
 import CommunityPage from '../components/Community';
 import SearchPage from '../components/SearchPage';
-import Dspaces from '../components/Dspaces';
 import Profile from '../components/Profile';
 import SignUp from '../components/Auth/SignUp/SignUp';
 import SignIn from '../components/Auth/SignIn/SignIn';
 import NewPost from '../components/NewPost';
 import DataUpdated from '../shared/DataUpdated';
 import LandingPage from '../components/LandingPage';
-import NewDspaceForm from '../components/Dspaces/NewDspaceForm';
+import NewDspaceForm from '../components/Dspace/NewDspaceForm';
 import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
 import OtherUser from '../components/OtherUserProfile';
@@ -21,6 +20,7 @@ import IndividualPost from '../components/IndividualPost';
 import UserDspaces from '../components/UserDspaces';
 import EditProfile from '../components/EditProfile';
 import Reauthentication from '../components/Reauthentication';
+import IndividualDspace from '../components/IndividualDspace';
 
 
 class Navigation extends React.Component {
@@ -43,7 +43,6 @@ class Navigation extends React.Component {
                 <Route path="/account-requests" exact render={() => <ClaimAccountPage />} />
                 <Route path="/search-d-spaces" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <SearchPage />} />
                 <Route path="/profile" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <Profile />} />
-                <Route path="/d-spaces" exact render={(props) => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <Dspaces {...props} />} />
                 <Route path="/user-dspaces" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <UserDspaces />} />
                 <Route path="/claim-account" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <ClaimAccountPage />} />
                 <Route path="/confirm-account" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <ConfirmAccount />} />
@@ -54,6 +53,7 @@ class Navigation extends React.Component {
                 <Route path="/reauth" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <Reauthentication />} />
                 <Route path="/id=:id" exact component={!this.getCurrentUserId() ? SignIn : OtherUser} />
                 <Route path="/post=:post" component={IndividualPost} />
+                <Route path="/dspace=:dspace" component={IndividualDspace} />
                 <Route path="*" render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) :<NoMatch/> }/>
             </Switch>
         )
@@ -70,7 +70,7 @@ function NoMatch() {
         >
             <center>
                 <h1>OOF</h1>
-                <h3> Heading in the wrong <i>DISHA</i>, are we?</h3>
+                <h3> You seem to be heading in the wrong <i>DISHA</i>!</h3>
                 <h4>Let's get you back to the home page.</h4>
                 <br />
                 <Button

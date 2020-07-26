@@ -8,7 +8,7 @@ import firebase from 'firebase/app'
 
 
 let dSpace = {}
-export class Dspaces extends Component {
+export class Dspace extends Component {
     
     state = {
         filterClicked: null,
@@ -20,12 +20,13 @@ export class Dspaces extends Component {
       };
 
     constructor(props){ 
-        super(); 
-        if(!!props.location.state ){ 
-            dSpace = props.location.state.dSpaceInfo.dSpace;
-        }
+        super();
         this.getUserData();
     }  
+
+    componentDidMount(){
+        dSpace = this.props.dSpace
+    }
     
     getUserData = () => {
         let currentUserId = localStorage.getItem('currentUserId')
@@ -36,8 +37,7 @@ export class Dspaces extends Component {
             if (!doc.exists) {
               console.log('No such document!');
             } else {
-              this.setState({ joined: doc.data().dspaces.includes(dSpace.id), userInfo: doc.data(), userDataReceived: true })
-              //console.log('Document data:', doc.data());
+              this.setState({ joined: doc.data().dspaces.includes(this.props.dSpace.docId), userInfo: doc.data(), userDataReceived: true })
             }
           })
           .catch(err => {
@@ -50,11 +50,11 @@ export class Dspaces extends Component {
         this.setState({joined: true})
         // console.log("dspace id", dSpace.id)
         let userDoc = {name: this.state.userInfo.firstName+" "+this.state.userInfo.lastName, rollNumber: this.state.userInfo.rollNumber}
-        database.collection('d-spaces').doc(dSpace.id).update({
+        database.collection('d-spaces').doc(this.props.dSpace.docId).update({
             members: firebase.firestore.FieldValue.arrayUnion(userDoc)
           });
         database.collection('users').doc(currentUserId).update({
-            dspaces: firebase.firestore.FieldValue.arrayUnion(dSpace.id)
+            dspaces: firebase.firestore.FieldValue.arrayUnion(this.props.dSpace.docId)
         });
     }
     
@@ -68,11 +68,11 @@ export class Dspaces extends Component {
             this.state.userInfo.lastName, 
             rollNumber: this.state.userInfo.rollNumber
         }
-        database.collection('d-spaces').doc(dSpace.id).update({
+        database.collection('d-spaces').doc(this.props.dSpace.docId).update({
             members: firebase.firestore.FieldValue.arrayRemove(userDoc)
         });
         database.collection('users').doc(currentUserId).update({
-            dspaces: firebase.firestore.FieldValue.arrayRemove(dSpace.id)
+            dspaces: firebase.firestore.FieldValue.arrayRemove(this.props.dSpace.docId)
         });
     }
 
@@ -86,7 +86,7 @@ export class Dspaces extends Component {
             <Container fluid>  
                 <Row> 
                     <Col md={11}>
-                        <Typography variant="h1">{dSpace.title}</Typography>
+                        <Typography variant="h1">{this.props.dSpace.title}</Typography>
                     </Col>
                     <Col md={1}>
                         {
@@ -116,7 +116,7 @@ export class Dspaces extends Component {
                 </Row> 
                 <Row> 
                     <Col>  
-                        <DspaceHeader dSpace={dSpace}/>
+                        <DspaceHeader dSpace={this.props.dSpace}/>
                     </Col>
                 </Row>
             </Container>
@@ -134,4 +134,4 @@ export class Dspaces extends Component {
     }
 }
 
-export default Dspaces;
+export default Dspace;
