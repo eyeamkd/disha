@@ -145,7 +145,7 @@ export class UserDspaces extends Component {
                           className="submit"
                           onClick={() => this.handleJoinedClick(dSpace.docId)}
                         >
-                          Joined
+                          Leave
                       </Button>
                       </Col>
                       {" "}
