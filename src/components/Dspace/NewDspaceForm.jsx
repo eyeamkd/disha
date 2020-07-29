@@ -177,8 +177,8 @@ export class NewDspaceForm extends Component {
 
     titleToId(title) {
         title = title.toLowerCase()
-        title = title.replace(/-/g, "--")
-        title = title.replace(" ", "-")
+        title = title.split('-').join('--');
+        title = title.split(' ').join('-');
         return title;
     }
 
