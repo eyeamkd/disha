@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import { Button } from "@material-ui/core"; 
+import { Button } from "@material-ui/core";
 import { storageRef, database } from "../firebase/firebase.utils";
 
 function rand() {
@@ -103,14 +103,38 @@ export default function ImageCropModal(props) {
   };
 
   const uploadCroppedImage = () => {
-    fetch(src)
-      .then((res) => res.blob)
-      .then((blob) => {
-        const file = new File([blob], props.file.name, { type: "image/png" });
-        setFile(file);
-        storeImageOnFireStore(file);
-      });
+    let blob = dataURItoBlob(src); 
+    let file = new File([blob], props.file.name, { type: 'image/jpeg' });
+    storeImageOnFireStore(file);
+    // fetch(src)
+    //   .then((res) => res.arrayBuffer())
+    //   .then((buffer) => {
+    //     const file = new File([buffer], props.file.name, { type: "image/png" });
+    //     setFile(file);
+    //     storeImageOnFireStore(file);
+    //   });
   };
+
+  const dataURItoBlob=()=>{  
+      let dataURI = croppedImageUrl;
+      debugger;
+    // convert base64/URLEncoded data component to raw binary data held in a string
+    var byteString;
+    if (dataURI.split(",")[0].indexOf("base64") >= 0)
+      byteString = atob(dataURI.split(",")[1]);
+    else byteString = unescape(dataURI.split(",")[1]);
+
+    // separate out the mime component
+    var mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+
+    // write the bytes of the string to a typed array
+    var ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([ia], { type: mimeString });
+  } 
 
   const storeImageOnFireStore = (file) => {
     let userRollNumber = JSON.parse(localStorage.getItem("currentUserInfo"))
