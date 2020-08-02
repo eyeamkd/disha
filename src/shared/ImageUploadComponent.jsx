@@ -3,15 +3,25 @@ import React, { useEffect, useState } from "react";
 import "react-image-crop/dist/ReactCrop.css";
 import styled from "styled-components";
 import { storageRef, database } from "../firebase/firebase.utils";
+import ImageCropModal from "./ImageCropModal";
 const ImageWrapper = styled.div`
   height: 200px;
   width: 250px;
   margin: 15px;
 `;
 const reader = new FileReader();
-const inputButtonReference = React.createRef();
+const inputButtonReference = React.createRef(); 
+
+//display modal when image is uploaded 
+//display image on modal
+//react crop operations on modal 
+//display uploaded image as a profile image everywhere 
+// repeat the same functionality for Dspaces 
+// modify D-space search cards to display the image  
+
 export const ImageUploadComponent = (props) => {
   const [files, setfiles] = useState([]);
+  const [isImageUploaded, setIsImageUploaded] = useState(false)
   // const [filePath, setfilePath] = useState(null);
   // const [crop, setCrop] = useState({ aspect: 16 / 9 });
   useEffect(() => {
@@ -23,7 +33,7 @@ export const ImageUploadComponent = (props) => {
       reader.readAsDataURL(files[0]);
       console.log(files);
     }
-  }, [files]);
+  }, [files,isImageUploaded]);
 
   const onImageUploaded = (event) => {
     let file = event.target.files[0];  
@@ -35,7 +45,8 @@ export const ImageUploadComponent = (props) => {
       if(snapshot.state==='success'){
         let userDocRef = database.collection('users').doc(localStorage.getItem('currentUserId')); 
         userDocRef.update({profileImagePath : snapshot.metadata.fullPath}).then((res)=>{
-            console.log("Image Uploaded Successfully!!",res);
+            console.log("Image Uploaded Successfully!!",res); 
+            setIsImageUploaded(true);
         })
       }
     });
@@ -46,8 +57,14 @@ export const ImageUploadComponent = (props) => {
     console.log("Upload Button Clicked");
     inputButtonReference.current.click();
   };
-  return (
-    <div>
+  return (   
+    <div className="main-class"> 
+    {  
+      isImageUploaded 
+      ? 
+      <ImageCropModal open={isImageUploaded}/> 
+      : 
+      <div className="image-upload-button"> 
       <Button
         type="submit"
         variant="contained"
@@ -64,6 +81,8 @@ export const ImageUploadComponent = (props) => {
         style={{ display: "none" }}
         ref={inputButtonReference}
       />
+    </div> 
+    } 
     </div>
   );
 };
