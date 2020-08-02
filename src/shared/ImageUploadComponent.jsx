@@ -2,6 +2,7 @@ import Button from "@material-ui/core/Button";
 import React, { useEffect, useState } from "react";
 import "react-image-crop/dist/ReactCrop.css";
 import styled from "styled-components";
+import { storageRef } from "../firebase/firebase.utils";
 const ImageWrapper = styled.div`
   height: 200px;
   width: 250px;
@@ -21,14 +22,16 @@ export const ImageUploadComponent = (props) => {
       };
       reader.readAsDataURL(files[0]);
       console.log(files);
-      
     }
   }, [files]);
 
   const onImageUploaded = (event) => {
+    let file = event.target.files[0];
+    storageRef.child(`profile-images/${file.name}`).put(file).then((snapshot) => {
+      console.log("Uploaded Snapshot ", snapshot);
+    });
     setfiles(event.target.files[0]);
   };
-  
 
   const uploadButtonClicked = () => {
     console.log("Upload Button Clicked");

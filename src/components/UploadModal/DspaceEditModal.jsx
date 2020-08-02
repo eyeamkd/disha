@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {DropzoneArea} from 'material-ui-dropzone'
+// import {DropzoneArea} from 'material-ui-dropzone'
  
 class DspaceEditModal extends Component{
   constructor(props){
@@ -15,9 +15,10 @@ class DspaceEditModal extends Component{
   }
   render(){
     return (
-      <DropzoneArea
-        onChange={this.handleChange.bind(this)}
-        />
+      // <DropzoneArea
+      //   onChange={this.handleChange.bind(this)}
+      //   /> 
+      <h1>D-space edit DspaceEditModal</h1>
     )
   }
 }
