@@ -14,7 +14,7 @@ const inputButtonReference = React.createRef();
 
 //display image on modal
 //react crop operations on modal 
-//display uploaded image as a profile image everywhere 
+// display uploaded image as a profile image everywhere 
 // repeat the same functionality for Dspaces 
 // modify D-space search cards to display the image  
 
@@ -44,12 +44,9 @@ export const ImageUploadComponent = (props) => {
       );
       reader.readAsDataURL(file);
     }
-  };
+  }; 
 
-
-  const onImageUploaded = (event) => {
-    let file = event.target.files[0];   
-    onSelectFile(file);
+  const storeImageOnFireStore=(file)=>{
     let userRollNumber = JSON.parse(localStorage.getItem('currentUserInfo')).rollNumber; 
     //dangerous if user deletes the localstorage and uploads the image 
     let userProfileImageStorageReference  = storageRef.child(`profile-images/${userRollNumber}-${file.name}`);
@@ -62,9 +59,14 @@ export const ImageUploadComponent = (props) => {
             setIsImageUploaded(true); 
         })
       } 
+  }); 
+}
+  const onImageUploaded = (event) => {
+    let file = event.target.files[0];   
+      onSelectFile(file);
+      storeImageOnFireStore(file);
       setfiles(file);
-    });
-  };
+    }
 
   const uploadButtonClicked = () => {
     console.log("Upload Button Clicked");

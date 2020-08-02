@@ -71,8 +71,8 @@ export default function ImageCropModal(props) {
       const croppedImageUrl = await getCroppedImg(
         imageRef,
         crop,
-        'newFile.jpeg'
-      );
+        props.file.name
+      ); 
       setCroppedImageUrl(croppedImageUrl);
     }
   }
@@ -95,21 +95,26 @@ export default function ImageCropModal(props) {
       0,
       crop.width,
       crop.height
-    );
+    ); 
 
-    return new Promise((resolve, reject) => {
-      canvas.toBlob(blob => {
-        if (!blob) {
-          //reject(new Error('Canvas is empty'));
-          console.error('Canvas is empty');
-          return;
-        }
-        blob.name = fileName;
-        window.URL.revokeObjectURL(fileUrl);
-        setFileUrl(window.URL.createObjectURL(blob));
-        resolve(fileUrl);
-      }, 'image/jpeg');
-    });
+    return new Promise((resolve,reject)=>{
+       resolve(canvas.toDataURL('image/jpeg'));
+    })
+
+    // return new Promise((resolve, reject) => { 
+    
+    //   canvas.toBlob(blob => {
+    //     if (!blob) {
+    //       //reject(new Error('Canvas is empty'));
+    //       console.error('Canvas is empty');
+    //       return;
+    //     }
+    //     blob.name = fileName;
+    //     window.URL.revokeObjectURL(fileUrl);
+    //     setFileUrl(window.URL.createObjectURL(blob));
+    //     resolve(fileUrl);
+    //   }, 'image/jpeg');
+    // });
   }
 
 
