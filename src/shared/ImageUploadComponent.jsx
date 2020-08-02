@@ -12,7 +12,6 @@ const ImageWrapper = styled.div`
 const reader = new FileReader();
 const inputButtonReference = React.createRef(); 
 
-//display modal when image is uploaded 
 //display image on modal
 //react crop operations on modal 
 //display uploaded image as a profile image everywhere 
@@ -21,7 +20,8 @@ const inputButtonReference = React.createRef();
 
 export const ImageUploadComponent = (props) => {
   const [files, setfiles] = useState([]);
-  const [isImageUploaded, setIsImageUploaded] = useState(false)
+  const [isImageUploaded, setIsImageUploaded] = useState(false); 
+  const [src, setSrc] = useState('');
   // const [filePath, setfilePath] = useState(null);
   // const [crop, setCrop] = useState({ aspect: 16 / 9 });
   useEffect(() => {
@@ -33,10 +33,23 @@ export const ImageUploadComponent = (props) => {
       reader.readAsDataURL(files[0]);
       console.log(files);
     }
-  }, [files,isImageUploaded]);
+  }, [files,isImageUploaded]); 
+  
+  const onSelectFile = (file) => {
+    if (file) {
+      const reader = new FileReader();
+      reader.addEventListener('load', () =>
+        // this.setState({ src: reader.result }) 
+        setSrc(reader.result)
+      );
+      reader.readAsDataURL(file);
+    }
+  };
+
 
   const onImageUploaded = (event) => {
-    let file = event.target.files[0];  
+    let file = event.target.files[0];   
+    onSelectFile(file);
     let userRollNumber = JSON.parse(localStorage.getItem('currentUserInfo')).rollNumber; 
     //dangerous if user deletes the localstorage and uploads the image 
     let userProfileImageStorageReference  = storageRef.child(`profile-images/${userRollNumber}-${file.name}`);
@@ -46,11 +59,11 @@ export const ImageUploadComponent = (props) => {
         let userDocRef = database.collection('users').doc(localStorage.getItem('currentUserId')); 
         userDocRef.update({profileImagePath : snapshot.metadata.fullPath}).then((res)=>{
             console.log("Image Uploaded Successfully!!",res); 
-            setIsImageUploaded(true);
+            setIsImageUploaded(true); 
         })
-      }
+      } 
+      setfiles(file);
     });
-    setfiles(event.target.files[0]);
   };
 
   const uploadButtonClicked = () => {
@@ -62,7 +75,7 @@ export const ImageUploadComponent = (props) => {
     {  
       isImageUploaded 
       ? 
-      <ImageCropModal open={isImageUploaded}/> 
+      <ImageCropModal open={isImageUploaded} file={files} src={src}/> 
       : 
       <div className="image-upload-button"> 
       <Button
