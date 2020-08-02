@@ -2,7 +2,7 @@ import Button from "@material-ui/core/Button";
 import React, { useEffect, useState } from "react";
 import "react-image-crop/dist/ReactCrop.css";
 import styled from "styled-components";
-import { storageRef } from "../firebase/firebase.utils";
+import { storageRef, database } from "../firebase/firebase.utils";
 const ImageWrapper = styled.div`
   height: 200px;
   width: 250px;
@@ -26,9 +26,18 @@ export const ImageUploadComponent = (props) => {
   }, [files]);
 
   const onImageUploaded = (event) => {
-    let file = event.target.files[0];
-    storageRef.child(`profile-images/${file.name}`).put(file).then((snapshot) => {
-      console.log("Uploaded Snapshot ", snapshot);
+    let file = event.target.files[0];  
+    let userRollNumber = JSON.parse(localStorage.getItem('currentUserInfo')).rollNumber; 
+    //dangerous if user deletes the localstorage and uploads the image 
+    let userProfileImageStorageReference  = storageRef.child(`profile-images/${userRollNumber}-${file.name}`);
+    userProfileImageStorageReference.put(file).then((snapshot) => {
+      console.log("Uploaded Snapshot ", snapshot);  
+      if(snapshot.state==='success'){
+        let userDocRef = database.collection('users').doc(localStorage.getItem('currentUserId')); 
+        userDocRef.update({profileImagePath : snapshot.metadata.fullPath}).then((res)=>{
+            console.log("Image Uploaded Successfully!!",res);
+        })
+      }
     });
     setfiles(event.target.files[0]);
   };
