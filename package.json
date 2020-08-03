@@ -14,6 +14,7 @@
     "bootstrap": "^4.4.1",
     "firebase": "^7.8.0",
     "firebase-admin": "^8.10.0",
+    "formik": "^2.1.5",
     "html-react-parser": "^0.10.3",
     "http2": "^3.3.7",
     "material-table": "^1.56.1",
@@ -22,8 +23,6 @@
     "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^16.12.0",
     "react-fade-animation": "^1.0.5",
-    "react-google-autocomplete": "^1.2.6",
-    "react-google-maps": "^9.4.5",
     "react-infinite-scroll-component": "^5.0.4",
     "react-lineto": "^3.1.3",
     "react-quill": "^1.3.5",
@@ -36,7 +35,8 @@
     "redux-logger": "^3.0.6",
     "simple-react-comments": "^1.1.0",
     "testcafe": "^1.8.3",
-    "typeface-roboto": "0.0.75"
+    "typeface-roboto": "0.0.75",
+    "zxcvbn": "^4.4.2"
   },
   "scripts": {
     "start": "react-scripts start",
