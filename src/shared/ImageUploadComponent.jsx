@@ -45,7 +45,13 @@ export const ImageUploadComponent = (props) => {
       reader.readAsDataURL(file);
       setIsImageUploaded(true);
     }
-  };
+  }; 
+
+  const onImageCropCancelClicked = () => {
+    setIsImageUploaded(false); 
+    setSrc(""); 
+    setfiles([]);
+  }
 
   //   const storeImageOnFireStore=(file)=>{
   //     let userRollNumber = JSON.parse(localStorage.getItem('currentUserInfo')).rollNumber;
@@ -75,9 +81,9 @@ export const ImageUploadComponent = (props) => {
   };
   return (
     <div className="main-class">
-      {isImageUploaded ? (
-        <ImageCropModal open={isImageUploaded} file={files} src={src} />
-      ) : (
+      {isImageUploaded && (
+        <ImageCropModal cancel={onImageCropCancelClicked} file={files} src={src} />
+      )} 
         <div className="image-upload-button">
           <Button
             type="submit"
@@ -96,7 +102,6 @@ export const ImageUploadComponent = (props) => {
             ref={inputButtonReference}
           />
         </div>
-      )}
     </div>
   );
 };

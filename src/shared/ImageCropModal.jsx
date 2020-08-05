@@ -36,7 +36,7 @@ export default function ImageCropModal(props) {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = useState(getModalStyle);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [croppedImageUrl, setCroppedImageUrl] = useState("");
   const [src, setSrc] = useState("");
   const [crop, setCrop] = useState("");
@@ -48,7 +48,8 @@ export default function ImageCropModal(props) {
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setOpen(false);  
+    
   };
 
   const onImageLoaded = (image) => {
@@ -113,7 +114,12 @@ export default function ImageCropModal(props) {
     //     setFile(file);
     //     storeImageOnFireStore(file);
     //   });
-  };
+  }; 
+
+  const onCropCancelledClicked =()=>{
+    handleClose();
+    props.cancel();
+  }
 
   const dataURItoBlob=()=>{  
       let dataURI = croppedImageUrl;
@@ -159,7 +165,7 @@ export default function ImageCropModal(props) {
   };
 
   const body = (
-    <div style={modalStyle} className={classes.paper}>
+    <div style={modalStyle} className={`${classes.paper} crop-image-modal-style `}>
       <h2 id="simple-modal-title">Crop Image</h2>
       <p id="simple-modal-description">Resize image to Crop</p>
       <ReactCrop
@@ -168,12 +174,14 @@ export default function ImageCropModal(props) {
         ruleOfThirds
         onImageLoaded={onImageLoaded}
         onComplete={onCropComplete}
-        onChange={onCropChange}
+        onChange={onCropChange} 
+        style={{ maxWidth: "300px" , maxHeight:'300px'}}
       />
       {croppedImageUrl && (
         <div>
-          <img alt="Crop" style={{ maxWidth: "100%" }} src={croppedImageUrl} />
+          <img alt="Crop" src={croppedImageUrl} />
           <Button onClick={uploadCroppedImage}>Set as Profile Image</Button>
+          <Button onClick={onCropCancelledClicked}>Cancel</Button>
         </div>
       )}
     </div>
@@ -182,7 +190,7 @@ export default function ImageCropModal(props) {
   return (
     <div>
       <Modal
-        open={props.open}
+        open={open}
         onClose={handleClose}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
