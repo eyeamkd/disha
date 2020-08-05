@@ -52,7 +52,7 @@ function NoMatch() {
         >
             <center>
                 <h1>OOF</h1>
-                <h3> Heading in the wrong <i>DISHA</i>, are we?</h3>
+                <h3> You seem to be heading in the wrong <i>DISHA</i>!</h3>
                 <h4>Let's get you back to the home page.</h4>
                 <br/>
                 <Button
