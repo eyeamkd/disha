@@ -49,8 +49,16 @@ export default class EditProfile extends Component {
       isConfirmPasswordValid: true,
       cities: [],
       uploadImageString: "",
-      imageUploaded: false,
+      imageUploaded: false, 
+      profileImage:''
     };
+  } 
+
+  onProfileImageUpdated=(updatedImageUrl)=>{
+    console.log("Profile Image updated with",updatedImageUrl);
+    this.setState({ 
+        profileImage:updatedImageUrl
+    })
   }
 
   componentDidMount() {
@@ -74,7 +82,7 @@ export default class EditProfile extends Component {
   };
   handleLastNameChange = (event) => {
     this.setState({ lastName: event.target.value });
-  };
+  }; 
   handleNewPasswordChange = (event) => {
     if (event.target.value.length < 8) {
       this.setState({ isNewPasswordValid: false });
@@ -342,11 +350,11 @@ export default class EditProfile extends Component {
                 scale={250}
                 variant="square"
                 image={!!this.state.profileImage}
-                imageSrc={this.state.profileImage}
+                imageSrc={this.state.profileImage} 
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <ImageUploadComponent onImageUpload={this.handleImageUpload} />
+              <ImageUploadComponent onImageUpload={this.handleImageUpload} onProfileImageUpdated = {this.onProfileImageUpdated} />
             </Grid>
           </Grid>
           <Grid container direction="row" justify="center">

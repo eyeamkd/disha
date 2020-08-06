@@ -15,6 +15,9 @@ export class ProfileImage extends Component {
     let imageStorageReference = storage.ref(this.props.imageSrc);
     imageStorageReference.getDownloadURL().then(url=>{this.setState({url:url})})
   }
+  componentDidUpdate(){
+    this.getImageSrc();
+  }
   render() {
     let scale = this.props.scale; 
 

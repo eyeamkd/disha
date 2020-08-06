@@ -12,9 +12,6 @@ const ImageWrapper = styled.div`
 const reader = new FileReader();
 const inputButtonReference = React.createRef();
 
-//  display image on modal
-//  react crop operations on modal
-//  display uploaded image as a profile image everywhere
 //  repeat the same functionality for Dspaces
 //  modify D-space search cards to display the image
 
@@ -22,8 +19,7 @@ export const ImageUploadComponent = (props) => {
   const [files, setfiles] = useState([]);
   const [isImageUploaded, setIsImageUploaded] = useState(false);
   const [src, setSrc] = useState("");
-  // const [filePath, setfilePath] = useState(null);
-  // const [crop, setCrop] = useState({ aspect: 16 / 9 });
+
   useEffect(() => {
     if (!!files[0]) {
       reader.onload = (e) => {
@@ -33,7 +29,7 @@ export const ImageUploadComponent = (props) => {
       reader.readAsDataURL(files[0]);
       console.log(files);
     }
-  }, [files, isImageUploaded]);
+  }, [files, isImageUploaded,props]);
 
   const onSelectFile = (file) => {
     if (file) {
@@ -53,21 +49,6 @@ export const ImageUploadComponent = (props) => {
     setfiles([]);
   }
 
-  //   const storeImageOnFireStore=(file)=>{
-  //     let userRollNumber = JSON.parse(localStorage.getItem('currentUserInfo')).rollNumber;
-  //     //dangerous if user deletes the localstorage and uploads the image
-  //     let userProfileImageStorageReference  = storageRef.child(`profile-images/${userRollNumber}-${file.name}`);
-  //     userProfileImageStorageReference.put(file).then((snapshot) => {
-  //       console.log("Uploaded Snapshot ", snapshot);
-  //       if(snapshot.state==='success'){
-  //         let userDocRef = database.collection('users').doc(localStorage.getItem('currentUserId'));
-  //         userDocRef.update({profileImagePath : snapshot.metadata.fullPath}).then((res)=>{
-  //             console.log("Image Uploaded Successfully!!",res);
-
-  //         })
-  //       }
-  //   });
-  // }
   const onImageUploaded = (event) => {
     let file = event.target.files[0];
     onSelectFile(file);
@@ -82,7 +63,7 @@ export const ImageUploadComponent = (props) => {
   return (
     <div className="main-class">
       {isImageUploaded && (
-        <ImageCropModal cancel={onImageCropCancelClicked} file={files} src={src} />
+        <ImageCropModal cancel={onImageCropCancelClicked} file={files} src={src} onProfileImageUpdated={props.onProfileImageUpdated} />
       )} 
         <div className="image-upload-button">
           <Button

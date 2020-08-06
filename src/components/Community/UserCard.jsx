@@ -37,12 +37,8 @@ export default function UserCard(props) {
                 let imageStorageReference = storage.ref(props.imageSrc);
                 imageStorageReference.getDownloadURL().then(url=>{setimageUrl(url)})
             }
-            // return () => {
-            //     cleanup
-            // }
-        }, [imageUrl,props.image,props.imageSrc])
-    
-        // console.log(getInitials(props.title))
+        }, [imageUrl,props.image,props.imageSrc]) 
+        
         return (   
                 <Box  
                 boxShadow={2}

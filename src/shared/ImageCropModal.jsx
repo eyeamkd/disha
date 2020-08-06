@@ -61,9 +61,6 @@ export default function ImageCropModal(props) {
   };
 
   const onCropChange = (crop, percentCrop) => {
-    // You could also use percentCrop:
-    // this.setState({ crop: percentCrop });
-    // this.setState({ crop });
     setCrop(crop);
   };
 
@@ -106,14 +103,8 @@ export default function ImageCropModal(props) {
   const uploadCroppedImage = () => {
     let blob = dataURItoBlob(src); 
     let file = new File([blob], props.file.name, { type: 'image/jpeg' });
-    storeImageOnFireStore(file);
-    // fetch(src)
-    //   .then((res) => res.arrayBuffer())
-    //   .then((buffer) => {
-    //     const file = new File([buffer], props.file.name, { type: "image/png" });
-    //     setFile(file);
-    //     storeImageOnFireStore(file);
-    //   });
+    storeImageOnFireStore(file); 
+    setOpen(false);
   }; 
 
   const onCropCancelledClicked =()=>{
@@ -145,7 +136,8 @@ export default function ImageCropModal(props) {
   const storeImageOnFireStore = (file) => {
     let userRollNumber = JSON.parse(localStorage.getItem("currentUserInfo"))
       .rollNumber;
-    //dangerous if user deletes the localstorage and uploads the image
+    //dangerous if user deletes the localstorage and uploads the image 
+    deleteProfileImageIfPresent();
     let userProfileImageStorageReference = storage.ref().child(
       `profile-images/${userRollNumber}-${file.name}`
     );
@@ -158,11 +150,24 @@ export default function ImageCropModal(props) {
         userDocRef
           .update({ profileImagePath: snapshot.metadata.fullPath })
           .then((res) => {
-            console.log("Image Uploaded Successfully!!", res);
+            console.log("Image Uploaded Successfully!!", res); 
+            props.onProfileImageUpdated(snapshot.metadata.fullPath);
           });
       }
     });
-  };
+  }; 
+
+  const deleteProfileImageIfPresent = () =>{  
+    //need to update the userInfo whenever update is called in the code
+        let userInfo =  JSON.parse(localStorage.getItem('currentUserInfo')); 
+        if(!!userInfo.profileImagePath){ 
+          let deleteRef = storage.ref(userInfo.profileImagePath); 
+          return deleteRef.delete().then(()=>{
+            return true;
+          })
+          .catch((err)=> {throw err;})
+        }
+  }
 
   const body = (
     <div style={modalStyle} className={`${classes.paper} crop-image-modal-style `}>
