@@ -1,13 +1,23 @@
 import React, { Component } from "react";
-import { Avatar, Typography } from "@material-ui/core";
+import { Avatar, Typography } from "@material-ui/core"; 
+import {storage} from '../../firebase/firebase.utils'
 
 export class ProfileImage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { 
+      url:''
+    }; 
+    if(!!props.image) 
+      this.getImageSrc();
+  } 
+  getImageSrc=()=>{ 
+    let imageStorageReference = storage.ref(this.props.imageSrc);
+    imageStorageReference.getDownloadURL().then(url=>{this.setState({url:url})})
   }
   render() {
-    let scale = this.props.scale;
+    let scale = this.props.scale; 
+
     return (
       <div>
         <Avatar
@@ -22,7 +32,7 @@ export class ProfileImage extends Component {
           })}
         >
           {!!this.props.image ? (
-            <img src={this.props.imagesrc} alt="profile pic" />
+            <img src={this.state.url} alt="profile pic" />
           ) : (
             <Typography>{this.props.name}</Typography>
           )}

@@ -4,7 +4,7 @@ import Modal from "@material-ui/core/Modal";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import { Button } from "@material-ui/core";
-import { storageRef, database } from "../firebase/firebase.utils";
+import { storage, database } from "../firebase/firebase.utils";
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -146,7 +146,7 @@ export default function ImageCropModal(props) {
     let userRollNumber = JSON.parse(localStorage.getItem("currentUserInfo"))
       .rollNumber;
     //dangerous if user deletes the localstorage and uploads the image
-    let userProfileImageStorageReference = storageRef.child(
+    let userProfileImageStorageReference = storage.ref().child(
       `profile-images/${userRollNumber}-${file.name}`
     );
     userProfileImageStorageReference.put(file).then((snapshot) => {

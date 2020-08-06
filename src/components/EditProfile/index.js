@@ -202,8 +202,9 @@ export default class EditProfile extends Component {
       lastName: userData.lastName,
       company: userData.company,
       location: userData.location,
+      profileImage:userData.profileImagePath
     });
-  };
+  }; 
 
   getCities = () => {
     let c;
@@ -340,8 +341,8 @@ export default class EditProfile extends Component {
                 name={"K E"}
                 scale={250}
                 variant="square"
-                image={this.state.imageUploaded}
-                imagesrc={this.state.uploadImageString}
+                image={!!this.state.profileImage}
+                imageSrc={this.state.profileImage}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
