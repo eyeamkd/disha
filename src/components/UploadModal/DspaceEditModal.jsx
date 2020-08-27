@@ -15,10 +15,7 @@ class DspaceEditModal extends Component{
   }
   render(){
     return (
-      // <DropzoneArea
-      //   onChange={this.handleChange.bind(this)}
-      //   /> 
-      <h1>D-space edit DspaceEditModal</h1>
+      <h1>DspaceEditModal</h1>
     )
   }
 }

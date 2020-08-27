@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -21,13 +21,18 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UploadModal(props) {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false); 
+
+  useEffect(() => { 
+    setOpen(props.open)
+   
+  }, [props])
 
   const handleOpen = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleClose = () => { 
     setOpen(false);
   };
 
@@ -37,7 +42,7 @@ export default function UploadModal(props) {
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         className={classes.modal}
-        open={props.open}
+        open={open}
         onClose={handleClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
@@ -45,9 +50,10 @@ export default function UploadModal(props) {
           timeout: 500,
         }}
       >
-        <Fade in={props.open}>
+        <Fade in={open}>
           <div className={classes.paper}>
-            <DspaceEditModal/>
+            <DspaceEditModal 
+            />
           </div>
         </Fade>
       </Modal>
