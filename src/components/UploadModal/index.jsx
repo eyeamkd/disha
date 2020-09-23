@@ -52,7 +52,7 @@ export default function UploadModal(props) {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <DspaceEditModal 
+            <DspaceEditModal  title={props.dSpace.title} description={props.dSpace.description}
             />
           </div>
         </Fade>

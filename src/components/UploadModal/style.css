@@ -1,0 +1,8 @@
+.d-space-modal{ 
+    display: flex; 
+    flex-direction: column; 
+} 
+
+.d-space-modal > * { 
+    margin: 10px;
+}

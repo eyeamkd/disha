@@ -134,7 +134,7 @@ export class Dspaces extends Component {
                         <DspaceHeader dSpace={dSpace}/>
                     </Col>
                 </Row> 
-                <UploadModal open={this.state.editModalOpen} />
+                <UploadModal dSpace={dSpace} open={this.state.editModalOpen} />
             </Container>
             
         )
