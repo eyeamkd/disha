@@ -1,6 +1,7 @@
 import { Button, Container, FormControl, Grid, IconButton, Input, InputAdornment, InputLabel, OutlinedInput, Typography } from '@material-ui/core';
 import React, {Component} from 'react'; 
-import AddIcon from '@material-ui/icons/Add';  
+import AddIcon from '@material-ui/icons/Add';   
+import {ImageUploadComponent} from "../../shared/ImageUploadComponent";
 import './style.css';
 
 // import {DropzoneArea} from 'material-ui-dropzone'
@@ -12,7 +13,9 @@ const DspaceEditModal = (props) => {
 
   const handleSave = () =>{
     console.log("Save Clicked");
-  }
+  } 
+
+
 
   const {title, description, imageRef } = props;
   return( 
@@ -29,7 +32,8 @@ const DspaceEditModal = (props) => {
                                     value={title}
                                     labelWidth={60} 
                                     required={true}
-                                />   
+                                /> 
+
       </FormControl> 
      </Grid>  
 
@@ -44,9 +48,9 @@ const DspaceEditModal = (props) => {
                                     labelWidth={60} 
                                     required={true} 
                                     multiline
-                                />  
-                              
+                                /> 
      </FormControl> 
+           <ImageUploadComponent/>                           
      </Grid> 
      </Grid> 
      <Button variant="outlined" color="primary" onClick={handleSave}>

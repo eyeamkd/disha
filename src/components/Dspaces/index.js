@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import DspaceHeader from './DspaceHeader'
 import Button from '@material-ui/core/Button';
-import { Container, Typography, CircularProgress } from '@material-ui/core';
+import { Container, Typography, CircularProgress, Avatar } from '@material-ui/core';
 import { Row, Col } from 'react-bootstrap'; 
 import {database} from '../../firebase/firebase.utils';
 import firebase from 'firebase/app'
 import UploadModal from '../UploadModal';
+import DspaceProfileImage from './DspaceProfileImage';
 
 
 let dSpace = {}
@@ -91,8 +92,9 @@ export class Dspaces extends Component {
         return ( 
             <Container fluid>  
                 <Row> 
-                    <Col md={11}>
-                        <Typography variant="h1">{dSpace.title}</Typography>
+                    <Col md={11} style={{display:'flex'}}>
+                        <DspaceProfileImage/>
+                        <Typography variant="h1">{dSpace.title}</Typography> 
                     </Col>
                     <Col md={1}>
                         {
