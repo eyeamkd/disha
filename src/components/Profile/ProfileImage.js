@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Avatar, Typography } from "@material-ui/core"; 
-import {storage} from '../../firebase/firebase.utils'
+import {storage} from '../../firebase/firebase.utils';
+import {getImageFromSource} from '../../firebase/firebase.utils';
 
 export class ProfileImage extends Component {
   constructor(props) {
@@ -12,8 +13,7 @@ export class ProfileImage extends Component {
       this.getImageSrc();
   } 
   getImageSrc=()=>{ 
-    let imageStorageReference = storage.ref(this.props.imageSrc);
-    imageStorageReference.getDownloadURL().then(url=>{this.setState({url:url})})
+    getImageFromSource(this.props.imageSrc).then(url=>{this.setState({url:url})});
   }
   componentDidUpdate(){
     this.getImageSrc();
@@ -26,9 +26,6 @@ export class ProfileImage extends Component {
         <Avatar
           variant={this.props.variant}
           sizes="width:100; height:100"
-          onMouseEnter={() => {
-            console.log("Mouse Entereed");
-          }}
           style={Object.assign({
             width: scale,
             height: scale,

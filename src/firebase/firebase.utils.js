@@ -32,6 +32,16 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         }
     }
     return userRef;
+} 
+
+export const getImageFromSource = async (imageSrc) => {
+    let imageStorageReference = firebase.storage().ref(imageSrc); 
+    return ( 
+        imageStorageReference.getDownloadURL().then( 
+            (url)=>  {return url;}
+        )
+    )
+
 }
 
 export async function getUserDocument(userId) {
