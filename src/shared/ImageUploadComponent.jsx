@@ -29,7 +29,7 @@ export const ImageUploadComponent = (props) => {
       reader.readAsDataURL(files[0]);
       console.log(files);
     }
-  }, [files, isImageUploaded,props]);
+  }, [files, isImageUploaded, props]);
 
   const onSelectFile = (file) => {
     if (file) {
@@ -41,13 +41,13 @@ export const ImageUploadComponent = (props) => {
       reader.readAsDataURL(file);
       setIsImageUploaded(true);
     }
-  }; 
+  };
 
   const onImageCropCancelClicked = () => {
-    setIsImageUploaded(false); 
-    setSrc(""); 
+    setIsImageUploaded(false);
+    setSrc("");
     setfiles([]);
-  }
+  };
 
   const onImageUploaded = (event) => {
     let file = event.target.files[0];
@@ -63,26 +63,33 @@ export const ImageUploadComponent = (props) => {
   return (
     <div className="main-class">
       {isImageUploaded && (
-        <ImageCropModal cancel={onImageCropCancelClicked} file={files} src={src} onProfileImageUpdated={props.onProfileImageUpdated} />
-      )} 
-        <div className="image-upload-button">
-          <Button
-            type="submit"
-            variant="contained"
-            color="secondary"
-            className="submit"
-            onClick={uploadButtonClicked}
-          >
-            UPLOAD
-          </Button>
+        <ImageCropModal
+          cancel={onImageCropCancelClicked}
+          file={files}
+          src={src}
+          onProfileImageUpdated={props.onProfileImageUpdated}
+          context={props.context}
+          dspaceId={!!props.dspaceId ? props.dspaceId : ""}
+        />
+      )}
+      <div className="image-upload-button">
+        <Button
+          type="submit"
+          variant="contained"
+          color="secondary"
+          className="submit"
+          onClick={uploadButtonClicked}
+        >
+          UPLOAD
+        </Button>
 
-          <input
-            type="file"
-            onChange={onImageUploaded}
-            style={{ display: "none" }}
-            ref={inputButtonReference}
-          />
-        </div>
+        <input
+          type="file"
+          onChange={onImageUploaded}
+          style={{ display: "none" }}
+          ref={inputButtonReference}
+        />
+      </div>
     </div>
   );
 };

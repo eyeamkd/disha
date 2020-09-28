@@ -133,8 +133,9 @@ export default function ImageCropModal(props) {
     return new Blob([ia], { type: mimeString });
   } 
 
-  const storeImageOnFireStore = (file) => {
-    let userRollNumber = JSON.parse(localStorage.getItem("currentUserInfo"))
+  const storeImageOnFireStore = (file) => { 
+    if(props.context === 'user'){ 
+      let userRollNumber = JSON.parse(localStorage.getItem("currentUserInfo"))
       .rollNumber;
     //dangerous if user deletes the localstorage and uploads the image 
     deleteProfileImageIfPresent();
@@ -155,6 +156,28 @@ export default function ImageCropModal(props) {
           });
       }
     });
+    }else if(props.context === 'dspace'){ 
+      let dspaceId = props.dspaceId;
+    //dangerous if user deletes the localstorage and uploads the image 
+    deleteProfileImageIfPresent();
+    let dspaceImageStorageReference = storage.ref().child(
+      `d-space-profile-images/${dspaceId}-${file.name}`
+    );
+    dspaceImageStorageReference.put(file).then((snapshot) => {
+      console.log("Uploaded Snapshot ", snapshot);
+      if (snapshot.state === "success") {
+        let dspaceDocRef = database
+          .collection("d-spaces")
+          .doc(dspaceId);
+          dspaceDocRef
+          .update({ profileImagePath: snapshot.metadata.fullPath })
+          .then((res) => {
+            console.log("Image Uploaded Successfully!!", res); 
+            props.onProfileImageUpdated(snapshot.metadata.fullPath);
+          });
+      }
+    });
+    }
   }; 
 
   const deleteProfileImageIfPresent = () =>{  

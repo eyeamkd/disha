@@ -354,7 +354,7 @@ export default class EditProfile extends Component {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <ImageUploadComponent onImageUpload={this.handleImageUpload} onProfileImageUpdated = {this.onProfileImageUpdated} />
+              <ImageUploadComponent onImageUpload={this.handleImageUpload} onProfileImageUpdated = {this.onProfileImageUpdated} context="user"/>
             </Grid>
           </Grid>
           <Grid container direction="row" justify="center">
