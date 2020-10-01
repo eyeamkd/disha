@@ -1,0 +1,17 @@
+[
+  {
+    "routeName": "Dashboard",
+    "endpoint": "/dashboard",
+    "icon": "home"
+  },
+  {
+    "routeName": "Set Admins",
+    "endpoint": "/set-admins",
+    "icon": "account_box"
+  },
+  {
+    "routeName": "Forgot Password",
+    "endpoint": "/forgot-password",
+    "icon": "search"
+  }
+]
