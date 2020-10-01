@@ -28,7 +28,7 @@ export class DspaceCard extends Component {
                 }}
                 >  
                 <Container style={{display:'flex', justifyContent:'center'}}>
-                <DspaceProfileImage/>
+                <DspaceProfileImage imageSrc={this.props.imageSrc}/>
                 </Container>  
                     <Card  
                     variant="outlined"

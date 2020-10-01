@@ -82,7 +82,7 @@ const DspaceEditModal = (props) => {
           </FormControl>
         </Grid>
         <Grid item>
-          <DspaceProfileImage />
+          <DspaceProfileImage  />
           <ImageUploadComponent
             onImageUpload={handleImageUpload}
             onProfileImageUpdated={onProfileImageUpdated}

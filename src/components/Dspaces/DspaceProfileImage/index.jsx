@@ -8,13 +8,14 @@ const DspaceProfileImage = (props) => {
     useEffect(() => { 
         getImageSrc();
     }, [])
-    const getImageSrc=()=>{ 
-        getImageFromSource(props.imageSrc).then(url=>{seturl({url:url})});
+    const getImageSrc=()=>{  
+        if(!!props.imageSrc)
+        getImageFromSource(props.imageSrc).then(url=>{seturl(url)});
       }
     return (   
         <> 
         {   
-            !!props.image? 
+            !!props.imageSrc? 
             ( <img src={url} alt="profile pic" />) 
             :  
 <Avatar variant="circle" style={{margin:'10px'}}  ></Avatar>

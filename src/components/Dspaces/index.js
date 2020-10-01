@@ -93,7 +93,7 @@ export class Dspaces extends Component {
             <Container fluid>  
                 <Row> 
                     <Col md={11} style={{display:'flex'}}>
-                        <DspaceProfileImage/>
+                        <DspaceProfileImage imageSrc={!!dSpace.profileImagePath?dSpace.profileImagePath:""}/>
                         <Typography variant="h1">{dSpace.title}</Typography> 
                     </Col>
                     <Col md={1}>
