@@ -6,7 +6,8 @@ import Navigation from "./navigation/index";
 import { connect } from "react-redux";
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 import { setUser } from "./redux/user/user-actions";
-import AdminNavigation from "./navigation/admin-nav";
+import AdminNavigation from "./navigation/admin-nav"; 
+import {database} from './firebase/firebase.utils';
 
 export class App extends Component {
   constructor(props) {
@@ -29,6 +30,25 @@ export class App extends Component {
       return true;
     }
     this.setState({ admin: false });
+  } 
+
+  setUserContext = async () =>{
+    let domain = this.state.currentUser.email.split("@")[1].toLowerCase();   
+    const facultyCollection = database.collection('faculty');  
+    const doc = await facultyCollection.where('email','==',this.state.currentUser.email).get();  
+    let userContext;
+    if(domain === 'disha.website'){  
+      userContext = React.createContext({cateogry:'admin'});
+      //set user context to admin
+    }else if(!doc.empty){ 
+        //set user context to faculty 
+      userContext = React.createContext({cateogry:'faculty'});
+
+    }else { 
+      //set user context to user 
+      userContext = React.createContext({cateogry:'user'});
+
+    }
   }
 
   componentDidMount() {

@@ -30,23 +30,7 @@ import { connect } from "react-redux";
 import { setUser } from './../../redux/user/user-actions';
 
 
-const getdrawerWidth = () => {     
-  let userInfo = localStorage.getItem('currentUserInfo')
-  if(userInfo!=null){ 
-    if(!userInfo.isAdmin){ 
-      return 240; 
-    } 
-    else { 
-      return 0;
-    }
-  }  
-  else 
-    return 0;
-} 
-
-
-
-const drawerWidth = getdrawerWidth(); 
+const drawerWidth = 240; 
 console.log("Drawer width is ", drawerWidth);
 
 const useStyles = makeStyles( theme => ({
@@ -110,13 +94,7 @@ function Layout(props) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
  
-  const menuDisplayHandle=()=>{  
-    console.log("Props is ", props); 
-    if(props.userInfo!== null)
-    return !props.userInfo.isAdmin; 
-    else 
-    return false;
-  }
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -156,10 +134,7 @@ function Layout(props) {
         })} 
         style={{zIndex:1400}}
       > 
-      {console.log("User info is ", menuDisplayHandle())}
         <Toolbar>
-          { menuDisplayHandle() 
-            &&
             <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -169,7 +144,6 @@ function Layout(props) {
           >
             <MenuIcon />
           </IconButton> 
-          }
           <Box flexGrow={1}>
           <Typography variant="h6" noWrap>
           <Link to="/home">
@@ -203,9 +177,6 @@ function Layout(props) {
           </Box>
         </Toolbar>
       </AppBar> 
-      {  
-        menuDisplayHandle() 
-        &&
       <Drawer
         className={classes.drawer}
         variant="persistent"
@@ -245,7 +216,7 @@ function Layout(props) {
         </List>
         <Divider />
       </Drawer> 
-      }
+      
       <main
         className={clsx(classes.content, {
           [classes.contentShift]: open
