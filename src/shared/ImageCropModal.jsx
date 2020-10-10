@@ -39,7 +39,7 @@ export default function ImageCropModal(props) {
   const [open, setOpen] = useState(true);
   const [croppedImageUrl, setCroppedImageUrl] = useState("");
   const [src, setSrc] = useState("");
-  const [crop, setCrop] = useState("");
+  const [crop, setCrop] = useState({unit:'px',height:'50',width:'50',aspect:1});
   const [imageRef, setImageRef] = useState("");
   const [file, setFile] = useState("");
 
@@ -203,7 +203,8 @@ export default function ImageCropModal(props) {
         onImageLoaded={onImageLoaded}
         onComplete={onCropComplete}
         onChange={onCropChange} 
-        style={{ maxWidth: "300px" , maxHeight:'300px'}}
+        maxHeight="300"
+        maxWidth="300"
       />
       {croppedImageUrl && (
         <div>

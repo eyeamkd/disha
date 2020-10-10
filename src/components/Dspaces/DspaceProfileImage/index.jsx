@@ -18,7 +18,7 @@ const DspaceProfileImage = (props) => {
             !!props.imageSrc? 
             ( <img src={url} alt="profile pic" />) 
             :  
-<Avatar variant="circle" style={{margin:'10px'}}  ></Avatar>
+<Avatar variant="circle" style={{margin:'10px', height:'100px', width:'100px'}}  ></Avatar>
         }
         </>
     );

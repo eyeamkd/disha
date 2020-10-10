@@ -78,7 +78,8 @@ export const ImageUploadComponent = (props) => {
           variant="contained"
           color="secondary"
           className="submit"
-          onClick={uploadButtonClicked}
+          onClick={uploadButtonClicked} 
+          style={props.buttonStyle?props.buttonStyle:{}}
         >
           UPLOAD
         </Button>
