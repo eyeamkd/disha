@@ -1,14 +1,13 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
-import Layout from "./components/Layout";
-import HomePage from "./components/HomePage";
-import Navigation from "./navigation/index";
 import { connect } from "react-redux";
-import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
+import Layout from "./components/Layout";
+import { auth, createUserProfileDocument, database } from "./firebase/firebase.utils";
+import Navigation from "./navigation/index";
 import { setUser } from "./redux/user/user-actions";
-import AdminNavigation from "./navigation/admin-nav"; 
-import {database} from './firebase/firebase.utils';
+import { UserContext } from "./utils/Context/index";
 
+
+UserContext.displayName = "UserContext";
 export class App extends Component {
   constructor(props) {
     super(props);
@@ -30,26 +29,24 @@ export class App extends Component {
       return true;
     }
     this.setState({ admin: false });
-  } 
-
-  setUserContext = async () =>{
-    let domain = this.state.currentUser.email.split("@")[1].toLowerCase();   
-    const facultyCollection = database.collection('faculty');  
-    const doc = await facultyCollection.where('email','==',this.state.currentUser.email).get();  
-    let userContext;
-    if(domain === 'disha.website'){  
-      userContext = React.createContext({cateogry:'admin'});
-      //set user context to admin
-    }else if(!doc.empty){ 
-        //set user context to faculty 
-      userContext = React.createContext({cateogry:'faculty'});
-
-    }else { 
-      //set user context to user 
-      userContext = React.createContext({cateogry:'user'});
-
-    }
   }
+
+  setUserContext = async () => {
+    let domain = this.state.currentUser.email.split("@")[1].toLowerCase();
+    const facultyCollection = database.collection("faculty");
+    const query = facultyCollection.where(
+      "email",
+      "==",
+      this.state.currentUser.email
+    );
+    if (domain === "disha.website") {
+      this.setState({ userType: "admin" });
+    } else {
+      let snapshot = await query.get();
+      if (snapshot.empty) this.setState({ userType: "general" });
+      else this.setState({ userType: "faculty" });
+    }
+  };
 
   componentDidMount() {
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
@@ -68,6 +65,8 @@ export class App extends Component {
               this.state.currentUser
                 ? this.setUserId()
                 : this.props.setUser(null);
+
+              this.setUserContext();
             }
           );
           //console.log(this.state)
@@ -82,6 +81,7 @@ export class App extends Component {
       } else {
         this.setState({ currentUser: userAuth }, () => {
           this.props.setUser(null);
+          this.setUserContext();
         });
       }
     });
@@ -100,26 +100,19 @@ export class App extends Component {
 
   render() {
     var currentUserId = localStorage.getItem("currentUserId");
-    return !!this.state.currentUser ? (
+    return (
       <Layout
         currentUser={this.props.isNewUser ? null : currentUserId}
         changeCurrentUser
         userInfo={this.state.currentUser}
       >
-        {this.state.admin ? (
-          <AdminNavigation />
-        ) : (
+        <UserContext.Provider value={this.state}>
           <Navigation userInfo={this.state.currentUser} />
-        )}
+        </UserContext.Provider>
       </Layout>
-    ) : this.state.admin ? (
-      <AdminNavigation />
-    ) : (
-      <Navigation userInfo={this.state.currentUser} />
     );
   }
 }
-
 const mapStateToProps = (state) => ({
   isNewUser: state.isNewUser.isNewUser,
   user: state.user.user,
