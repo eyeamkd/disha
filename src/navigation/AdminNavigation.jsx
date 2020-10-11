@@ -1,30 +1,10 @@
-import React, { Component } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
-import { connect } from "react-redux";
-import SignIn from "../components/Auth/SignIn/SignIn";
 import Button from "@material-ui/core/Button";
-import { Link } from "react-router-dom";
+import React, { Component } from "react";
+import { Link, Redirect, Route, Switch } from "react-router-dom";
 import AdminDashboard from "../components/Admin/AdminDashboard";
+import SignIn from "../components/Auth/SignIn/SignIn";
 import LandingPage from "../components/LandingPage";
-import { UserContext } from "../utils/Context/index";
 
-import HomePage from "../components/HomePage";
-import ClaimAccountPage, {
-  ConfirmAccount,
-} from "../components/ConfirmAccountPage";
-import CommunityPage from "../components/Community";
-import SearchPage from "../components/SearchPage";
-import Profile from "../components/Profile";
-import SignUp from "../components/Auth/SignUp/SignUp";
-import NewPost from "../components/NewPost";
-import DataUpdated from "../shared/DataUpdated";
-import NewDspaceForm from "../components/Dspace/NewDspaceForm";
-import OtherUser from "../components/OtherUserProfile";
-import IndividualPost from "../components/IndividualPost";
-import UserDspaces from "../components/UserDspaces";
-import EditProfile from "../components/EditProfile";
-import Reauthentication from "../components/Reauthentication";
-import IndividualDspace from "../components/IndividualDspace";
 export class AdminNavigation extends Component { 
     constructor(props){ 
         super(props); 

@@ -52,7 +52,7 @@ export class App extends Component {
         this.setState({ userType: userRoles.admin });
       } else {
         let snapshot = await query.get();
-        if (snapshot.empty) this.setState({ userType: userRoles.general });
+        if (snapshot.empty) this.setState({ userType: userRoles.general, admin:true });
         else this.setState({ userType: userRoles.faculty });
       }
     } else{ 
@@ -66,7 +66,6 @@ export class App extends Component {
       console.log("Auth state changed!!!");
       if (userAuth) {
         let userRef = await createUserProfileDocument(userAuth);
-
         userRef.onSnapshot((snapShot) => {
           this.setState(
             {

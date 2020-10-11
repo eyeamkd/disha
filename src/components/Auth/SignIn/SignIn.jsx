@@ -52,7 +52,8 @@ class SignIn extends React.Component {
     };
 
 
-    handleSigninClick = async () => {
+    handleSigninClick = async () => { 
+        debugger;
         this.setState({isSignin : true}, () => this.setState({signinErrorMessage: ''}));
         const { email, password } = this.state;
         if (!this.state.isEmail && !this.state.isPassword) {

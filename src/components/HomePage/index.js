@@ -90,13 +90,14 @@ export default class HomePage extends React.Component {
                 }
                 let a = [] 
                 if(!!snapshot){ 
-
-                    snapshot.forEach(doc => {
-                        userInfo.dspaces.forEach((dspaceId) => {
-                            if (dspaceId === doc.id) {
-                                a.push(doc.data().title)
-                            }
-                        })
+                    snapshot.forEach(doc => { 
+                        if(!!userInfo.dspaces){ 
+                            userInfo.dspaces.forEach((dspaceId) => {
+                                if (dspaceId === doc.id) {
+                                    a.push(doc.data().title)
+                                }
+                            })
+                        }
                     });
                 }
                 // let dspaceInfo = snapshot.data()
