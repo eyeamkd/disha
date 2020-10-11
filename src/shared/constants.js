@@ -24,7 +24,7 @@ export const POST_CATEGORIES = {
 export const ROLL_NUMBER_CONFIG = {
   YEAR: ["0", "1", "2"],
   STUDENT_TYPE: ["1a", "5a"],
-  BRANCH: ["01", "02", "03", "04", "05", "12"],
+  BRANCH: ["00", "01", "02", "03", "04", "05", "12"],
 };
 
 export const DEPARTMENT_CODES = {

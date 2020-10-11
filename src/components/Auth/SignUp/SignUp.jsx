@@ -38,7 +38,7 @@ import {
 } from "../../../firebase/firebase.utils";
 
 var emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
+let mbaCode = "1e";
 class SignUp extends React.Component {
   state = {
     isAckChecked: false,
@@ -85,7 +85,7 @@ class SignUp extends React.Component {
 
   handleRollNumberChange = (value) => {
     let tempRollNumber = value.toLowerCase().split(" ")[0];
-    let isRollNumberProper = this.validateTicketNum(tempRollNumber);
+    let isRollNumberProper = this.validateRollNumber(tempRollNumber);
     if (tempRollNumber.length < 1 || !isRollNumberProper) {
       if (tempRollNumber.length < 1) {
         return "* Required";
@@ -100,6 +100,12 @@ class SignUp extends React.Component {
     let departments = DEPARTMENT_CODES;
     if (value.length > 7) {
       let deptCode = value.substring(6, 8);
+      let studentType = value.substring(4, 6);
+      if(studentType === mbaCode) {
+        this.setState({ department: "MBA" });
+        department = "MBA"
+        return department;
+      }
       department = departments[deptCode];
       this.setState({ department: departments[deptCode] });
     } else {
@@ -110,7 +116,8 @@ class SignUp extends React.Component {
 
   handleYearChange = (value) => {
     let yearValue = Number(value);
-    let isYearProper = Number(value) > 2007 && Number(value) < 2050;
+    let yearMax = new Date().getFullYear() + 5;
+    let isYearProper = Number(value) > 2007 && Number(value) <= yearMax;
     let date = new Date();
     let currentYear = date.getFullYear();
     let currentMonth = date.getMonth() + 1;
@@ -219,7 +226,7 @@ class SignUp extends React.Component {
     return Object.keys(obj).length === 0 && obj.constructor === Object;
   };
 
-  validateTicketNum(rollNumber) {
+  validateRollNumber(rollNumber) {
     rollNumber = rollNumber.toLowerCase();
     var year = ROLL_NUMBER_CONFIG.YEAR;
     var studentType = ROLL_NUMBER_CONFIG.STUDENT_TYPE;
@@ -240,6 +247,9 @@ class SignUp extends React.Component {
     if (branch.indexOf(rollNumber.substring(6, 8)) === -1) {
       return false;
     }
+    else {
+      if(rollNumber.substring(6, 8) === "00" && rollNumber.substring(4, 6) !== mbaCode) return false;
+    }
     return true;
   }
 
@@ -255,7 +265,8 @@ class SignUp extends React.Component {
           this.state.department === "IT" ||
           this.state.department === "Civil" ||
           this.state.department === "EEE" ||
-          this.state.department === "Mech"
+          this.state.department === "Mech" ||
+          this.state.department === "MBA"
         );
     }
   };
