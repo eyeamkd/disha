@@ -8,7 +8,8 @@ import {
 } from "./firebase/firebase.utils";
 import Navigation from "./navigation/index";
 import { setUser } from "./redux/user/user-actions";
-import { UserContext } from "./utils/Context/index";
+import { UserContext } from "./utils/Context/index"; 
+import userRoles from "./utils/userRoles";
 
 UserContext.displayName = "UserContext";
 export class App extends Component {
@@ -48,14 +49,14 @@ export class App extends Component {
         this.state.currentUser.email
       );
       if (domain === "disha.website") {
-        this.setState({ userType: "admin" });
+        this.setState({ userType: userRoles.admin });
       } else {
         let snapshot = await query.get();
-        if (snapshot.empty) this.setState({ userType: "general" });
-        else this.setState({ userType: "faculty" });
+        if (snapshot.empty) this.setState({ userType: userRoles.general });
+        else this.setState({ userType: userRoles.faculty });
       }
     } else{ 
-      this.setState({userType:'signedout'});
+      this.setState({userType:userRoles.signedout});
     }
     
   };

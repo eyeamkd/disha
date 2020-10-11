@@ -1,5 +1,6 @@
-export  const  menu = {
-  "faculty": [
+import userRoles from "../utils/userRoles";
+export const  menu = {
+  [userRoles.faculty]: [
     {
       "routeName": "Dashboard",
       "endpoint": "/dashboard",
@@ -11,7 +12,7 @@ export  const  menu = {
       "icon": "account_box"
     }
   ],
-  "admin": [
+  [userRoles.admin]: [
     {
       "routeName": "Dashboard",
       "endpoint": "/dashboard",
@@ -23,7 +24,7 @@ export  const  menu = {
       "icon": "account_box"
     }
   ],
-  "general": [
+  [userRoles.general]: [
     {
       "routeName": "Home",
       "endpoint": "/home",
@@ -60,7 +61,9 @@ export  const  menu = {
       "icon": "emoji_people"
     }
   ],
-  "signedout":[ 
-    
-  ]
-}
+  [userRoles.signedout]:[ 
+
+  ], 
+} 
+
+

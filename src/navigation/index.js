@@ -4,8 +4,7 @@ import { UserContext } from "../utils/Context/index";
 import AdminNavigation from "./AdminNavigation";
 import FacultyNavigation from "./FacultyNavigation";
 import GeneralUserNavigation from "./GeneralUserNavigation";
-
-
+import userRoles from "../utils/userRoles";
 class Navigation extends React.Component {
   constructor(props) {
     super(props);
@@ -31,11 +30,11 @@ class Navigation extends React.Component {
       <UserContext.Consumer>
         {(value) => {
           switch (value.userType) {
-            case "admin":
+            case userRoles.admin:
               return <AdminNavigation />;
-            case "general":
+            case userRoles.general:
               return <GeneralUserNavigation />;
-            case "faculty":
+            case userRoles.faculty:
               return <FacultyNavigation />;
             default:
               return <GeneralUserNavigation/>;
