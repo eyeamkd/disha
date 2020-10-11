@@ -1,7 +1,7 @@
 [
   {
     "routeName": "Dashboard",
-    "endpoint": "/dashboard",
+    "endpoint": "/admin-dashboard",
     "icon": "home"
   },
   {
@@ -10,8 +10,8 @@
     "icon": "account_box"
   },
   {
-    "routeName": "Forgot Password",
-    "endpoint": "/forgot-password",
-    "icon": "search"
+    "routeName": "View Overall Stats",
+    "endpoint": "/admin-stats",
+    "icon": "emoji_people"
   }
 ]

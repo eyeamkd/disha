@@ -34,13 +34,11 @@ const getdrawerWidth = () => {
 };
 
 const loadMenu = () => {
-  let userInfo = JSON.parse(localStorage.getItem("currentUserInfo"));
-  if (!userInfo) {
+  let isAdmin = localStorage.getItem("isAdmin");
+  let isTrueSet = isAdmin === "true";
+  if (isTrueSet) {
     return AdminMenu;
   } else {
-    // if (userInfo.rollNumber) {
-    //   // return FacultyMenu;
-    // }
     return Menu;
   }
 };
@@ -197,7 +195,7 @@ function Layout(props) {
           classes={{
             paper: classes.drawerPaper,
           }}
-          style={{ zIndex: 1350 }}
+          // style={{ zIndex: 1350 }}
         >
           <div className={classes.drawerHeader}>
             <IconButton onClick={handleDrawerClose}>

@@ -45,7 +45,7 @@ export async function getUserDocument(userId) {
     });
 }
 
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV !== "development") {
   firebase.initializeApp(testingConfig);
 } else {
   firebase.initializeApp(config);

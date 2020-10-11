@@ -169,10 +169,22 @@ export class UserCards extends Component {
       .catch((err) => {
         console.log("Error getting documents", err);
       });
+      this.countByDept(Users)
     SearchUsers = Users;
     CompleteUsersArray = Users;
     FilteredUsers = Users;
     this.setState({ usersLoaded: true });
+  }
+
+  countByDept(users) {
+    let count = {}
+    count["CSE"] = users.filter((obj) => obj.department === "CSE").length;
+    count["IT"] = users.filter((obj) => obj.department === "IT").length;
+    count["ECE"] = users.filter((obj) => obj.department === "ECE").length;
+    count["Civil"] = users.filter((obj) => obj.department === "Civil").length;
+    count["Mech"] = users.filter((obj) => obj.department === "Mech").length;
+    count["EEE"] = users.filter((obj) => obj.department === "EEE").length;
+    console.log(count);
   }
 
   render() {

@@ -13,6 +13,7 @@ import Container from "@material-ui/core/Container";
 import Logo from "../../Logo/Logo";
 import { database } from "../../../firebase/firebase.utils";
 import { Formik } from "formik";
+import { PASSWORD_STRENGTHS } from "../../../shared/constants";
 import zxcvbn from "zxcvbn";
 
 import {
@@ -35,14 +36,6 @@ import {
   auth,
   createUserProfileDocument,
 } from "../../../firebase/firebase.utils";
-
-var strength = {
-  0: "Anyone can guess that!",
-  1: "Hackable!",
-  2: "Now that's a bit better",
-  3: "Almost there!",
-  4: "Perfect!",
-};
 
 var emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -150,7 +143,7 @@ class SignUp extends React.Component {
     let pwdAnalysis = zxcvbn(value); //Gives the password strength score
     this.setState({
       password: value,
-      passwordMessage: strength[pwdAnalysis.score],
+      passwordMessage: PASSWORD_STRENGTHS[pwdAnalysis.score],
     });
   };
 
