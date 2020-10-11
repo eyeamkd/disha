@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { UserContext } from "../utils/Context/index";
+import AdminNavigation from "./AdminNavigation";
 import FacultyNavigation from "./FacultyNavigation";
 import GeneralUserNavigation from "./GeneralUserNavigation";
 
@@ -31,7 +32,7 @@ class Navigation extends React.Component {
         {(value) => {
           switch (value.userType) {
             case "admin":
-              return <FacultyNavigation />;
+              return <AdminNavigation />;
             case "general":
               return <GeneralUserNavigation />;
             case "faculty":

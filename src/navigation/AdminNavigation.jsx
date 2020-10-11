@@ -25,7 +25,27 @@ import UserDspaces from "../components/UserDspaces";
 import EditProfile from "../components/EditProfile";
 import Reauthentication from "../components/Reauthentication";
 import IndividualDspace from "../components/IndividualDspace";
-export class AdminNavigation extends Component {
+export class AdminNavigation extends Component { 
+    constructor(props){ 
+        super(props); 
+        this.state={ 
+          userInfo: null
+        } 
+ 
+        console.log("In Faculty Navigation");
+     } 
+ 
+     componentWillReceiveProps(){ 
+         this.setState({userInfo:this.props.userInfo})
+     } 
+ 
+     getCurrentUserId() {
+         let currentUserId = localStorage.getItem('currentUserId');
+         if(currentUserId)
+             return true;
+         else   
+             return false;
+     } 
   render() {
     return (
       <>

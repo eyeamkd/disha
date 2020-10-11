@@ -17,83 +17,83 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Icon from "@material-ui/core/Icon";
 import Menu from "./../../navigation/menu.json";
-import Button from '@material-ui/core/Button';
-import { Redirect } from 'react-router-dom'; 
-import Box from '@material-ui/core/Box';
-
+import Button from "@material-ui/core/Button";
+import { Redirect } from "react-router-dom";
+import Box from "@material-ui/core/Box";
 
 import { Link } from "react-router-dom";
-import Grid from '@material-ui/core/Grid';
-import {auth} from '../../firebase/firebase.utils';
+import Grid from "@material-ui/core/Grid";
+import { auth } from "../../firebase/firebase.utils";
 import { connect } from "react-redux";
 
-import { setUser } from './../../redux/user/user-actions';
+import { setUser } from "./../../redux/user/user-actions";
+import { UserContext } from "../../utils/Context";
 
+import { menu } from "../../navigation/menu";
 
-const drawerWidth = 240; 
+const drawerWidth = 240;
 console.log("Drawer width is ", drawerWidth);
 
-const useStyles = makeStyles( theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex"
+    display: "flex",
   },
   appBar: {
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    })
+      duration: theme.transitions.duration.leavingScreen,
+    }),
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: drawerWidth,
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen
-    })
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   hide: {
-    display: "none"
+    display: "none",
   },
   drawer: {
     width: drawerWidth,
-    flexShrink: 0
+    flexShrink: 0,
   },
   drawerPaper: {
-    width: drawerWidth
+    width: drawerWidth,
   },
   drawerHeader: {
     display: "flex",
     alignItems: "center",
     padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
   },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
+      duration: theme.transitions.duration.leavingScreen,
     }),
-    marginLeft: -drawerWidth
+    marginLeft: -drawerWidth,
   },
   contentShift: {
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen
+      duration: theme.transitions.duration.enteringScreen,
     }),
-    marginLeft: 0
-  }
+    marginLeft: 0,
+  },
 }));
 
 function Layout(props) {
-  const classes = useStyles(  );
+  const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
- 
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -103,138 +103,136 @@ function Layout(props) {
     setOpen(false);
   };
 
-  const redirect = ()=>{ 
-
-    return (<Redirect to="/SignIn" />)
-  }
-
-  const handleSignOut = () => {
-    auth.signOut().then(
-      redirect()
-    ).then(  
-      changeCurrentUser()
-    )
+  const redirect = () => {
+    return <Redirect to="/SignIn" />;
   };
 
-  const changeCurrentUser = () => { 
-    
-    localStorage.removeItem('currentUserId')
-    localStorage.removeItem('currentUserInfo')  
+  const handleSignOut = () => {
+    auth.signOut().then(redirect()).then(changeCurrentUser());
+  };
+
+  const changeCurrentUser = () => {
+    localStorage.removeItem("currentUserId");
+    localStorage.removeItem("currentUserInfo");
     // console.log(props.user)
   };
 
-
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open
-        })} 
-        style={{zIndex:1400}}
-      > 
-        <Toolbar>
-            <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}
+    <UserContext.Consumer className={classes.root}>
+      {(value) => (
+        <>
+          {console.log("Value is", value)}
+          <CssBaseline />
+          <AppBar
+            position="fixed"
+            className={clsx(classes.appBar, {
+              [classes.appBarShift]: open,
+            })}
+            style={{ zIndex: 1400 }}
           >
-            <MenuIcon />
-          </IconButton> 
-          <Box flexGrow={1}>
-          <Typography variant="h6" noWrap>
-          <Link to="/home">
-              DISHA
-              </Link>
-            </Typography>
-          </Box>
-          <Box>
-            {
-              props.currentUser ?
-              <Button
-              type="submit"
-              variant="contained"
-              color="secondary"
-              className="submit"
-              onClick={() => handleSignOut()}
+            <Toolbar>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawerOpen}
+                edge="start"
+                className={clsx(classes.menuButton, open && classes.hide)}
               >
-                Sign Out
-              </Button>
-              :
-              <Button
-                type="submit"
-                variant="contained"
-                color="secondary"
-                className="submit"
-              >
-                <Link to="/SignIn">Sign In</Link>
-              </Button>
-            }
-            
-          </Box>
-        </Toolbar>
-      </AppBar> 
-      <Drawer
-        className={classes.drawer}
-        variant="persistent"
-        anchor="left"
-        open={open}
-        classes={{
-          paper: classes.drawerPaper
-        }} 
-        style={{zIndex:1350}}
-      >
-        <div className={classes.drawerHeader}>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "ltr" ? (
-              <ChevronLeftIcon />
-            ) : (
-              <ChevronRightIcon />
-            )}
-          </IconButton>
-        </div>
-        <Divider />
-        <List>
-          {Menu.map((menuItem, key) => (
-            <ListItem
-              component={Link}
-              to={menuItem.endpoint}
-              button
-              key={menuItem.routeName}
-              onClick={handleDrawerClose}
-            >
-              <Icon>{menuItem.icon}</Icon>
-              <ListItemText
-                primary={menuItem.routeName}
-                style={{ padding: "10px" }}
-              />
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-      </Drawer> 
-      
-      <main
-        className={clsx(classes.content, {
-          [classes.contentShift]: open
-        })}
-      >
-        <div className={classes.drawerHeader} />
-        {props.children}
-      </main>
-    </div>
+                <MenuIcon />
+              </IconButton>
+              <Box flexGrow={1}>
+                <Typography variant="h6" noWrap>
+                  <Link to="/home">DISHA</Link>
+                </Typography>
+              </Box>
+              <Box>
+                {props.currentUser ? (
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="secondary"
+                    className="submit"
+                    onClick={() => handleSignOut()}
+                  >
+                    Sign Out
+                  </Button>
+                ) : (
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="secondary"
+                    className="submit"
+                  >
+                    <Link to="/SignIn">Sign In</Link>
+                  </Button>
+                )}
+              </Box>
+            </Toolbar>
+          </AppBar>
+          <Drawer
+            className={classes.drawer}
+            variant="persistent"
+            anchor="left"
+            open={open}
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+            style={{ zIndex: 1350 }}
+          >
+            <div className={classes.drawerHeader}>
+              <IconButton onClick={handleDrawerClose}>
+                {theme.direction === "ltr" ? (
+                  <ChevronLeftIcon />
+                ) : (
+                  <ChevronRightIcon />
+                )}
+              </IconButton>
+            </div>
+            <Divider />
+            <List>
+              {!!value.userType
+                ? menu[value.userType].map((menuItem, key) => (
+                    <ListItem
+                      component={Link}
+                      to={menuItem.endpoint}
+                      button
+                      key={menuItem.routeName}
+                      onClick={handleDrawerClose}
+                    >
+                      <Icon>{menuItem.icon}</Icon>
+                      <ListItemText
+                        primary={menuItem.routeName}
+                        style={{ padding: "10px" }}
+                      />
+                    </ListItem>
+                  ))
+                : <>  
+                Menu Loading..
+                </>}
+            </List>
+            <Divider />
+          </Drawer>
+
+          <main
+            className={clsx(classes.content, {
+              [classes.contentShift]: open,
+            })}
+          >
+            <div className={classes.drawerHeader} />
+            {props.children}
+          </main>
+        </>
+      )}
+    </UserContext.Consumer>
   );
 }
 
-const mapStateToProps = state => ({
-  user: state.user.user
+const mapStateToProps = (state) => ({
+  user: state.user.user,
 });
 
-const mapDispatchToProps = dispatch => ({
-  setUser: user => dispatch(setUser(user))
+const mapDispatchToProps = (dispatch) => ({
+  setUser: (user) => dispatch(setUser(user)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Layout);

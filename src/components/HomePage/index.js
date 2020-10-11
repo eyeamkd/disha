@@ -88,14 +88,17 @@ export default class HomePage extends React.Component {
                     console.log('No matching documents.');
                     return;
                 }
-                let a = []
-                snapshot.forEach(doc => {
-                    userInfo.dspaces.forEach((dspaceId) => {
-                        if (dspaceId === doc.id) {
-                            a.push(doc.data().title)
-                        }
-                    })
-                });
+                let a = [] 
+                if(!!snapshot){ 
+
+                    snapshot.forEach(doc => {
+                        userInfo.dspaces.forEach((dspaceId) => {
+                            if (dspaceId === doc.id) {
+                                a.push(doc.data().title)
+                            }
+                        })
+                    });
+                }
                 // let dspaceInfo = snapshot.data()
                 this.setState({ userDspaces: a, userDspacesArrived: true })
                 console.log(this.state.userDspaces)
