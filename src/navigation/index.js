@@ -38,7 +38,7 @@ class Navigation extends React.Component {
             case "faculty":
               return <FacultyNavigation />;
             default:
-              break;
+              return <GeneralUserNavigation/>;
           }
         }}
       </UserContext.Consumer>

@@ -55,7 +55,7 @@ export class App extends Component {
         else this.setState({ userType: "faculty" });
       }
     } else{ 
-      this.setState({userType:'general'});
+      this.setState({userType:'signedout'});
     }
     
   };

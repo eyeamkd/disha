@@ -59,5 +59,8 @@ export  const  menu = {
       "endpoint": "/community",
       "icon": "emoji_people"
     }
+  ],
+  "signedout":[ 
+    
   ]
 }
