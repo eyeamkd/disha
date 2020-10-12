@@ -36,6 +36,12 @@ export class App extends Component {
     }
     this.setState({ admin: false }); 
     this.setUserContext();
+  } 
+
+  getFacultyData(snapshot){   
+    let data;
+    snapshot.forEach(doc => {data= doc.data()});  
+    return data;
   }
 
   setUserContext = async () => {  
@@ -51,9 +57,10 @@ export class App extends Component {
       if (domain === "disha.website") {
         this.setState({ userType: userRoles.admin });
       } else {
-        let snapshot = await query.get();
+        let snapshot = await query.get();  
+        // console.log("Snapshot is ",snapshot.data());
         if (snapshot.empty) this.setState({ userType: userRoles.general, admin:true });
-        else this.setState({ userType: userRoles.faculty });
+        else this.setState({ userType: userRoles.faculty, facultyData:this.getFacultyData(snapshot) });
       }
     } else{ 
       this.setState({userType:userRoles.signedout});

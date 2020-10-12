@@ -118,10 +118,10 @@ function Layout(props) {
     // console.log(props.user)
   };
 
-  return (
-    <UserContext.Consumer className={classes.root}>
+  return ( 
+    <UserContext.Consumer >
       {(value) => (
-        <div>
+        <div className={classes.root}>
           {console.log("Value is", value)}
           <CssBaseline />
           <AppBar
@@ -222,7 +222,7 @@ function Layout(props) {
           </main>
         </div>
       )}
-    </UserContext.Consumer>
+    </UserContext.Consumer> 
   );
 }
 
