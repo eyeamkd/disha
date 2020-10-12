@@ -1,7 +1,10 @@
-import { Typography } from '@material-ui/core'
+import { Divider, Typography } from '@material-ui/core'
 import React, { useContext, useEffect, useState  } from 'react'
 import { UserContext } from '../../utils/Context';
-import {database} from '../../firebase/firebase.utils';
+import {database} from '../../firebase/firebase.utils'; 
+import { PieChart, Pie, Sector } from 'recharts';
+import BatchWisePieChart from './BatchWisePieChart';
+import UsersList from './UsersList';
 
 
 const FacultyDashboard = (props) => {  
@@ -58,9 +61,24 @@ const FacultyDashboard = (props) => {
                 (value)=>(  
                     <React.Fragment> 
                     <Typography variant="h1">  
-                     Dashboard of {value.facultyData.department} Department
+                     Department of {value.facultyData.department} 
                     </Typography>  
-                    
+                    <Divider/>
+                    <React.Fragment className="total-count-section">
+                        <Typography variant="h5">Total Users Count: {totalDepartmentUsersCount}</Typography>
+                    </React.Fragment> 
+                    <Divider/>
+
+                    <React.Fragment className="batch-count-section"> 
+                    <Typography variant="h5">Batch Wise Statistics</Typography>
+                        <BatchWisePieChart data={batchWiseUsers}/>
+                    </React.Fragment> 
+
+                    <React.Fragment className="users-list-section"> 
+                    <Typography variant="h5">List of Users</Typography>
+                        <UsersList users={usersOfDepartment}/>
+                    </React.Fragment>
+
                     </React.Fragment>
                 )      
             }
