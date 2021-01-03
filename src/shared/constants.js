@@ -32,7 +32,7 @@ export const DEPARTMENT_CODES = {
   "02": "EEE",
   "03": "Mech",
   "04": "ECE",
-  "12": "IT",
+  12: "IT",
   "05": "CSE",
 };
 
@@ -45,3 +45,5 @@ export const PASSWORD_STRENGTHS = {
 };
 
 export const POST_SCORE_THRESHOLD = 2;
+
+export const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

@@ -68,12 +68,12 @@ class SignIn extends React.Component {
     const { email, password } = this.state;
     if (!this.state.isEmail && !this.state.isPassword) {
       try {
-        let domain = email.split("@")[1].toLowerCase();
-        if (domain === "disha.website") {
-          localStorage.setItem("isAdmin", true);
-        } else {
-          localStorage.setItem("isAdmin", false);
-        }
+        // let domain = email.split("@")[1].toLowerCase();
+        // if (domain === "disha.website") {
+        //   localStorage.setItem("isAdmin", true);
+        // } else {
+        //   localStorage.setItem("isAdmin", false);
+        // }
         var signedIn = await auth.signInWithEmailAndPassword(email, password);
         this.setState({
           email: "",

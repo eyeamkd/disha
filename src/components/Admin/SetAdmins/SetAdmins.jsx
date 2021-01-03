@@ -1,10 +1,15 @@
 import React, { Component } from "react";
 import MaterialTable from "material-table";
 import { database } from "../../../firebase/firebase.utils";
-import { CircularProgress, Typography, Container } from "@material-ui/core";
+import {
+  CircularProgress,
+  Typography,
+  Container,
+  FormHelperText,
+} from "@material-ui/core";
 import Snackbar, { SnackbarOrigin } from "@material-ui/core/Snackbar";
 import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
-import { DEPARTMENT_CODES } from "../../../shared/constants";
+import { DEPARTMENT_CODES, EMAIL_REGEX } from "../../../shared/constants";
 import Form from "react-bootstrap/Form";
 import "./style.css";
 import CheckIcon from "@material-ui/icons/Check";
@@ -23,7 +28,7 @@ export class SetAdmins extends Component {
     this.state = {
       facultyData: [],
       facultyDepts: [],
-      open: false,
+      openSnackBar: false,
     };
     this.getFacultyData();
     for (let key in DEPARTMENT_CODES) {
@@ -59,6 +64,12 @@ export class SetAdmins extends Component {
   }
 
   addFaculty = (newData) => {
+    newData["isActivated"] = false;
+    if (!this.verifyDepartment(newData.department)) {
+      return new Promise((resolve, reject) => {
+        resolve();
+      });
+    }
     return new Promise((resolve, reject) => {
       database
         .collection("faculty")
@@ -75,7 +86,7 @@ export class SetAdmins extends Component {
           this.sendMail(newData.email);
           this.snackBarStyle = "success";
           this.snackBarMessage = "Faculty assigned!";
-          this.setState({ open: true });
+          this.setState({ openSnackBar: true });
           resolve();
         })
         .catch((err) => {
@@ -85,6 +96,11 @@ export class SetAdmins extends Component {
   };
 
   updateFaculty = (newData, oldData) => {
+    if (!this.verifyDepartment(newData.department)) {
+      return new Promise((resolve, reject) => {
+        resolve();
+      });
+    }
     return new Promise((resolve, reject) => {
       database
         .collection("faculty")
@@ -146,11 +162,26 @@ export class SetAdmins extends Component {
     });
   };
 
+  verifyDepartment(dept) {
+    if (!dept) {
+      this.snackBarStyle = "error";
+      this.snackBarMessage =
+        "Faculty assign failed! Please select the department.";
+        this.setState({ openSnackBar: true });
+      return false;
+    } else return true;
+  }
+
   sendMail(mailId) {
     let mailBase64 = btoa(mailId);
     console.log("Sending mail to", mailId, "with ID", mailBase64);
     //Add mailing code here
+    //localhost:3000/email=<mailBase64>
   }
+
+  isEmailValid = (email) => {
+    return EMAIL_REGEX.test(email);
+  };
 
   render() {
     if (
@@ -172,44 +203,66 @@ export class SetAdmins extends Component {
             <MaterialTable
               title="Faculty Admins"
               columns={[
-                { title: "Name", field: "name" },
+                {
+                  title: "Name",
+                  field: "name",
+                  validate: (rowData) =>
+                    rowData.name ? "" : "Name cannot be empty",
+                },
                 {
                   title: "Department",
                   field: "department",
                   editComponent: (props) => (
-                    <Form.Control
-                      as="select"
-                      value={props.value}
-                      onChange={(e) => props.onChange(e.target.value)}
-                      id="deptDropdown"
-                    >
-                      {this.deptCodes.map((dept, key) => (
-                        <option
-                          style={
-                            this.state.facultyDepts.includes(dept) &&
-                            dept !== props.value
-                              ? { color: "#c7c7c7" }
-                              : { color: "#000" }
-                          }
-                          disabled={
-                            this.state.facultyDepts.includes(dept) &&
-                            dept !== props.value
-                          }
-                          value={dept}
-                        >
-                          {dept}
-                        </option>
-                      ))}
-                    </Form.Control>
+                    <div>
+                      <Form.Control
+                        as="select"
+                        value={props.value}
+                        onChange={(e) => props.onChange(e.target.value)}
+                        id="deptDropdown"
+                      >
+                        <option value={""}>(Select)</option>
+                        {this.deptCodes.map((dept, key) => (
+                          <option
+                            style={
+                              this.state.facultyDepts.includes(dept) &&
+                              dept !== props.value
+                                ? { color: "#c7c7c7" }
+                                : { color: "#000" }
+                            }
+                            disabled={
+                              this.state.facultyDepts.includes(dept) &&
+                              dept !== props.value
+                            }
+                            value={dept}
+                          >
+                            {dept}
+                          </option>
+                        ))}
+                      </Form.Control>
+                      {!props.value && (
+                        <FormHelperText error={true}>
+                          Department cannot be empty
+                        </FormHelperText>
+                      )}
+                    </div>
                   ),
                 },
-                { title: "Email", field: "email" },
+                {
+                  title: "Email",
+                  field: "email",
+                  validate: (rowData) =>
+                    rowData.email
+                      ? this.isEmailValid(rowData.email)
+                        ? ""
+                        : "Enter a valid email address"
+                      : "Email cannot be empty",
+                },
                 {
                   title: "Activated",
                   field: "isActivated",
                   editable: "never",
                   render: (rowData) =>
-                    rowData.isActivated ? (
+                    rowData?.isActivated ? (
                       <CheckIcon style={{ color: green[600] }} />
                     ) : (
                       <ClearIcon style={{ color: red[500] }} />
@@ -237,10 +290,10 @@ export class SetAdmins extends Component {
                 vertical: this.vertical,
                 horizontal: this.horizontal,
               }}
-              open={this.state.open}
+              open={this.state.openSnackBar}
               autoHideDuration={5000}
               key={this.vertical + this.horizontal}
-              onClose={() => this.setState({ open: false })}
+              onClose={() => this.setState({ openSnackBar: false })}
             >
               <MuiAlert severity={this.snackBarStyle}>
                 {this.snackBarMessage}

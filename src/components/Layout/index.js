@@ -44,7 +44,6 @@ const loadMenu = () => {
 };
 
 const drawerWidth = getdrawerWidth();
-const menu = loadMenu();
 console.log("Drawer width is ", drawerWidth);
 
 const useStyles = makeStyles((theme) => ({
@@ -108,11 +107,8 @@ function Layout(props) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
-  const loadMenu = () => {
-    console.log("Props is ", props);
-    if (props.userInfo) return true;
-    else return false;
-  };
+  const menu = loadMenu();
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };

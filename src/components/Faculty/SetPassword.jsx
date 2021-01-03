@@ -42,6 +42,7 @@ export class SetPassword extends Component {
   }
 
   componentDidMount() {
+    debugger;
     const { email } = this.props.match.params;
     console.log(email);
     let mailId = atob(email);
@@ -138,6 +139,7 @@ export class SetPassword extends Component {
   };
 
   render() {
+    console.log(this.state.facultyData)
     if (!this.state.dataLoaded) {
       return (
         <div className="dashboard-loader-style">
@@ -148,6 +150,7 @@ export class SetPassword extends Component {
         </div>
       );
     } else {
+      debugger;
       if (
         this.state.emailExists &&
         this.state.facultyData.isActivated === false

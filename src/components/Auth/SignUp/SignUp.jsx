@@ -13,7 +13,7 @@ import Container from "@material-ui/core/Container";
 import Logo from "../../Logo/Logo";
 import { database } from "../../../firebase/firebase.utils";
 import { Formik } from "formik";
-import { PASSWORD_STRENGTHS } from "../../../shared/constants";
+import { PASSWORD_STRENGTHS, EMAIL_REGEX } from "../../../shared/constants";
 import zxcvbn from "zxcvbn";
 
 import {
@@ -37,7 +37,7 @@ import {
   createUserProfileDocument,
 } from "../../../firebase/firebase.utils";
 
-var emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+var emailRegex = EMAIL_REGEX;
 let mbaCode = "1e";
 class SignUp extends React.Component {
   state = {

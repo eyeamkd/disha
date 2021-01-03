@@ -24,10 +24,8 @@
 th {
   max-width: 125px;
   min-width: 125px;
-  padding: 0 !important;
   overflow-x: auto;
   white-space: nowrap;
-  text-align: center !important;
 }
 
 @media only screen and (max-width: 600px) {
