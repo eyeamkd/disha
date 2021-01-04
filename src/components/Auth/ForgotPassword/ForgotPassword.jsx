@@ -57,52 +57,7 @@ class SignIn extends React.Component {
     this.setState({ email: event.target.value });
   };
 
-  handlePasswordChange = (event) => {
-    this.setState({ password: event.target.value });
-  };
-
-  handleSigninClick = async () => {
-    this.setState({ isSignin: true }, () =>
-      this.setState({ signinErrorMessage: "" })
-    );
-    const { email, password } = this.state;
-    if (!this.state.isEmail && !this.state.isPassword) {
-      try {
-        // let domain = email.split("@")[1].toLowerCase();
-        // if (domain === "disha.website") {
-        //   localStorage.setItem("isAdmin", true);
-        // } else {
-        //   localStorage.setItem("isAdmin", false);
-        // }
-        var signedIn = await auth.signInWithEmailAndPassword(email, password);
-        this.setState({
-          email: "",
-          password: "",
-        });
-      } catch (error) {
-        if (error.code === "auth/user-not-found")
-          this.setState({
-            errorMessage: "Incorrect e-mail ID or password. Please check!",
-            isSignin: false,
-          });
-        else if (error.code === "auth/wrong-password")
-          this.setState({
-            errorMessage: "Incorrect e-mail ID or password. Please check!",
-            isSignin: false,
-          });
-        console.error(error);
-      }
-      // console.log("ok")
-    } else {
-      // console.log("not ok")
-      this.setState({ isSignin: false }, () =>
-        this.setState({
-          signinErrorMessage: "* Please fill all the fields",
-        })
-      );
-      return;
-    }
-  };
+  handleForgotClick = async () => {};
 
   render() {
     return (

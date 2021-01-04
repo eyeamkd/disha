@@ -4,7 +4,7 @@ import Layout from "./components/Layout";
 import HomePage from "./components/HomePage";
 import Navigation from "./navigation/index";
 import { connect } from "react-redux";
-import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
+import { auth, getUserDocument } from "./firebase/firebase.utils";
 import { setUser } from "./redux/user/user-actions";
 import AdminNavigation from "./navigation/admin-nav";
 
@@ -22,21 +22,16 @@ export class App extends Component {
 
   setUserId() {
     localStorage.setItem("currentUserId", this.state.currentUser.id);
+    localStorage.setItem("isAdmin", this.state.currentUser.isAdmin);
+    this.setState({ admin: this.state.currentUser.isAdmin });
     this.props.setUser(this.state.currentUser.id);
-    let domain = this.state.currentUser.email.split("@")[1].toLowerCase();
-    if (domain === "disha.website") {
-      this.setState({ admin: true });
-      return true;
-    }
-    this.setState({ admin: false });
   }
 
   componentDidMount() {
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
-        let userRef = await createUserProfileDocument(userAuth);
-
-        userRef.onSnapshot((snapShot) => {
+        let snapShot = await getUserDocument(userAuth);
+        if (snapShot) {
           this.setState(
             {
               currentUser: {
@@ -50,8 +45,21 @@ export class App extends Component {
                 : this.props.setUser(null);
             }
           );
-          //console.log(this.state)
-        });
+        } else {
+          this.setState(
+            {
+              currentUser: {
+                id: userAuth.uid,
+                isAdmin: true
+              },
+            },
+            () => {
+              this.state.currentUser
+                ? this.setUserId()
+                : this.props.setUser(null);
+            }
+          );
+        }
         // }
         // else if(this.props.isNewUser === true){
         // userRef = null;

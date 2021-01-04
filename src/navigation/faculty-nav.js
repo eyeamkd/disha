@@ -8,14 +8,14 @@ import AdminDashboard from "../components/Admin/AdminDashboard";
 import SetAdmins from "../components/Admin/SetAdmins/SetAdmins";
 import LandingPage from "../components/LandingPage";
 
-class AdminNavigation extends React.Component {
+class FacultyNavigation extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       userInfo: null,
     };
 
-    console.log("Admin Navigation");
+    console.log("Faculty Navigation");
   }
 
   componentWillReceiveProps() {
@@ -140,4 +140,4 @@ function NoMatch() {
 const mapStateToProps = (state) => ({
   user: state.user.user,
 });
-export default connect(mapStateToProps)(AdminNavigation);
+export default connect(mapStateToProps)(FacultyNavigation);

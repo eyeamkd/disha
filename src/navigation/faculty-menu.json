@@ -1,0 +1,7 @@
+[
+  {
+    "routeName": "Dashboard",
+    "endpoint": "/faculty-dashboard",
+    "icon": "home"
+  }
+]
