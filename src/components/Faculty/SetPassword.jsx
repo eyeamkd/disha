@@ -110,36 +110,42 @@ export class SetPassword extends Component {
 
   handlePasswordSubmit = () => {
     if (this.state.isNewPasswordValid && this.state.isConfirmPasswordValid) {
-      database
-        .collection("faculty")
-        .doc(this.state.facultyData.id)
-        .update({ isActivated: true })
-        .then((docRef) => {
-          console.log("Updated");
-          firebase
-            .auth()
-            .createUserWithEmailAndPassword(
-              this.state.email,
-              this.state.newPassword
-            )
-            .then(() => {
-              this.setState({ accountCreated: true });
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(
+          this.state.email,
+          this.state.newPassword
+        )
+        .then(() => {
+          this.setState({ accountCreated: true });
+          database
+            .collection("faculty")
+            .doc(this.state.facultyData.id)
+            .update({ isActivated: true })
+            .then((docRef) => {
+              console.log("Updated");
             })
-            .catch(function (error) {
-              // Handle Errors here.
-              var errorCode = error.code;
-              var errorMessage = error.message;
-              // ...
+            .catch((err) => {
+              console.log(
+                "Oof! there was an error! Please try after some time"
+              );
             });
         })
-        .catch((err) => {
-          console.log("Oof! there was an error! Please try after some time");
+        .catch(function (error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // ...
+          console.log(
+            "Oof! there was an error! Please try after some time",
+            errorCode,
+            errorMessage
+          );
         });
     }
   };
 
   render() {
-    console.log(this.state.facultyData)
+    console.log(this.state.facultyData);
     if (!this.state.dataLoaded) {
       return (
         <div className="dashboard-loader-style">
