@@ -9,13 +9,16 @@ import {
 } from "@material-ui/core";
 import Snackbar, { SnackbarOrigin } from "@material-ui/core/Snackbar";
 import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
-import { DEPARTMENT_CODES, EMAIL_REGEX } from "../../../shared/constants";
+import { DEPARTMENT_CODES, EMAIL_REGEX, facultyAdminMailContentCreator } from "../../../shared/constants";
 import Form from "react-bootstrap/Form";
 import "./style.css";
 import CheckIcon from "@material-ui/icons/Check";
 import ClearIcon from "@material-ui/icons/Clear";
 import { red, green } from "@material-ui/core/colors";
-import Paper from "@material-ui/core/Paper";
+import Paper from "@material-ui/core/Paper"; 
+import sendMail from '../../../microservices/mailing';  
+
+
 
 export class SetAdmins extends Component {
   snackBarStyle = "";
@@ -83,7 +86,7 @@ export class SetAdmins extends Component {
           });
         })
         .then(() => {
-          this.sendMail(newData.email);
+          this.sendFacultyMail(newData);
           this.snackBarStyle = "success";
           this.snackBarMessage = "Faculty assigned!";
           this.setState({ openSnackBar: true });
@@ -167,14 +170,17 @@ export class SetAdmins extends Component {
       this.snackBarStyle = "error";
       this.snackBarMessage =
         "Faculty assign failed! Please select the department.";
-        this.setState({ openSnackBar: true });
+      this.setState({ openSnackBar: true });
       return false;
     } else return true;
   }
 
-  sendMail(mailId) {
-    let mailBase64 = btoa(mailId);
-    console.log("Sending mail to", mailId, "with ID", mailBase64);
+  sendFacultyMail(mailData) { 
+    const {name,email,department} = mailData; 
+    let mailBase64 = btoa(email); 
+    const link = `${window.location.origin}/email=${mailBase64}`;   
+    let mailContent = facultyAdminMailContentCreator(name,link,department);
+    sendMail(email,mailContent.subject,mailContent.body);
     //Add mailing code here
     //localhost:3000/email=<mailBase64>
   }
