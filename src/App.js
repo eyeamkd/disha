@@ -33,27 +33,24 @@ export class App extends Component {
   } 
 
   getFacultyData(snapshot){   
-    let data;
+    let data;  
+    console.log('Snapshot is ', snapshot);
+    if(Array.isArray(snapshot))
     snapshot.forEach(doc => {data= doc.data()});  
     return data;
   }
 
   setUserContext = async () => {  
     console.log("The Current User State is", this.state.currentUser); 
-    if(!!this.state.currentUser){ 
-      let domain = this.state.currentUser.email.split("@")[1].toLowerCase();
-      const facultyCollection = database.collection("faculty");
-      const query = facultyCollection.where(
-        "email",
-        "==",
-        this.state.currentUser.email
-      );
-      if (domain === "disha.website") {
+    if(!!this.state.currentUser){  
+      let {isAdmin,id} = this.state.currentUser;
+      const query = database.collection("faculty").doc(id);
+      if (isAdmin) {
         this.setState({ userType: userRoles.admin });
       } else {
         let snapshot = await query.get();  
-        // console.log("Snapshot is ",snapshot.data());
-        if (snapshot.empty) this.setState({ userType: userRoles.general, admin:true });
+        console.log("Snapshot is ",snapshot.data());
+        if (!snapshot.exists) this.setState({ userType: userRoles.general, admin:true });
         else this.setState({ userType: userRoles.faculty, facultyData:this.getFacultyData(snapshot) });
       }
     } else{ 

@@ -112,6 +112,28 @@ export default class HomePage extends React.Component {
     arr.splice(index, 1);
     this.setState({ allPosts: arr });
     let deleteDoc = database.collection("posts").doc(post.id).delete();
+  }; 
+
+  sortPosts = (posts) => {
+    let importantPosts = [];
+    let unimportantPosts = [];
+    posts.forEach((post) => {
+      post = this.calculatePostScored(post);
+      if (post.score > POST_SCORE_THRESHOLD) {
+        importantPosts.push(post);
+      } else {
+        unimportantPosts.push(post);
+      }
+    });
+    importantPosts.sort((a, b) => (a.timeStamp > b.timeStamp ? -1 : 1));
+    unimportantPosts.sort((a, b) => (a.timeStamp > b.timeStamp ? -1 : 1));
+    posts = importantPosts.concat(unimportantPosts);
+    posts.forEach((post, index) => {
+      post.score = 0;
+      posts[index] = post;
+    });
+    console.log(posts);
+    return posts;
   };
 
   getPosts = () => {

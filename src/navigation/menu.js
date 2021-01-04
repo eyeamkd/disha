@@ -19,9 +19,14 @@ export const  menu = {
       "icon": "home"
     },
     {
-      "routeName": "Profile",
-      "endpoint": "/profile",
+      "routeName": "Set Admins",
+      "endpoint": "/set-admins",
       "icon": "account_box"
+    },
+    {
+      "routeName": "View Overall Stats",
+      "endpoint": "/admin-stats",
+      "icon": "emoji_people"
     }
   ],
   [userRoles.general]: [

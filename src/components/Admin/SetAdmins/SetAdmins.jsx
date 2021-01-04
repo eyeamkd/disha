@@ -26,7 +26,8 @@ export class SetAdmins extends Component {
   vertical = "bottom";
   horizontal = "center";
   deptCodes = [];
-  constructor(props) {
+  constructor(props) { 
+    console.log("In set admin ")
     super(props);
     this.state = {
       facultyData: [],
