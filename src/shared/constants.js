@@ -46,4 +46,17 @@ export const PASSWORD_STRENGTHS = {
 
 export const POST_SCORE_THRESHOLD = 2;
 
-export const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+export const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; 
+
+export const MAILING_MICROSERVICE = 'https://disha-mailer.azurewebsites.net/send-mail'; 
+
+export const facultyAdminMailContentCreator = (name,link,department) => {
+  let subject = 'Congratulations! You are now a Faculty Admin'; 
+    let body = `Hello ${name} \n  
+    Hearty congratulations on being appointed as the DISHA Faculty Admin for the ${department} Department \n 
+    \n
+    Please go on to this link ${link} in order to set your password and get started `;  
+
+    return Object.assign({},{subject:subject,body:body}); 
+
+}
