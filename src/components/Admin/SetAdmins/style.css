@@ -1,0 +1,35 @@
+#deptDropdown {
+  width: 50% !important;
+  font-size: 0.8rem !important;
+  line-height: 1 !important;
+}
+
+.paper {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#responsive {
+  overflow-x: auto;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 50px;
+  padding: 10px;
+  margin: 10px;
+  width: 100%;
+}
+
+th {
+  max-width: 125px;
+  min-width: 125px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+@media only screen and (max-width: 600px) {
+  #responsive {
+    width: 98%;
+  }
+}

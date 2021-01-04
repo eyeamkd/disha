@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import Layout from "./components/Layout";
 import {
   auth,
-  createUserProfileDocument,
-  database,
+  database, 
+  getUserDocument
 } from "./firebase/firebase.utils";
 import Navigation from "./navigation/index";
 import { setUser } from "./redux/user/user-actions";
@@ -26,15 +26,9 @@ export class App extends Component {
 
   setUserId() {
     localStorage.setItem("currentUserId", this.state.currentUser.id);
-    this.props.setUser(this.state.currentUser.id);
-    let domain = this.state.currentUser.email.split("@")[1].toLowerCase();
-    if (domain === "disha.website") {
-      this.setState({ admin: true }); 
-    this.setUserContext();
-
-      return true;
-    }
-    this.setState({ admin: false }); 
+    localStorage.setItem("isAdmin", this.state.currentUser.isAdmin);
+    this.setState({ admin: this.state.currentUser.isAdmin });
+    this.props.setUser(this.state.currentUser.id); 
     this.setUserContext();
   } 
 
@@ -72,8 +66,8 @@ export class App extends Component {
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => { 
       console.log("Auth state changed!!!");
       if (userAuth) {
-        let userRef = await createUserProfileDocument(userAuth);
-        userRef.onSnapshot((snapShot) => {
+        let snapShot = await getUserDocument(userAuth);
+        if (snapShot) {
           this.setState(
             {
               currentUser: {
@@ -87,8 +81,21 @@ export class App extends Component {
                 : this.props.setUser(null);
             }
           );
-          //console.log(this.state)
-        });
+        } else {
+          this.setState(
+            {
+              currentUser: {
+                id: userAuth.uid,
+                isAdmin: true
+              },
+            },
+            () => {
+              this.state.currentUser
+                ? this.setUserId()
+                : this.props.setUser(null);
+            }
+          );
+        }
         // }
         // else if(this.props.isNewUser === true){
         // userRef = null;

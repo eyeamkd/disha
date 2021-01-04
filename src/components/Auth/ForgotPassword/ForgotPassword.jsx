@@ -1,23 +1,34 @@
-import {
-  CircularProgress,
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  OutlinedInput,
-} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import Container from "@material-ui/core/Container";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Grid from "@material-ui/core/Grid";
-import Link from "@material-ui/core/Link";
-import Typography from "@material-ui/core/Typography";
 import React from "react";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormLabel from "@material-ui/core/FormLabel";
+import Container from "@material-ui/core/Container";
 import { connect } from "react-redux";
-import { auth } from "../../../firebase/firebase.utils";
 import { setIsNewUser } from "../../../redux/signup/isNewUser-actions";
 import { setUser } from "../../../redux/user/user-actions";
 import Logo from "../../Logo/Logo";
+
+import {
+  FormControl,
+  OutlinedInput,
+  InputLabel,
+  CircularProgress,
+  FormHelperText,
+} from "@material-ui/core";
+
 import "./SignIn.css";
+import {
+  auth,
+  createUserProfileDocument,
+} from "../../../firebase/firebase.utils";
 
 class SignIn extends React.Component {
   constructor(props) {
@@ -46,44 +57,7 @@ class SignIn extends React.Component {
     this.setState({ email: event.target.value });
   };
 
-  handlePasswordChange = (event) => {
-    this.setState({ password: event.target.value });
-  };
-
-  handleSigninClick = async () => {
-    this.setState({ isSignin: true }, () =>
-      this.setState({ signinErrorMessage: "" })
-    );
-    const { email, password } = this.state;
-    if (!this.state.isEmail && !this.state.isPassword) {
-      try {
-        var signedIn = await auth.signInWithEmailAndPassword(email, password);
-        this.setState({
-          email: "",
-          password: "",
-        });
-      } catch (error) {
-        if (error.code === "auth/user-not-found")
-          this.setState({
-            errorMessage: "Incorrect e-mail ID or password. Please check!",
-            isSignin: false,
-          });
-        else if (error.code === "auth/wrong-password")
-          this.setState({
-            errorMessage: "Incorrect e-mail ID or password. Please check!",
-            isSignin: false,
-          });
-        console.error(error);
-      }
-      // console.log("ok")
-    } else {
-      // console.log("not ok")
-      this.setState({ isSignin: false }, () =>
-        this.setState({ signinErrorMessage: "* Please fill all the fields" })
-      );
-      return;
-    }
-  };
+  handleForgotClick = async () => {};
 
   render() {
     return (

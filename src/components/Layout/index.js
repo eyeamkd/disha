@@ -1,45 +1,39 @@
-import React from "react";
-import clsx from "clsx";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import Divider from "@material-ui/core/Divider";
+import Drawer from "@material-ui/core/Drawer";
+import Icon from "@material-ui/core/Icon";
 import IconButton from "@material-ui/core/IconButton";
-//import HomeIcon from "@material-ui/icons/HomeRounded";
-import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import Icon from "@material-ui/core/Icon";
-import Menu from "./../../navigation/menu.json";
-import Button from "@material-ui/core/Button";
-import { Redirect } from "react-router-dom";
-import Box from "@material-ui/core/Box";
-
-import { Link } from "react-router-dom";
-import Grid from "@material-ui/core/Grid";
-import { auth } from "../../firebase/firebase.utils";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+//import HomeIcon from "@material-ui/icons/HomeRounded";
+import MenuIcon from "@material-ui/icons/Menu";
+import clsx from "clsx";
+import React from "react";
 import { connect } from "react-redux";
-
-import { setUser } from "./../../redux/user/user-actions";
-import { UserContext } from "../../utils/Context";
-
+import { Link, Redirect } from "react-router-dom";
+import { auth } from "../../firebase/firebase.utils";
 import { menu } from "../../navigation/menu";
+import { UserContext } from "../../utils/Context";
+import { setUser } from "./../../redux/user/user-actions";
 
 const drawerWidth = 240;
 console.log("Drawer width is ", drawerWidth);
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
+    display: "flex",
   },
   appBar: {
-    transition: theme.transitions.create(['margin', 'width'], {
+    transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
@@ -47,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: drawerWidth,
-    transition: theme.transitions.create(['margin', 'width'], {
+    transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -56,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   hide: {
-    display: 'none',
+    display: "none",
   },
   drawer: {
     width: drawerWidth,
@@ -66,24 +60,24 @@ const useStyles = makeStyles((theme) => ({
     width: drawerWidth,
   },
   drawerHeader: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
   },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
+    transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
     marginLeft: -drawerWidth,
   },
   contentShift: {
-    transition: theme.transitions.create('margin', {
+    transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -118,8 +112,8 @@ function Layout(props) {
     // console.log(props.user)
   };
 
-  return ( 
-    <UserContext.Consumer >
+  return (
+    <UserContext.Consumer>
       {(value) => (
         <div className={classes.root}>
           {console.log("Value is", value)}
@@ -129,7 +123,6 @@ function Layout(props) {
             className={clsx(classes.appBar, {
               [classes.appBarShift]: open,
             })}
-            
           >
             <Toolbar>
               <IconButton
@@ -190,25 +183,25 @@ function Layout(props) {
             </div>
             <Divider />
             <List>
-              {!!value.userType
-                ? menu[value.userType].map((menuItem, key) => (
-                    <ListItem
-                      component={Link}
-                      to={menuItem.endpoint}
-                      button
-                      key={menuItem.routeName}
-                      onClick={handleDrawerClose}
-                    >
-                      <Icon>{menuItem.icon}</Icon>
-                      <ListItemText
-                        primary={menuItem.routeName}
-                        style={{ padding: "10px" }}
-                      />
-                    </ListItem>
-                  ))
-                : <>  
-                Menu Loading..
-                </>}
+              {!!value.userType ? (
+                menu[value.userType].map((menuItem, key) => (
+                  <ListItem
+                    component={Link}
+                    to={menuItem.endpoint}
+                    button
+                    key={menuItem.routeName}
+                    onClick={handleDrawerClose}
+                  >
+                    <Icon>{menuItem.icon}</Icon>
+                    <ListItemText
+                      primary={menuItem.routeName}
+                      style={{ padding: "10px" }}
+                    />
+                  </ListItem>
+                ))
+              ) : (
+                <>Menu Loading..</>
+              )}
             </List>
             <Divider />
           </Drawer>
@@ -222,7 +215,7 @@ function Layout(props) {
           </main>
         </div>
       )}
-    </UserContext.Consumer> 
+    </UserContext.Consumer>
   );
 }
 
