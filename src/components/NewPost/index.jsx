@@ -116,7 +116,7 @@ isFormDataValid=()=>{
         this.setState({  
             isPostTitleInValid:false,
             isPostDescriptionInValid:false,
-            isSelectedCategoryInValid:true 
+            isSelectedCategoryInValid:false 
         }); 
         return true;
     }
@@ -169,10 +169,7 @@ getUserDetails = () => {
 
 getCurrentDate = () => {
     var today = new Date();
-    var date = this.doubleDigitDate(today.getFullYear())+'-'+(this.doubleDigitDate(today.getMonth()+1))+'-'+this.doubleDigitDate(today.getDate());
-    var time = this.doubleDigitDate(today.getHours()) + ":" + this.doubleDigitDate(today.getMinutes()) + ":" + this.doubleDigitDate(today.getSeconds());
-    var dateTime = date+' '+time;
-    return dateTime;
+    return today;
 }
 
 doubleDigitDate = (date) => {
@@ -188,9 +185,7 @@ addPostUrl = () => {
     if(titleArray.length > 3)
       titleArray = titleArray.slice(0,3)
     let postUrl = titleArray.join("-")
-    let dateTime = this.getCurrentDate()
-    let timeCode = this.getTimeCode(dateTime)
-    postUrl += "-" + timeCode
+    postUrl += "-" + Date.now()
     return postUrl
 }
 
@@ -218,7 +213,7 @@ postData = () => {
         postUrl:postUrl,
         authorRollNumber:this.state.userDetails.rollNumber,
         likes:0,
-        isAdminPost: this.state.userDetails.isAdmin
+        isAdminPost: this.state.userDetails.isAdmin ? this.state.userDetails.isAdmin : false
     }
     database.collection('posts').add(newPostData)
     .then((docRef)=>{this.setState({dataSubmittedSuccessfully:true})}) 

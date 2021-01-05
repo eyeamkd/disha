@@ -1,51 +1,65 @@
-import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
-import Layout from './components/Layout';
-import HomePage from './components/HomePage';
-import Navigation from './navigation/index';
-import { connect } from 'react-redux';
-import { auth, createUserProfileDocument } from './firebase/firebase.utils';
-import { setUser } from './redux/user/user-actions'; 
-import AdminNavigation from './navigation/admin-nav'
-
+import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
+import Layout from "./components/Layout";
+import HomePage from "./components/HomePage";
+import Navigation from "./navigation/index";
+import { connect } from "react-redux";
+import { auth, getUserDocument } from "./firebase/firebase.utils";
+import { setUser } from "./redux/user/user-actions";
+import AdminNavigation from "./navigation/admin-nav";
 
 export class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      currentUser: null, 
-      admin:false
-    }
+      currentUser: null,
+      admin: false,
+    };
   }
 
-  unsubscribeFromAuth = null
+  unsubscribeFromAuth = null;
 
   setUserId() {
-    localStorage.setItem('currentUserId', this.state.currentUser.id) 
-    this.props.setUser(this.state.currentUser.id) 
-    this.setState({admin: !!this.state.currentUser.isAdmin})
+    localStorage.setItem("currentUserId", this.state.currentUser.id);
+    localStorage.setItem("isAdmin", this.state.currentUser.isAdmin);
+    this.setState({ admin: this.state.currentUser.isAdmin });
+    this.props.setUser(this.state.currentUser.id);
   }
 
   componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
-        let userRef = await createUserProfileDocument(userAuth);
-
-        userRef.onSnapshot(snapShot => {
-          this.setState({
-            currentUser: {
-              id: snapShot.id,
-              ...snapShot.data()
+        let snapShot = await getUserDocument(userAuth);
+        if (snapShot) {
+          this.setState(
+            {
+              currentUser: {
+                id: snapShot.id,
+                ...snapShot.data(),
+              },
+            },
+            () => {
+              this.state.currentUser
+                ? this.setUserId()
+                : this.props.setUser(null);
             }
-          }, () => {
-            this.state.currentUser ?
-              this.setUserId()
-              :
-              this.props.setUser(null)
-          })
-          //console.log(this.state)
-        })
+          );
+        } else {
+          this.setState(
+            {
+              currentUser: {
+                id: userAuth.uid,
+                isAdmin: true
+              },
+            },
+            () => {
+              this.state.currentUser
+                ? this.setUserId()
+                : this.props.setUser(null);
+            }
+          );
+        }
         // }
         // else if(this.props.isNewUser === true){
         // userRef = null;
@@ -53,65 +67,54 @@ export class App extends Component {
         //   this.props.setUser(null)
         // })
         // }
-      }
-      else {
+      } else {
         this.setState({ currentUser: userAuth }, () => {
-          this.props.setUser(null)
-        })
+          this.props.setUser(null);
+        });
       }
-
-
-
     });
   }
 
   componentWillUnmount() {
     this.unsubscribeFromAuth();
-  } 
+  }
 
   changeCurrentUser() {
-    this.setState({ currentUser: null })
-    this.props.setUser(null)
-    localStorage.removeItem('currentUserId')
+    this.setState({ currentUser: null });
+    this.props.setUser(null);
+    localStorage.removeItem("currentUserId");
     // console.log(this.props.user)
   }
 
-
   render() {
-    var currentUserId = localStorage.getItem('currentUserId'); 
-    return (  
-      !!this.state.currentUser 
-      ? 
-      <Layout  
-        currentUser={this.props.isNewUser ? null : currentUserId} 
-        changeCurrentUser 
-        userInfo= {this.state.currentUser}  
-        >
-        { 
-          this.state.admin
-          ? 
-          <AdminNavigation /> 
-          : 
-          <Navigation userInfo={this.state.currentUser}/>
-        }
+    var currentUserId = localStorage.getItem("currentUserId");
+    return !!this.state.currentUser ? (
+      <Layout
+        currentUser={this.props.isNewUser ? null : currentUserId}
+        changeCurrentUser
+        userInfo={this.state.currentUser}
+      >
+        {this.state.admin ? (
+          <AdminNavigation />
+        ) : (
+          <Navigation userInfo={this.state.currentUser} />
+        )}
       </Layout>
-      :  
-        this.state.admin
-        ? 
-        <AdminNavigation /> 
-        : 
-        <Navigation userInfo={this.state.currentUser}/>
-    ) 
+    ) : this.state.admin ? (
+      <AdminNavigation />
+    ) : (
+      <Navigation userInfo={this.state.currentUser} />
+    );
   }
-}  
+}
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isNewUser: state.isNewUser.isNewUser,
-  user: state.user.user
+  user: state.user.user,
 });
 
-const mapDispatchToProps = dispatch => ({
-  setUser: user => dispatch(setUser(user))
+const mapDispatchToProps = (dispatch) => ({
+  setUser: (user) => dispatch(setUser(user)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

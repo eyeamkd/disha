@@ -11,13 +11,16 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^10.4.7",
     "@testing-library/user-event": "^7.1.2",
+    "axios": "^0.21.1",
     "bootstrap": "^4.4.1",
     "firebase": "^7.8.0",
     "firebase-admin": "^8.10.0",
+    "formik": "^2.1.5",
     "html-react-parser": "^0.10.3",
     "http2": "^3.3.7",
     "material-table": "^1.56.1",
     "material-ui-dropzone": "^3.2.1",
+    "qs": "^6.9.4",
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.0-beta.16",
     "react-copy-to-clipboard": "^5.0.2",
@@ -39,7 +42,8 @@
     "simple-react-comments": "^1.1.0",
     "styled-components": "^5.1.1",
     "testcafe": "^1.8.3",
-    "typeface-roboto": "0.0.75"
+    "typeface-roboto": "0.0.75",
+    "zxcvbn": "^4.4.2"
   },
   "scripts": {
     "start": "react-scripts start",
