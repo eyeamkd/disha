@@ -9,7 +9,8 @@ import {
 import Navigation from "./navigation/index";
 import { setUser } from "./redux/user/user-actions";
 import { UserContext } from "./utils/Context/index"; 
-import userRoles from "./utils/userRoles";
+import userRoles from "./utils/userRoles"; 
+import {isAdmin} from './utils/Functions';
 
 UserContext.displayName = "UserContext";
 export class App extends Component {
@@ -25,9 +26,7 @@ export class App extends Component {
   unsubscribeFromAuth = null;
 
   setUserId() {
-    localStorage.setItem("currentUserId", this.state.currentUser.id);
-    localStorage.setItem("isAdmin", this.state.currentUser.isAdmin);
-    this.setState({ admin: this.state.currentUser.isAdmin });
+    localStorage.setItem("currentUserId", this.state.currentUser.id); 
     this.props.setUser(this.state.currentUser.id); 
     this.setUserContext();
   } 
@@ -38,20 +37,23 @@ export class App extends Component {
     if(Array.isArray(snapshot))
     snapshot.forEach(doc => {data= doc.data()});  
     return data;
-  }
+  } 
+
+
 
   setUserContext = async () => {  
     console.log("The Current User State is", this.state.currentUser); 
-    if(!!this.state.currentUser){  
-      let {isAdmin,id} = this.state.currentUser;
+    if(!!this.state.currentUser){   
+      let admin = isAdmin(this.state.currentUser.email);
+      let {id} = this.state.currentUser;
       const query = database.collection("faculty").doc(id);
-      if (isAdmin) {
+      if (admin) {
         this.setState({ userType: userRoles.admin });
       } else {
         let snapshot = await query.get();  
         console.log("Snapshot is ",snapshot.data());
-        if (!snapshot.exists) this.setState({ userType: userRoles.general, admin:true });
-        else this.setState({ userType: userRoles.faculty, facultyData:this.getFacultyData(snapshot) });
+        if (!snapshot.exists) this.setState({ userType: userRoles.general });
+        else this.setState({ userType: userRoles.faculty, facultyData:snapshot.data() });
       }
     } else{ 
       this.setState({userType:userRoles.signedout});
@@ -83,7 +85,6 @@ export class App extends Component {
             {
               currentUser: {
                 id: userAuth.uid,
-                isAdmin: true
               },
             },
             () => {

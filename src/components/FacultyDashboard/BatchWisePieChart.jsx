@@ -109,7 +109,7 @@ export default function BatchWisePieChart(props) {
       <Pie
         activeIndex={activeIndex}
         activeShape={renderActiveShape}
-        data={sample}
+        data={pieData}
         cx={300}
         cy={200}
         innerRadius={60}
