@@ -6,11 +6,6 @@ export const  menu = {
       "endpoint": "/dashboard",
       "icon": "home"
     },
-    {
-      "routeName": "Profile",
-      "endpoint": "/profile",
-      "icon": "account_box"
-    }
   ],
   [userRoles.admin]: [
     {
