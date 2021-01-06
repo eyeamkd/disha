@@ -13,5 +13,5 @@
     "routeName": "View Overall Stats",
     "endpoint": "/admin-stats",
     "icon": "emoji_people"
-  }
+  },
 ]

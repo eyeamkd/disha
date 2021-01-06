@@ -1,13 +1,17 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
-import Layout from "./components/Layout";
-import HomePage from "./components/HomePage";
-import Navigation from "./navigation/index";
 import { connect } from "react-redux";
-import { auth, getUserDocument } from "./firebase/firebase.utils";
+import Layout from "./components/Layout";
+import {
+  auth,
+  database, 
+  getUserDocument
+} from "./firebase/firebase.utils";
+import Navigation from "./navigation/index";
 import { setUser } from "./redux/user/user-actions";
-import AdminNavigation from "./navigation/admin-nav";
+import { UserContext } from "./utils/Context/index"; 
+import userRoles from "./utils/userRoles";
 
+UserContext.displayName = "UserContext";
 export class App extends Component {
   constructor(props) {
     super(props);
@@ -24,11 +28,40 @@ export class App extends Component {
     localStorage.setItem("currentUserId", this.state.currentUser.id);
     localStorage.setItem("isAdmin", this.state.currentUser.isAdmin);
     this.setState({ admin: this.state.currentUser.isAdmin });
-    this.props.setUser(this.state.currentUser.id);
+    this.props.setUser(this.state.currentUser.id); 
+    this.setUserContext();
+  } 
+
+  getFacultyData(snapshot){   
+    let data;  
+    console.log('Snapshot is ', snapshot);
+    if(Array.isArray(snapshot))
+    snapshot.forEach(doc => {data= doc.data()});  
+    return data;
   }
 
+  setUserContext = async () => {  
+    console.log("The Current User State is", this.state.currentUser); 
+    if(!!this.state.currentUser){  
+      let {isAdmin,id} = this.state.currentUser;
+      const query = database.collection("faculty").doc(id);
+      if (isAdmin) {
+        this.setState({ userType: userRoles.admin });
+      } else {
+        let snapshot = await query.get();  
+        console.log("Snapshot is ",snapshot.data());
+        if (!snapshot.exists) this.setState({ userType: userRoles.general, admin:true });
+        else this.setState({ userType: userRoles.faculty, facultyData:this.getFacultyData(snapshot) });
+      }
+    } else{ 
+      this.setState({userType:userRoles.signedout});
+    }
+    
+  };
+
   componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => { 
+      console.log("Auth state changed!!!");
       if (userAuth) {
         let snapShot = await getUserDocument(userAuth);
         if (snapShot) {
@@ -70,6 +103,7 @@ export class App extends Component {
       } else {
         this.setState({ currentUser: userAuth }, () => {
           this.props.setUser(null);
+          this.setUserContext();
         });
       }
     });
@@ -88,26 +122,19 @@ export class App extends Component {
 
   render() {
     var currentUserId = localStorage.getItem("currentUserId");
-    return !!this.state.currentUser ? (
-      <Layout
-        currentUser={this.props.isNewUser ? null : currentUserId}
-        changeCurrentUser
-        userInfo={this.state.currentUser}
-      >
-        {this.state.admin ? (
-          <AdminNavigation />
-        ) : (
+    return (
+      <UserContext.Provider value={this.state}>
+        <Layout
+          currentUser={this.props.isNewUser ? null : currentUserId}
+          changeCurrentUser
+          userInfo={this.state.currentUser}
+        >
           <Navigation userInfo={this.state.currentUser} />
-        )}
-      </Layout>
-    ) : this.state.admin ? (
-      <AdminNavigation />
-    ) : (
-      <Navigation userInfo={this.state.currentUser} />
+        </Layout>
+      </UserContext.Provider>
     );
   }
 }
-
 const mapStateToProps = (state) => ({
   isNewUser: state.isNewUser.isNewUser,
   user: state.user.user,
