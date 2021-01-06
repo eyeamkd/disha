@@ -92,14 +92,9 @@ export class Dspace extends Component {
         return ( 
             <Container fluid>  
                 <Row> 
-<<<<<<< HEAD:src/components/Dspaces/index.js
                     <Col md={11} style={{display:'flex'}}>
                         <DspaceProfileImage imageSrc={!!dSpace.profileImagePath?dSpace.profileImagePath:""}/>
                         <Typography variant="h1">{dSpace.title}</Typography> 
-=======
-                    <Col md={11}>
-                        <Typography variant="h1">{this.props.dSpace.title}</Typography>
->>>>>>> f5265db1edaf745d6f51ad29bccb2acde18f5c0d:src/components/Dspace/index.js
                     </Col>
                     <Col md={1}>
                         {

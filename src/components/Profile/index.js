@@ -14,7 +14,8 @@ import UserInfo from "./UserInfo";
 import UserCommunity from "./UserCommunity";
 import UserPosts from "./UserPosts";
 import { database } from "../../firebase/firebase.utils";
-import { connect } from "react-redux";
+import { connect } from "react-redux"; 
+import {getInitials} from '../../utils/Functions';
 
 export class Profile extends Component {
   constructor(props) {
@@ -44,14 +45,7 @@ export class Profile extends Component {
       });
   }
 
-  initials() {
-    // console.log("State from profile",this.state);
-    return (
-      this.state.info.firstName[0].toUpperCase() +
-      this.state.info.lastName[0].toUpperCase()
-    );
-  }
-
+  
   // image={!!this.state.info.profileImagePath} imageSrc={this.state.profileImagePath}
 
   render() {
@@ -62,7 +56,7 @@ export class Profile extends Component {
             <Grid container spacing={2}>
               <Grid item xs={12} md={1}>
                 <ProfileImage
-                  name={this.initials()}
+                  name={getInitials(this.state.info.firstName,this.state.info.lastName)}
                   scale={100}
                   variant="square" 
                   imageSrc={this.state.info.profileImagePath}  

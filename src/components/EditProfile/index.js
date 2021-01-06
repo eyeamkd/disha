@@ -22,11 +22,9 @@ import { Redirect } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
 import firebase from "firebase/app";
 import LocationSearch from "./LocationSearch";
-<<<<<<< HEAD
 import { ImageUploadComponent } from "../../shared/ImageUploadComponent";
-import { ProfileImage } from "../Profile/ProfileImage";
-=======
->>>>>>> f5265db1edaf745d6f51ad29bccb2acde18f5c0d
+import { ProfileImage } from "../Profile/ProfileImage"; 
+import {getInitials} from '../../utils/Functions';
 
 let posts = [];
 export default class EditProfile extends Component {
@@ -49,7 +47,6 @@ export default class EditProfile extends Component {
       isCurrentPasswordValid: true,
       isNewPasswordValid: true,
       isConfirmPasswordValid: true,
-<<<<<<< HEAD
       isConfirmPasswordValid: true,
       cities: [],
       uploadImageString: "",
@@ -254,197 +251,6 @@ export default class EditProfile extends Component {
     this.state.location = value;
   };
 
-=======
-      cities: [],
-    };
-  }
-
-  componentDidMount() {
-    this.getUserDetails();
-    this.getCities();
-  }
-
-  componentWillUnmount() {
-    posts = [];
-  }
-
-  handleTextChange = (event) => {
-    this.setState({
-      [event.target.id]: event.target.value,
-    });
-    console.log(this.state);
-  };
-
-  handleFirstNameChange = (event) => {
-    this.setState({ firstName: event.target.value });
-  };
-  handleLastNameChange = (event) => {
-    this.setState({ lastName: event.target.value });
-  };
-  handleNewPasswordChange = (event) => {
-    if (event.target.value.length < 8) {
-      this.setState({ isNewPasswordValid: false });
-    } else {
-      this.setState({ isNewPasswordValid: true });
-    }
-    if (
-      this.state.confirmPassword &&
-      event.target.value !== this.state.confirmPassword
-    ) {
-      this.setState({ isConfirmPasswordValid: false });
-    } else {
-      this.setState({ isConfirmPasswordValid: true });
-    }
-    this.setState({ newPassword: event.target.value });
-  };
-  handleConfirmPasswordChange = (event) => {
-    if (event.target.value !== this.state.newPassword) {
-      this.setState({ isConfirmPasswordValid: false });
-    } else {
-      this.setState({ isConfirmPasswordValid: true });
-    }
-    this.setState({ confirmPassword: event.target.value });
-  };
-
-  isNameChanged = () => {
-    if (
-      this.state.firstName === this.state.currentUserInfo.firstName &&
-      this.state.lastName === this.state.currentUserInfo.lastName
-    ) {
-      return false;
-    } else return true;
-  };
-
-  isOtherDetailsChanged = () => {
-    if (
-      this.state.location === this.state.currentUserInfo.location &&
-      this.state.company === this.state.currentUserInfo.company
-    ) {
-      return false;
-    } else return true;
-  };
-
-  updatePostData = () => {
-    this.state.allPosts.forEach((post) => {
-      if (post.authorRollNumber === this.state.currentUserInfo.rollNumber) {
-        database
-          .collection("posts")
-          .doc(post.id)
-          .update({
-            author: this.state.firstName + " " + this.state.lastName,
-          });
-      }
-    });
-  };
-
-  updateUserDetails = () => {
-    if (!this.state.firstName || !this.state.lastName) return;
-    let currentUserId = localStorage.getItem("currentUserId");
-    let userData = this.state.currentUserInfo;
-    userData.firstName = this.state.firstName;
-    userData.lastName = this.state.lastName;
-    if (this.state.location) userData.location = this.state.location;
-    if (this.state.company) userData.company = this.state.company;
-    localStorage.setItem("currentUserInfo", JSON.stringify(userData));
-    database.collection("users").doc(currentUserId).update({
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      location: userData.location,
-      company: userData.company,
-    });
-    this.setState({ detailsUpdatedSuccessfully: true });
-  };
-
-  handleDetailsSubmit = () => {
-    debugger;
-    if (this.isNameChanged()) {
-      this.setState({ postsUpdated: false });
-      this.updatePostData();
-    }
-    if (this.isNameChanged() || this.isOtherDetailsChanged()) {
-      this.updateUserDetails();
-      this.setState({
-        onDataSubmitting: true,
-      });
-    }
-  };
-
-  handlePasswordSubmit = () => {
-    if (this.state.isNewPasswordValid && this.state.isConfirmPasswordValid) {
-      let result;
-      let user = firebase.auth().currentUser;
-      try {
-        result = user.updatePassword(this.state.newPassword);
-      } catch (error) {
-        if (error.code === "auth/user-not-found")
-          this.setState({
-            errorMessage: "Incorrect Password. Please check!",
-            isSignin: false,
-          });
-        else if (error.code === "auth/wrong-password")
-          this.setState({
-            errorMessage: "Incorrect Password. Please check!",
-            isSignin: false,
-          });
-        console.error(error);
-      } finally {
-        if (result) {
-          this.setState({ detailsUpdatedSuccessfully: true });
-        }
-      }
-    }
-  };
-
-  getUserDetails = () => {
-    let currentUserInfo = localStorage.getItem("currentUserInfo");
-    let userData = JSON.parse(currentUserInfo);
-    this.setState({
-      currentUserInfo: userData,
-      userDataReceived: true,
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      company: userData.company,
-      location: userData.location,
-    });
-  };
-
-  getCities = () => {
-    let c;
-    var proxyUrl = "https://cors-anywhere.herokuapp.com/",
-      targetUrl =
-        "https://pkgstore.datahub.io/core/world-cities/world-cities_json/data/5b3dd46ad10990bca47b04b4739a02ba/world-cities_json.json";
-    c = fetch(proxyUrl + targetUrl)
-      .then((blob) => blob.json())
-      .then((data) => {
-        console.log(data);
-        this.setState({ cities: data });
-        return data;
-      })
-      .catch((e) => {
-        console.log(e);
-        return e;
-      });
-    console.log(c);
-    // setCities(c)
-  };
-
-  handleTabSwitch = () => {
-    this.setState({
-      isPasswordTab: !this.state.isPasswordTab,
-      currentPassword: null,
-      firstName: null,
-    });
-  };
-
-  handleCompanyChange = (event) => {
-    this.state.company = event.target.value;
-  };
-
-  handleSearchChange = (value) => {
-    this.state.location = value;
-  };
-
->>>>>>> f5265db1edaf745d6f51ad29bccb2acde18f5c0d
   render() {
     // console.log(this.state);
     if (this.state.detailsUpdatedSuccessfully) {
@@ -530,7 +336,6 @@ export default class EditProfile extends Component {
               </FormControl>
             </Grid>
           </Grid>
-<<<<<<< HEAD
           <Typography style={{ margin: "10px" }}>
             Upload New Display Picture
           </Typography>
@@ -542,7 +347,7 @@ export default class EditProfile extends Component {
               style={{ maxWidth: "250px", margin: "15px" }}
             >
               <ProfileImage
-                name={"K E"}
+                name={getInitials(this.state.currentUserInfo.firstName,this.state.currentUserInfo.lastName)}
                 scale={250}
                 variant="square"
                 image={!!this.state.profileImage}
@@ -550,11 +355,9 @@ export default class EditProfile extends Component {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <ImageUploadComponent onImageUpload={this.handleImageUpload} onProfileImageUpdated = {this.onProfileImageUpdated} context="user"/>
+              <ImageUploadComponent image={!!this.state.profileImage?this.state.profileImage:false} onImageUpload={this.handleImageUpload} onProfileImageUpdated = {this.onProfileImageUpdated} context="user"/>
             </Grid>
           </Grid>
-=======
->>>>>>> f5265db1edaf745d6f51ad29bccb2acde18f5c0d
           <Grid container direction="row" justify="center">
             <Button
               type="submit"

@@ -6,8 +6,8 @@ import { borderColor } from '@material-ui/system';
 import { Link } from 'react-router-dom';
 import Dspace from '../Dspace';
 
-import "./styles.css";
-import DspaceProfileImage from '../Dspaces/DspaceProfileImage';
+import "./styles.css"; 
+import DspaceProfileImage from '../Dspace/DspaceProfileImage/index';
 import { CardFooter } from 'reactstrap';
 
 export class DspaceCard extends Component { 

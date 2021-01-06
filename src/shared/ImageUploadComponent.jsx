@@ -2,7 +2,7 @@ import Button from "@material-ui/core/Button";
 import React, { useEffect, useState } from "react";
 import "react-image-crop/dist/ReactCrop.css";
 import styled from "styled-components";
-import { storageRef, database } from "../firebase/firebase.utils";
+import { storage, database } from "../firebase/firebase.utils";
 import ImageCropModal from "./ImageCropModal";
 const ImageWrapper = styled.div`
   height: 200px;
@@ -59,7 +59,18 @@ export const ImageUploadComponent = (props) => {
   const uploadButtonClicked = () => {
     console.log("Upload Button Clicked");
     inputButtonReference.current.click();
-  };
+  }; 
+
+  const deleteProfileImage = () => {
+    console.log("Delete Button Clicked");   
+    debugger;
+    let imageReference = storage.ref(props.image); 
+    imageReference.delete().then( ()=> {
+      console.log("Image deleted succesfully"); 
+    }) 
+    .catch((err)=>console.log("Error ", err));
+
+  }
   return (
     <div className="main-class">
       {isImageUploaded && (
@@ -78,11 +89,18 @@ export const ImageUploadComponent = (props) => {
           variant="contained"
           color="secondary"
           className="submit"
-          onClick={uploadButtonClicked} 
-          style={props.buttonStyle?props.buttonStyle:{}}
+          onClick={uploadButtonClicked}
+          style={props.buttonStyle ? props.buttonStyle : {}}
         >
           UPLOAD
         </Button>
+        {!!props.image ? (
+          <Button type="submit" variant="contained" color="secondary" onClick={deleteProfileImage}>
+            DELETE
+          </Button>
+        ) : (
+          <></>
+        )}
 
         <input
           type="file"

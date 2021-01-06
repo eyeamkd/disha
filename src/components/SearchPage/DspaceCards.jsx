@@ -123,12 +123,8 @@ export class DspaceCards extends Component {
                                                     className="d-space-card" 
                                                     title = { dSpace.title } 
                                                     description = { dSpace.description } 
-<<<<<<< HEAD
                                                     key={dSpace.title} 
                                                     imageSrc={!!dSpace.profileImagePath?dSpace.profileImagePath:""}
-=======
-                                                    key={dSpace.id}
->>>>>>> f5265db1edaf745d6f51ad29bccb2acde18f5c0d
                                             />
                                             </Link> 
                                         );

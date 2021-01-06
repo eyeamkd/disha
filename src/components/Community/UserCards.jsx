@@ -25,20 +25,11 @@ const updateUsersArray = (searchValue, filterValues) => {
     if (filterValues.length)
       return FilteredUsers.filter((user) => {
         let userFullName = user.firstName + user.lastName;
-<<<<<<< HEAD
-=======
-        console.log(user);
->>>>>>> f5265db1edaf745d6f51ad29bccb2acde18f5c0d
         return userFullName.toLowerCase().includes(searchValue.toLowerCase());
       });
     else
       return CompleteUsersArray.filter((user) => {
         let userFullName = user.firstName + user.lastName;
-<<<<<<< HEAD
-=======
-
-        console.log(user);
->>>>>>> f5265db1edaf745d6f51ad29bccb2acde18f5c0d
         return userFullName.toLowerCase().includes(searchValue.toLowerCase());
       });
   }
@@ -76,11 +67,8 @@ const checkUserValid = (user, currentUserInfo, filterValues) => {
       case FILTER_TYPES.SECTION:
         isSameClass = isUserFromSameClass(user, currentUserInfo);
         break;
-<<<<<<< HEAD
       default:
         break;
-=======
->>>>>>> f5265db1edaf745d6f51ad29bccb2acde18f5c0d
     }
   });
   return isSameBatch || isSameDepartment || isSameClass;
@@ -180,18 +168,13 @@ export class UserCards extends Component {
       .catch((err) => {
         console.log("Error getting documents", err);
       });
-<<<<<<< HEAD
-=======
       this.countByDept(Users)
->>>>>>> f5265db1edaf745d6f51ad29bccb2acde18f5c0d
     SearchUsers = Users;
     CompleteUsersArray = Users;
     FilteredUsers = Users;
     this.setState({ usersLoaded: true });
   }
 
-<<<<<<< HEAD
-=======
   countByDept(users) {
     let count = {}
     count["CSE"] = users.filter((obj) => obj.department === "CSE").length;
@@ -203,7 +186,6 @@ export class UserCards extends Component {
     console.log(count);
   }
 
->>>>>>> f5265db1edaf745d6f51ad29bccb2acde18f5c0d
   render() {
     if (!this.state.usersLoaded) {
       return (
@@ -228,11 +210,8 @@ export class UserCards extends Component {
                     <UserCard
                       className="d-space-card"
                       title={User.firstName + " " + User.lastName}
-<<<<<<< HEAD
                       imageSrc={User.profileImagePath}
                       image={!!User.profileImagePath}
-=======
->>>>>>> f5265db1edaf745d6f51ad29bccb2acde18f5c0d
                       // description = { dSpace.description }
                       key={User.firstName}
                     />

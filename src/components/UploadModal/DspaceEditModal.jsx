@@ -14,7 +14,7 @@ import React, { Component, useState } from "react";
 import AddIcon from "@material-ui/icons/Add";
 import { ImageUploadComponent } from "../../shared/ImageUploadComponent";
 import "./style.css";
-import DspaceProfileImage from "../Dspaces/DspaceProfileImage";
+import DspaceProfileImage from "../Dspace/DspaceProfileImage";
 
 // import {DropzoneArea} from 'material-ui-dropzone'
 

@@ -23,7 +23,7 @@ export class ProfileImage extends Component {
 
     return (
       <div>
-        <Avatar
+      <Avatar
           variant={this.props.variant}
           sizes="width:100; height:100"
           style={Object.assign({
