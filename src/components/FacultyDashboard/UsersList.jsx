@@ -16,8 +16,8 @@ export default function UsersList(props ){
     }
     return( 
         <Container>
-            <MaterialTable 
-                title="Users who belong to IT Department" 
+            <MaterialTable  
+            title=""
                 columns={
                     [
                         {title:"First Name", field:"firstName"},
