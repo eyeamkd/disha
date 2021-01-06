@@ -59,4 +59,9 @@ export const facultyAdminMailContentCreator = (name,link,department) => {
 
     return Object.assign({},{subject:subject,body:body}); 
 
+} 
+
+export const FIREBASE_STORAGE_FOLDERNAMES = { 
+  "profileImage":"profile-images", 
+  "dSpaceProfileImage":"d-space-profile-images"
 }

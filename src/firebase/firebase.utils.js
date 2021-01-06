@@ -31,6 +31,11 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   return userRef;
 }; 
 
+export const storeImageInFireStore = async (file,path) => {
+  let userProfileImageStorageReference = storage.ref().child(path);
+  return  userProfileImageStorageReference.put(file)
+}
+
 export const getImageFromSource = async (imageSrc) => {
   let imageStorageReference = firebase.storage().ref(imageSrc);
   return imageStorageReference.getDownloadURL();

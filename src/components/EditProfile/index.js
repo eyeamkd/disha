@@ -26,7 +26,8 @@ import { ImageUploadComponent } from "../../shared/ImageUploadComponent";
 import { ProfileImage } from "../Profile/ProfileImage"; 
 import {getInitials} from '../../utils/Functions';
 
-let posts = [];
+let posts = []; 
+let infoUpdated = false;
 export default class EditProfile extends Component {
   constructor(props) {
     super(props);
@@ -51,7 +52,8 @@ export default class EditProfile extends Component {
       cities: [],
       uploadImageString: "",
       imageUploaded: false, 
-      profileImage:''
+      profileImage:'', 
+      imageDeleted:false 
     };
   } 
 
@@ -68,7 +70,14 @@ export default class EditProfile extends Component {
   }
 
   componentWillUnmount() {
-    posts = [];
+    posts = []; 
+    if(infoUpdated){ 
+      this.updateUserDetails();
+    }
+  } 
+
+  componentDidUpdate(){ 
+    infoUpdated = true;
   }
 
   handleTextChange = (event) => {

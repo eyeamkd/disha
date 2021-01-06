@@ -60,7 +60,7 @@ export default function UserCard(props) {
                             { 
                                 props.image  
                                 ? 
-                            <Avatar  src={imageUrl} alt={props.key} />
+                            <Avatar   src={imageUrl} alt={props.key} />
                             :
                             <Avatar className={classes.purple}>{getInitials(props.title)}</Avatar>
                             } 

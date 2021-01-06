@@ -4,4 +4,12 @@ export const getInitials=(firstName,lastName)=>{
     firstName[0].toUpperCase() +
     lastName[0].toUpperCase()
     );
+  } 
+
+  export const getImageStoragePath= (folderName,refName,fileName) => {  
+      //folder to be initially determined on context 
+      // name of the file to be stored, should be as <ref-name>-<fileName> 
+      let path = `${folderName}/${refName}-${fileName}`; 
+      return path;
+
   }

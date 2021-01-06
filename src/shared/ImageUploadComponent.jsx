@@ -66,7 +66,8 @@ export const ImageUploadComponent = (props) => {
     debugger;
     let imageReference = storage.ref(props.image); 
     imageReference.delete().then( ()=> {
-      console.log("Image deleted succesfully"); 
+      console.log("Image deleted succesfully");  
+        props.onProfileImageUpdated("");
     }) 
     .catch((err)=>console.log("Error ", err));
 

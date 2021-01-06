@@ -4,7 +4,9 @@ import Modal from "@material-ui/core/Modal";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import { Button } from "@material-ui/core";
-import { storage, database } from "../firebase/firebase.utils";
+import { storage, database,storeImageInFireStore } from "../firebase/firebase.utils";
+import { getImageStoragePath} from "../utils/Functions";
+import { FIREBASE_STORAGE_FOLDERNAMES } from "../shared/constants";
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -39,7 +41,12 @@ export default function ImageCropModal(props) {
   const [open, setOpen] = useState(true);
   const [croppedImageUrl, setCroppedImageUrl] = useState("");
   const [src, setSrc] = useState("");
-  const [crop, setCrop] = useState({unit:'px',height:'50',width:'50',aspect:1});
+  const [crop, setCrop] = useState({
+    unit: "px",
+    height: "50",
+    width: "50",
+    aspect: 1,
+  });
   const [imageRef, setImageRef] = useState("");
   const [file, setFile] = useState("");
 
@@ -48,8 +55,7 @@ export default function ImageCropModal(props) {
   };
 
   const handleClose = () => {
-    setOpen(false);  
-    
+    setOpen(false);
   };
 
   const onImageLoaded = (image) => {
@@ -101,20 +107,20 @@ export default function ImageCropModal(props) {
   };
 
   const uploadCroppedImage = () => {
-    let blob = dataURItoBlob(src); 
-    let file = new File([blob], props.file.name, { type: 'image/jpeg' });
-    storeImageOnFireStore(file); 
+    let blob = dataURItoBlob(src);
+    let file = new File([blob], props.file.name, { type: "image/jpeg" });
+    storeImageOnFireStore(file);
     setOpen(false);
-  }; 
+  };
 
-  const onCropCancelledClicked =()=>{
+  const onCropCancelledClicked = () => {
     handleClose();
     props.cancel();
-  }
+  };
 
-  const dataURItoBlob=()=>{  
-      let dataURI = croppedImageUrl;
-      debugger;
+  const dataURItoBlob = () => {
+    let dataURI = croppedImageUrl;
+    debugger;
     // convert base64/URLEncoded data component to raw binary data held in a string
     var byteString;
     if (dataURI.split(",")[0].indexOf("base64") >= 0)
@@ -131,69 +137,66 @@ export default function ImageCropModal(props) {
     }
 
     return new Blob([ia], { type: mimeString });
-  } 
+  };
 
-  const storeImageOnFireStore = (file) => { 
-    if(props.context === 'user'){ 
+  const storeImageOnFireStore = (file) => {
+   // deleteProfileImageIfPresent(); commenting because of a bug 
+    if (props.context === "user") {
       let userRollNumber = JSON.parse(localStorage.getItem("currentUserInfo"))
-      .rollNumber;
-    //dangerous if user deletes the localstorage and uploads the image 
-    deleteProfileImageIfPresent();
-    let userProfileImageStorageReference = storage.ref().child(
-      `profile-images/${userRollNumber}-${file.name}`
-    );
-    userProfileImageStorageReference.put(file).then((snapshot) => {
-      console.log("Uploaded Snapshot ", snapshot);
-      if (snapshot.state === "success") {
-        let userDocRef = database
-          .collection("users")
-          .doc(localStorage.getItem("currentUserId"));
-        userDocRef
-          .update({ profileImagePath: snapshot.metadata.fullPath })
-          .then((res) => {
-            console.log("Image Uploaded Successfully!!", res); 
-            props.onProfileImageUpdated(snapshot.metadata.fullPath);
-          });
-      }
-    });
-    }else if(props.context === 'dspace'){ 
+        .rollNumber;
+      //dangerous if user deletes the localstorage and uploads the image
+      let imagePath = getImageStoragePath(
+        FIREBASE_STORAGE_FOLDERNAMES.profileImage,
+        userRollNumber,
+        file.name
+      ); //check for blank file
+      storeImageInFireStore(file, imagePath).then((snapshot) => {
+        console.log("Uploaded Snapshot ", snapshot);
+      });
+    } else if (props.context === "dspace") {
       let dspaceId = props.dspaceId;
-    //dangerous if user deletes the localstorage and uploads the image 
-    deleteProfileImageIfPresent();
-    let dspaceImageStorageReference = storage.ref().child(
-      `d-space-profile-images/${dspaceId}-${file.name}`
-    );
-    dspaceImageStorageReference.put(file).then((snapshot) => {
-      console.log("Uploaded Snapshot ", snapshot);
-      if (snapshot.state === "success") {
-        let dspaceDocRef = database
-          .collection("d-spaces")
-          .doc(dspaceId);
+      //dangerous if user deletes the localstorage and uploads the image
+      let imagePath = getImageStoragePath(
+        FIREBASE_STORAGE_FOLDERNAMES.dSpaceProfileImage,
+        dspaceId,
+        file.name
+      );
+      storeImageOnFireStore(file, imagePath).then((snapshot) => {
+        console.log("Uploaded Snapshot ", snapshot);
+        if (snapshot.state === "success") {
+          let dspaceDocRef = database.collection("d-spaces").doc(dspaceId);
           dspaceDocRef
-          .update({ profileImagePath: snapshot.metadata.fullPath })
-          .then((res) => {
-            console.log("Image Uploaded Successfully!!", res); 
-            props.onProfileImageUpdated(snapshot.metadata.fullPath);
-          });
-      }
-    });
-    }
-  }; 
-
-  const deleteProfileImageIfPresent = () =>{  
-    //need to update the userInfo whenever update is called in the code
-        let userInfo =  JSON.parse(localStorage.getItem('currentUserInfo')); 
-        if(!!userInfo.profileImagePath){ 
-          let deleteRef = storage.ref(userInfo.profileImagePath); 
-          return deleteRef.delete().then(()=>{
-            return true;
-          })
-          .catch((err)=> {throw err;})
+            .update({ profileImagePath: snapshot.metadata.fullPath })
+            .then((res) => {
+              console.log("Image Uploaded Successfully!!", res);
+              props.onProfileImageUpdated(snapshot.metadata.fullPath);
+            });
         }
-  }
+      });
+    }
+  };
+
+  const deleteProfileImageIfPresent = () => {
+    //need to update the userInfo whenever update is called in the code
+    let userInfo = JSON.parse(localStorage.getItem("currentUserInfo"));
+    if (!!(userInfo.profileImagePath.length>1)) {
+      let deleteRef = storage.ref(userInfo.profileImagePath);
+      return deleteRef
+        .delete()
+        .then(() => {
+          return true;
+        })
+        .catch((err) => {
+          throw err;
+        });
+    }
+  };
 
   const body = (
-    <div style={modalStyle} className={`${classes.paper} crop-image-modal-style `}>
+    <div
+      style={modalStyle}
+      className={`${classes.paper} crop-image-modal-style `}
+    >
       <h2 id="simple-modal-title">Crop Image</h2>
       <p id="simple-modal-description">Resize image to Crop</p>
       <ReactCrop
@@ -202,7 +205,7 @@ export default function ImageCropModal(props) {
         ruleOfThirds
         onImageLoaded={onImageLoaded}
         onComplete={onCropComplete}
-        onChange={onCropChange} 
+        onChange={onCropChange}
         maxHeight="300"
         maxWidth="300"
       />

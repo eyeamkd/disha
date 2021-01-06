@@ -45,7 +45,7 @@ export class Profile extends Component {
       });
   }
 
-  
+
   // image={!!this.state.info.profileImagePath} imageSrc={this.state.profileImagePath}
 
   render() {
@@ -60,7 +60,7 @@ export class Profile extends Component {
                   scale={100}
                   variant="square" 
                   imageSrc={this.state.info.profileImagePath}  
-                  image={!!this.state.info.profileImagePath} 
+                  image={!!((this.state.info.profileImagePath.length)>1)} 
                 />
               </Grid>
               <Grid item xs={12} md={11} style={{ margin: "1px" }}>

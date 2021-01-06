@@ -32,7 +32,7 @@ export class ProfileImage extends Component {
           })}
         >
           {!!this.props.image ? (
-            <img src={this.state.url} alt="profile pic" />
+            <img style={{width:`${scale}px`,height:`${scale}px`}} src={this.state.url} alt="profile pic" />
           ) : (
             <Typography>{this.props.name}</Typography>
           )}
