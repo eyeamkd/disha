@@ -18,4 +18,11 @@ export const isAdmin = (email) => {
     let domain = email.split("@")[1];
     if (domain === "disha.website") return true;
   } else return false;
-};
+}; 
+
+export const getUpdatedObjectByProperty = (prevState,key,value)=>{ 
+  let newState = JSON.parse(JSON.stringify(prevState));
+  newState[key] =  value;   
+  console.log(newState,key);
+  return newState;
+}

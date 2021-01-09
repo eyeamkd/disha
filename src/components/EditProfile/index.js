@@ -24,7 +24,8 @@ import firebase from "firebase/app";
 import LocationSearch from "./LocationSearch";
 import { ImageUploadComponent } from "../../shared/ImageUploadComponent";
 import { ProfileImage } from "../Profile/ProfileImage"; 
-import {getInitials} from '../../utils/Functions';
+import {getInitials, getUpdatedObjectByProperty} from '../../utils/Functions'; 
+
 
 let posts = []; 
 let infoUpdated = false;
@@ -56,12 +57,17 @@ export default class EditProfile extends Component {
       imageDeleted:false 
     };
   } 
+  
+  //copy currentUserInfo object  
+  // make changes on the copy
+  // if saveChanges update the user profile with the copy  
 
   onProfileImageUpdated=(updatedImageUrl)=>{
-    console.log("Profile Image updated with",updatedImageUrl);
+    console.log("Profile Image updated with",updatedImageUrl); 
+    const {currentUserInfo,profileImagePath} = this.state;
     this.setState({ 
-        profileImage:updatedImageUrl
-    })
+      currentUserInfo:getUpdatedObjectByProperty(currentUserInfo,profileImagePath,updatedImageUrl)
+    }) 
   }
 
   componentDidMount() {
@@ -76,23 +82,17 @@ export default class EditProfile extends Component {
     }
   } 
 
-  componentDidUpdate(){ 
+  componentDidUpdate(prevProps,prevState,snapshot){  
     infoUpdated = true;
   }
 
-  handleTextChange = (event) => {
+  handleTextChange = (event,key=event.target.id,value=event.target.value) => { 
     this.setState({
-      [event.target.id]: event.target.value,
+      currentUserInfo: getUpdatedObjectByProperty(this.state.currentUserInfo,key,value),
     });
-    console.log(this.state);
+    
   };
 
-  handleFirstNameChange = (event) => {
-    this.setState({ firstName: event.target.value });
-  };
-  handleLastNameChange = (event) => {
-    this.setState({ lastName: event.target.value });
-  }; 
   handleNewPasswordChange = (event) => {
     if (event.target.value.length < 8) {
       this.setState({ isNewPasswordValid: false });
@@ -256,7 +256,7 @@ export default class EditProfile extends Component {
     this.state.company = event.target.value;
   };
 
-  handleSearchChange = (value) => {
+  handleSearchChange = (event, value) => {
     this.state.location = value;
   };
 
@@ -318,7 +318,7 @@ export default class EditProfile extends Component {
                   placeholder={this.state.currentUserInfo.firstName}
                   variant="outlined"
                   required
-                  onChange={this.handleFirstNameChange}
+                  onChange={this.handleTextChange}
                   error={this.state.isFirstNameInvalid}
                 />
               </FormControl>
@@ -332,7 +332,7 @@ export default class EditProfile extends Component {
                   placeholder={this.state.currentUserInfo.lastName}
                   variant="outlined"
                   required
-                  onChange={this.handleLastNameChange}
+                  onChange={this.handleTextChange}
                   error={this.state.isLastNameInvalid}
                 />
               </FormControl>
@@ -343,7 +343,7 @@ export default class EditProfile extends Component {
               <LocationSearch
                 defaultCity={this.state.currentUserInfo.location}
                 cities={this.state.cities}
-                handleSearchChange={this.handleSearchChange}
+                handleSearchChange={(event,newValue) => this.handleTextChange(event,'location',newValue)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -354,7 +354,7 @@ export default class EditProfile extends Component {
                   defaultValue={this.state.currentUserInfo.company || ""}
                   placeholder={this.state.currentUserInfo.company || ""}
                   variant="outlined"
-                  onChange={this.handleCompanyChange}
+                  onChange={this.handleTextChange}
                   error={this.state.isCompanyInvalid}
                 />
               </FormControl>
