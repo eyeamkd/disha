@@ -1,34 +1,23 @@
-import React from "react";
+import {
+  CircularProgress,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  OutlinedInput,
+} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormLabel from "@material-ui/core/FormLabel";
 import Container from "@material-ui/core/Container";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Grid from "@material-ui/core/Grid";
+import Link from "@material-ui/core/Link";
+import Typography from "@material-ui/core/Typography";
+import React from "react";
 import { connect } from "react-redux";
+import { auth } from "../../../firebase/firebase.utils";
 import { setIsNewUser } from "../../../redux/signup/isNewUser-actions";
 import { setUser } from "../../../redux/user/user-actions";
 import Logo from "../../Logo/Logo";
-
-import {
-  FormControl,
-  OutlinedInput,
-  InputLabel,
-  CircularProgress,
-  FormHelperText,
-} from "@material-ui/core";
-
 import "./SignIn.css";
-import {
-  auth,
-  createUserProfileDocument,
-} from "../../../firebase/firebase.utils";
 
 class SignIn extends React.Component {
   constructor(props) {
@@ -68,12 +57,6 @@ class SignIn extends React.Component {
     const { email, password } = this.state;
     if (!this.state.isEmail && !this.state.isPassword) {
       try {
-        // let domain = email.split("@")[1].toLowerCase();
-        // if (domain === "disha.website") {
-        //   localStorage.setItem("isAdmin", true);
-        // } else {
-        //   localStorage.setItem("isAdmin", false);
-        // }
         var signedIn = await auth.signInWithEmailAndPassword(email, password);
         this.setState({
           email: "",
@@ -96,9 +79,7 @@ class SignIn extends React.Component {
     } else {
       // console.log("not ok")
       this.setState({ isSignin: false }, () =>
-        this.setState({
-          signinErrorMessage: "* Please fill all the fields",
-        })
+        this.setState({ signinErrorMessage: "* Please fill all the fields" })
       );
       return;
     }
