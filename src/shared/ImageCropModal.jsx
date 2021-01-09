@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import { Button } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import { storage, database,storeImageInFireStore } from "../firebase/firebase.utils";
 import { getImageStoragePath} from "../utils/Functions";
 import { FIREBASE_STORAGE_FOLDERNAMES } from "../shared/constants";
@@ -195,10 +195,9 @@ export default function ImageCropModal(props) {
   const body = (
     <div
       style={modalStyle}
-      className={`${classes.paper} crop-image-modal-style `}
+      className={`${classes.paper} crop-image-modal-style `} 
     >
-      <h2 id="simple-modal-title">Crop Image</h2>
-      <p id="simple-modal-description">Resize image to Crop</p>
+      <Typography variant="h3" id="simple-modal-title">Crop Image</Typography>
       <ReactCrop
         src={props.src}
         crop={crop}
@@ -210,10 +209,9 @@ export default function ImageCropModal(props) {
         maxWidth="300"
       />
       {croppedImageUrl && (
-        <div>
-          <img alt="Crop" src={croppedImageUrl} />
-          <Button onClick={uploadCroppedImage}>Set as Profile Image</Button>
-          <Button onClick={onCropCancelledClicked}>Cancel</Button>
+        <div style={{display:'flex', flexDirection:'row', justifyContent:'space-around'}}>
+          <Button variant="contained" color="secondary" onClick={uploadCroppedImage}>Set as Profile Image</Button>
+          <Button variant="contained" color="secondary" onClick={onCropCancelledClicked}>Cancel</Button>
         </div>
       )}
     </div>
@@ -225,7 +223,9 @@ export default function ImageCropModal(props) {
         open={open}
         onClose={handleClose}
         aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
+        aria-describedby="simple-modal-description" 
+      style={{marginTop:'10vh',marginLeft:'41%', marginRight:'30%'}}
+       
       >
         {body}
       </Modal>
