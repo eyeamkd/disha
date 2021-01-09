@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Card, CardContent, Typography, Box, makeStyles, Avatar } from '@material-ui/core';  
-
+import {storage} from '../../firebase/firebase.utils';
 import { deepOrange, deepPurple } from '@material-ui/core/colors';
 
 const Styles = makeStyles((theme) => ({
@@ -29,8 +29,16 @@ const getInitials=(fullName)=>{
 } 
 
 export default function UserCard(props) {   
-        const classes = Styles();
-        // console.log(getInitials(props.title))
+        const classes = Styles();  
+        const [imageUrl, setimageUrl] = useState('');  
+       
+        useEffect(() => {
+            if(!!props.image){ 
+                let imageStorageReference = storage.ref(props.imageSrc);
+                imageStorageReference.getDownloadURL().then(url=>{setimageUrl(url)})
+            }
+        }, [imageUrl,props.image,props.imageSrc]) 
+        
         return (   
                 <Box  
                 boxShadow={2}
@@ -49,7 +57,13 @@ export default function UserCard(props) {
                     className="grow"
                     >  
                         <CardContent style={{display:'flex', justifyContent:'space-around'}} >   
+                            { 
+                                props.image  
+                                ? 
+                            <Avatar   src={imageUrl} alt={props.key} />
+                            :
                             <Avatar className={classes.purple}>{getInitials(props.title)}</Avatar>
+                            } 
                             <Typography>{props.title}</Typography>
                         </CardContent>
                     </Card>

@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import DspaceHeader from './DspaceHeader'
 import Button from '@material-ui/core/Button';
-import { Container, Typography, CircularProgress } from '@material-ui/core';
+import { Container, Typography, CircularProgress, Avatar } from '@material-ui/core';
 import { Row, Col } from 'react-bootstrap'; 
 import {database} from '../../firebase/firebase.utils';
 import firebase from 'firebase/app'
+import UploadModal from '../UploadModal';
+import DspaceProfileImage from './DspaceProfileImage';
 
 
 let dSpace = {}
@@ -16,7 +18,8 @@ export class Dspace extends Component {
         filterValue: "None",
         userInfo: null,
         joined: false,
-        userDataReceived: false
+        userDataReceived: false,
+        editModalOpen : false
       };
 
     constructor(props){ 
@@ -74,6 +77,10 @@ export class Dspace extends Component {
         database.collection('users').doc(currentUserId).update({
             dspaces: firebase.firestore.FieldValue.arrayRemove(this.props.dSpace.docId)
         });
+    } 
+
+    handleEditClick(){ 
+        this.setState({ editModalOpen:true })
     }
 
     componentDidMount(  ){ 
@@ -85,8 +92,9 @@ export class Dspace extends Component {
         return ( 
             <Container fluid>  
                 <Row> 
-                    <Col md={11}>
-                        <Typography variant="h1">{this.props.dSpace.title}</Typography>
+                    <Col md={11} style={{display:'flex'}}>
+                        <DspaceProfileImage imageSrc={!!dSpace.profileImagePath?dSpace.profileImagePath:""}/>
+                        <Typography variant="h1">{dSpace.title}</Typography> 
                     </Col>
                     <Col md={1}>
                         {
@@ -111,14 +119,24 @@ export class Dspace extends Component {
                             >
                                 Joined
                             </Button>
-                        }
+                        } 
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            color="secondary"
+                            className="submit"
+                            onClick={() => this.handleEditClick()}
+                            >
+                                EDIT
+                            </Button>
                     </Col>
                 </Row> 
                 <Row> 
                     <Col>  
                         <DspaceHeader dSpace={this.props.dSpace}/>
                     </Col>
-                </Row>
+                </Row> 
+                <UploadModal dSpace={dSpace} open={this.state.editModalOpen} />
             </Container>
             
         )

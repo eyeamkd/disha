@@ -12,4 +12,15 @@
 
 .checkbox-section{ 
     margin: 5px;
+} 
+
+.crop-image-modal-style{  
+    border-radius: 10px;
+    /* max-height: 500px; */
+} 
+
+.image-upload-button{ 
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }

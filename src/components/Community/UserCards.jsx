@@ -25,14 +25,11 @@ const updateUsersArray = (searchValue, filterValues) => {
     if (filterValues.length)
       return FilteredUsers.filter((user) => {
         let userFullName = user.firstName + user.lastName;
-        console.log(user);
         return userFullName.toLowerCase().includes(searchValue.toLowerCase());
       });
     else
       return CompleteUsersArray.filter((user) => {
         let userFullName = user.firstName + user.lastName;
-
-        console.log(user);
         return userFullName.toLowerCase().includes(searchValue.toLowerCase());
       });
   }
@@ -69,6 +66,8 @@ const checkUserValid = (user, currentUserInfo, filterValues) => {
         break;
       case FILTER_TYPES.SECTION:
         isSameClass = isUserFromSameClass(user, currentUserInfo);
+        break;
+      default:
         break;
     }
   });
@@ -211,6 +210,8 @@ export class UserCards extends Component {
                     <UserCard
                       className="d-space-card"
                       title={User.firstName + " " + User.lastName}
+                      imageSrc={User.profileImagePath}
+                      image={!!User.profileImagePath}
                       // description = { dSpace.description }
                       key={User.firstName}
                     />

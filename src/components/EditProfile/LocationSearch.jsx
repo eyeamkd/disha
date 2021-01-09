@@ -38,20 +38,23 @@ function fetchDefautValue(props) {
 
 export default function LocationSearch(props) {
     const classes = useStyles();
-    const cities = props.cities;
+    const cities = props.cities; 
+    const [value, setValue] = useState("");
 
 
     return (
         <Autocomplete
-            id="country-select-demo"
+            id="location"
             style={{ width: '100%', marginLeft: 10, paddingRight: 20 }}
             options={cities}
             classes={{
                 option: classes.option,
             }}
             onChange={(event, newValue) => {
-                props.handleSearchChange(newValue)
-            }}
+                props.handleSearchChange(event,newValue.name); 
+                setValue(newValue);
+            }} 
+            value={value}
             autoHighlight
             getOptionLabel={(option) => option.name}
             defaultValue={props.defaultCity}
