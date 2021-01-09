@@ -75,7 +75,8 @@ export const ImageUploadComponent = (props) => {
   return (
     <div className="main-class">
       {isImageUploaded && (
-        <ImageCropModal
+        <ImageCropModal 
+       
           cancel={onImageCropCancelClicked}
           file={files}
           src={src}
@@ -91,12 +92,16 @@ export const ImageUploadComponent = (props) => {
           color="secondary"
           className="submit"
           onClick={uploadButtonClicked}
-          style={props.buttonStyle ? props.buttonStyle : {}}
+          style={{margin:'10px'}} 
+          
         >
           UPLOAD
         </Button>
         {!!props.image ? (
-          <Button type="submit" variant="contained" color="secondary" onClick={deleteProfileImage}>
+          
+          <Button  
+          style={{margin:'10px'}}  
+           type="submit" variant="contained" color="secondary" onClick={deleteProfileImage}>
             DELETE
           </Button>
         ) : (

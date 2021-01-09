@@ -279,12 +279,7 @@ export default class EditProfile extends Component {
     ) {
       return (
         <div
-          style={{
-            position: "absolute",
-            left: "50%",
-            top: "50%",
-            transform: "translate(-50%, -50%)",
-          }}
+         className="progress-container"
         >
           <CircularProgress size={80} />
         </div>
@@ -292,7 +287,27 @@ export default class EditProfile extends Component {
     } else {
       return (
         <Container component="main" maxWidth="xs">
-          <Typography variant="h1">Edit Profile</Typography>
+          <Typography variant="h1">Edit Profile</Typography> 
+
+          <Grid container className="profile-image-grid-container">
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              style={{ maxWidth: "250px", margin: "15px" }}
+            >
+              <ProfileImage
+                name={getInitials(this.state.currentUserInfo.firstName,this.state.currentUserInfo.lastName)}
+                scale={250}
+                variant="square"
+                image={!!this.state.profileImage}
+                imageSrc={this.state.profileImage} 
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <ImageUploadComponent image={!!this.state.profileImage?this.state.profileImage:false} onImageUpload={this.handleImageUpload} onProfileImageUpdated = {this.onProfileImageUpdated} context="user"/>
+            </Grid>
+          </Grid>
           <Grid container>
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
@@ -345,28 +360,7 @@ export default class EditProfile extends Component {
               </FormControl>
             </Grid>
           </Grid>
-          <Typography style={{ margin: "10px" }}>
-            Upload New Display Picture
-          </Typography>
-          <Grid container>
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              style={{ maxWidth: "250px", margin: "15px" }}
-            >
-              <ProfileImage
-                name={getInitials(this.state.currentUserInfo.firstName,this.state.currentUserInfo.lastName)}
-                scale={250}
-                variant="square"
-                image={!!this.state.profileImage}
-                imageSrc={this.state.profileImage} 
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <ImageUploadComponent image={!!this.state.profileImage?this.state.profileImage:false} onImageUpload={this.handleImageUpload} onProfileImageUpdated = {this.onProfileImageUpdated} context="user"/>
-            </Grid>
-          </Grid>
+        
           <Grid container direction="row" justify="center">
             <Button
               type="submit"
