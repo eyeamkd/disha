@@ -151,7 +151,8 @@ export default function ImageCropModal(props) {
         file.name
       ); //check for blank file
       storeImageInFireStore(file, imagePath).then((snapshot) => {
-        console.log("Uploaded Snapshot ", snapshot);
+        console.log("Uploaded Snapshot ", snapshot); 
+        props.onProfileImageUpdated(snapshot.metadata.fullPath);
       });
     } else if (props.context === "dspace") {
       let dspaceId = props.dspaceId;
