@@ -32,6 +32,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
     "react-share": "^4.1.0",
+    "react-web-notification": "^0.8.0",
     "reactstrap": "^8.4.1",
     "recharts": "^1.8.5",
     "redux": "^4.0.5",
