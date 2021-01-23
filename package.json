@@ -40,6 +40,7 @@
     "simple-react-comments": "^1.1.0",
     "testcafe": "^1.8.3",
     "typeface-roboto": "0.0.75",
+    "web-push": "^3.4.4",
     "zxcvbn": "^4.4.2"
   },
   "scripts": {

@@ -1,45 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" /> 
-    <!-- Add manifest -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-    <!-- Tell the browser it's a PWA -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <!-- Tell iOS it's a PWA -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <!-- Make sure theme-color is defined -->
-    <meta name="theme-color" content="#f57f17">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Delegation, Interaction & Scholarly Help Application"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
 
-    <!-- Material UI Styles -->
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-    />
-    <link rel="stylesheet" href="//cdn.quilljs.com/1.2.6/quill.snow.css">
-    <!--
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <!-- Add manifest -->
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+  <!-- Tell the browser it's a PWA -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <!-- Tell iOS it's a PWA -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <!-- Make sure theme-color is defined -->
+  <meta name="theme-color" content="#f57f17">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Delegation, Interaction & Scholarly Help Application" />
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+
+  <!-- Material UI Styles -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+  <link rel="stylesheet" href="//cdn.quilljs.com/1.2.6/quill.snow.css">
+  <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-      crossorigin="anonymous"
-    />
-    <!--
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
@@ -47,60 +35,77 @@
       Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
-    --> 
-    <title>Disha</title> 
-    <style type="text/css">
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: sans-serif;
-      }
+    -->
+  <title>Disha</title>
+  <style type="text/css">
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+    }
 
-      .App {
-        text-align: center;
-      }
+    .App {
+      text-align: center;
+    }
 
-      .App-header {
-        background-color:#f57f17 ;
-        height: 150px;
-        padding: 20px;
-        color: white;
-      }
+    .App-header {
+      background-color: #f57f17;
+      height: 150px;
+      padding: 20px;
+      color: white;
+    }
 
-      .App-intro {
-        font-size: large;
-      }
-    </style>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBgXAeA_fR7xZKm9gCG3zgUQR2U9m7cuJw&libraries=places"></script>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"> 
-      <div class="App">
-        <img src="logo512.png">
-        <h4 class="App-intro">
-          Caliberating your <i>DISHA..</i>
-        </h4>
-      </div> 
+    .App-intro {
+      font-size: large;
+    }
+  </style>
+  <script type="text/javascript"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBgXAeA_fR7xZKm9gCG3zgUQR2U9m7cuJw&libraries=places"></script>
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root">
+    <div class="App">
+      <img src="logo512.png">
+      <h4 class="App-intro">
+        Caliberating your <i>DISHA..</i>
+      </h4>
     </div>
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-          navigator.serviceWorker.register('service-worker.js').then(function(registration) {
-            // Registration was successful
-            console.log('ServiceWorker registration successful with scope: ', registration.scope);
-          }, function(err) {
-            // registration failed :(
-            console.log('ServiceWorker registration failed: ', err);
-          }).catch(function(err) {
-            console.log(err)
-          });
+  </div>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('service-worker.js').then(function (registration) {
+          var options = {
+            userVisibleOnly: true,
+            applicationServerKey: 'BDtMFAWgRx0ixSGo9WkwrGCDknRmDoEB3GOqr-nYy61asbQ29zhMZu6gcCFj_Xt1qj2gWM9XhOl2D-95WWf6Swo'
+          };
+          // Registration was successful  
+          registration.pushManager.subscribe(options).then((subscriptionObject)=> {
+            console.log("Subscription Object is", subscriptionObject);
+          })
+          Notification.requestPermission()
+            .then((permission) => {
+              var img = './logo192.png';
+              var text = '';
+              var notification = new Notification('Welcome to DISHA', { body: text, icon: img });
+
+            })
+            .catch(err => console.log(err));
+          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }, function (err) {
+          // registration failed :(
+          console.log('ServiceWorker registration failed: ', err);
+        }).catch(function (err) {
+          console.log(err)
         });
-      } else {
-        console.log('service worker is not supported');
-      }
-    </script>
-    <!--
+      });
+    } else {
+      console.log('service worker is not supported');
+    }
+  </script>
+  <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 
@@ -110,5 +115,6 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-  </body>
+</body>
+
 </html>

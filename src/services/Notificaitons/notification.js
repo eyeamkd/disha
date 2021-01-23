@@ -7,5 +7,11 @@ const options = {
 
 export const sendNotificaiton = () => {
 
-} 
+}  
+
+export const checkNotificationPermission = () => {
+  
+    console.log(window.Notification.permission);
+  } 
+  
 

@@ -1,11 +1,12 @@
-// Set this to true for production
+// Set this to true for production 
+// import {checkNotificationPermission} from '../src/services/Notificaitons/notification';
 var doCache = true;
 
 // Name our cache
 var CACHE_NAME = 'disha-cache-v1';
 
 // Delete old caches that are not our current one!
-window.self.addEventListener("activate", event => {
+self.addEventListener("activate", event => {
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
     caches.keys()
@@ -21,7 +22,7 @@ window.self.addEventListener("activate", event => {
 });
 
 // The first time the user starts up the PWA, 'install' is triggered.
-window.self.addEventListener('install', function(event) {
+self.addEventListener('install', function(event) {
   if (doCache) {
     event.waitUntil(
       caches.open(CACHE_NAME)
@@ -50,7 +51,7 @@ window.self.addEventListener('install', function(event) {
 
 // When the webpage goes to fetch files, we intercept that request and serve up the matching files
 // if we have them
-window.self.addEventListener('fetch', function(event) {
+self.addEventListener('fetch', function(event) {
     if (doCache) {
       event.respondWith(
           caches.match(event.request).then(function(response) {
@@ -58,4 +59,48 @@ window.self.addEventListener('fetch', function(event) {
           })
       );
     }
-});
+}); 
+
+
+
+console.log("Service Worker is executing..."); 
+
+// const requestPermission = () => { 
+//   console.log(Notification);
+//   Notification.requestPermission() 
+//   .then(permission => console.log(permission)) 
+//   .catch(err=> console.log(err)); 
+
+// } 
+
+// requestPermission(); 
+
+self.addEventListener('push', function(event) { 
+  console.log("Push triggered");
+    var title = "Notification from the server";
+  var message = "Your friend Kaustubh has joined DISHA";
+  var icon = "./logo192.png";
+
+ const options = {
+    body: message,
+    icon: icon
+  }; 
+
+  self.registration.showNotification(title,options);
+}); 
+
+// self.addEventListener("push", function(event) {
+//   if (event.data) {
+//     console.log("Push event!! ", event.data.text());
+//     showLocalNotification("Yolo", event.data.text(),  self.registration);
+//   } else {
+//     console.log("Push event but no data");
+//   }
+// });
+// const showLocalNotification = (title, body, swRegistration) => {
+//   const options = {
+//     body
+//     // here you can add more properties like icon, image, vibrate, etc.
+//   };
+//   swRegistration.showNotification(title, options);
+// };
