@@ -11,9 +11,10 @@ import {
 } from "@material-ui/core/styles";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import {getRegistrationToken} from './firebase/firebase.utils';
 
 
-
+console.log(getRegistrationToken());
 
 
 let theme = createMuiTheme({

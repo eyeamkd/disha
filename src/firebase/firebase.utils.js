@@ -58,6 +58,10 @@ if (process.env.NODE_ENV === "development") {
 } else {
   firebase.initializeApp(config);
 }
+const messaging = firebase.messaging(); 
+messaging.onMessage((payload)=>{ 
+  console.log("Message received", payload);
+})
 
 export const auth = firebase.auth();
 export const database = firebase.firestore();
