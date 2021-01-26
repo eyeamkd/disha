@@ -1,11 +1,13 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
-import "firebase/auth";
+import "firebase/auth"; 
+import "firebase/messaging"; 
 import firebaseConfig from "./firebase.config.json";
 import firebaseTestingConfig from "./firebase.testing-config.json";
 
 const config = firebaseConfig;
 const testingConfig = firebaseTestingConfig;
+
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
@@ -44,6 +46,11 @@ export async function getUserDocument(userAuth) {
     .catch((err) => {
       console.log("Unable to fetch UserDocument ", err);
     });
+} 
+
+export const getRegistrationToken = () => {  
+  const messaging = firebase.messaging();
+ return messaging.getToken().then((token) => token)
 }
 
 if (process.env.NODE_ENV === "development") {
