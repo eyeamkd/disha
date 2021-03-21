@@ -31,6 +31,9 @@ export class Profile extends Component {
   }
 
   getUserData(userData) {
+    if(this.props.userInfo) {
+      this.setState({ info: this.props.userInfo })
+    }
     var a;
     a = userData.get()
       .then(doc => {

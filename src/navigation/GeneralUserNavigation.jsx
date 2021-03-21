@@ -45,7 +45,7 @@ export class GeneralUserNavigation extends Component {
                 <Route path="/community" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <CommunityPage />} />
                 <Route path="/account-requests" exact render={() => <ClaimAccountPage />} />
                 <Route path="/search-d-spaces" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <SearchPage />} />
-                <Route path="/profile" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <Profile />} />
+                <Route path="/profile" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <Profile userInfo={value.state.currentUser}/>} />
                 <Route path="/user-dspaces" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <UserDspaces />} />
                 <Route path="/claim-account" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <ClaimAccountPage />} />
                 <Route path="/confirm-account" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <ConfirmAccount />} />
