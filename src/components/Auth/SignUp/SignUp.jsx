@@ -57,7 +57,11 @@ class SignUp extends React.Component {
     labelWidth: 0,
     inputLabel: null,
     errors: null,
-  };
+  };  
+
+  constructor(props){
+    super(props);
+  }
 
   handleFirstNameChange = (value) => {
     if (value.length < 1) return "* Required";
@@ -101,9 +105,9 @@ class SignUp extends React.Component {
     if (value.length > 7) {
       let deptCode = value.substring(6, 8);
       let studentType = value.substring(4, 6);
-      if(studentType === mbaCode) {
+      if (studentType === mbaCode) {
         this.setState({ department: "MBA" });
-        department = "MBA"
+        department = "MBA";
         return department;
       }
       department = departments[deptCode];
@@ -246,9 +250,12 @@ class SignUp extends React.Component {
     }
     if (branch.indexOf(rollNumber.substring(6, 8)) === -1) {
       return false;
-    }
-    else {
-      if(rollNumber.substring(6, 8) === "00" && rollNumber.substring(4, 6) !== mbaCode) return false;
+    } else {
+      if (
+        rollNumber.substring(6, 8) === "00" &&
+        rollNumber.substring(4, 6) !== mbaCode
+      )
+        return false;
     }
     return true;
   }
@@ -277,7 +284,6 @@ class SignUp extends React.Component {
   }
 
   handleSignupClick = async (values, setSubmitting) => {
-    debugger;
     if (!this.state.isAckChecked) {
       this.setState({
         ackMessage: "* Please confirm if the details are correct",
@@ -318,8 +324,8 @@ class SignUp extends React.Component {
       let { email, year, department, section } = values;
       let newEmail = email.toLowerCase();
       let { isAlumni, isAuthenticated } = this.state;
-      const { user } = information;
-      await createUserProfileDocument(user, {
+      const { user } = information;  
+      const userDoc = {
         firstName,
         lastName,
         newEmail,
@@ -331,8 +337,22 @@ class SignUp extends React.Component {
         isAuthenticated,
         likedPosts,
         dspaces,
-      });
-      this.setState({ accountCreated: true });
+      };
+      this.props.updateUser(userDoc);
+       createUserProfileDocument(user, userDoc).then(()=>this.setState({ accountCreated: true }));
+      // localStorage.setItem("currentUserInfo", {
+      //   firstName,
+      //   lastName,
+      //   newEmail,
+      //   rollNumber,
+      //   year,
+      //   department,
+      //   section,
+      //   isAlumni,
+      //   isAuthenticated,
+      //   likedPosts,
+      //   dspaces,
+      // });
     } catch (error) {
       console.error(error);
       setSubmitting(false);

@@ -37,7 +37,7 @@ export async function getUserDocument(userAuth) {
   return await userRef
     .get()
     .then((snapShot) => {
-      if (snapShot.exists) {
+      if (!!snapShot.exists) {
         return snapShot;
       }
     })
@@ -50,7 +50,8 @@ if (process.env.NODE_ENV === "development") {
   firebase.initializeApp(testingConfig);
 } else {
   firebase.initializeApp(config);
-}
+}  
+
 
 export const auth = firebase.auth();
 export const database = firebase.firestore();

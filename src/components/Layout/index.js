@@ -183,8 +183,8 @@ function Layout(props) {
             </div>
             <Divider />
             <List>
-              {!!value.userType ? (
-                menu[value.userType].map((menuItem, key) => (
+              {!!value.state.userType ? (
+                menu[value.state.userType].map((menuItem, key) => (
                   <ListItem
                     component={Link}
                     to={menuItem.endpoint}

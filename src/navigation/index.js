@@ -29,7 +29,7 @@ class Navigation extends React.Component {
     return (
       <UserContext.Consumer>
         {(value) => {
-          switch (value.userType) {
+          switch (value.state.userType) {
             case userRoles.admin:
               return <AdminNavigation />;
             case userRoles.general:

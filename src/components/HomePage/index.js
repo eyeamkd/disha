@@ -20,6 +20,7 @@ import {
 } from "../../shared/constants";
 
 import postData from "./postsdata.json";
+import { UserContext } from "../../utils/Context";
 
 let posts = [];
 
@@ -44,7 +45,6 @@ export default class HomePage extends React.Component {
 
   componentDidMount() {
     this.getUserData();
-    this.getPosts();
     console.log(this.state.allPosts);
   }
 
@@ -55,9 +55,12 @@ export default class HomePage extends React.Component {
   }
 
   getUserData = () => {
-    let currentUserInfo = JSON.parse(localStorage.getItem("currentUserInfo"));
+    let currentUserInfo = this.props.userInfo;
     if (currentUserInfo) {
-      this.setState({ userInfo: currentUserInfo, userInfoReceived: true });
+      this.setState(
+        { userInfo: currentUserInfo, userInfoReceived: true },
+        this.getPosts()
+      );
       this.getUserDspaces(currentUserInfo);
     } else {
       let currentUserId = localStorage.getItem("currentUserId");
@@ -73,7 +76,10 @@ export default class HomePage extends React.Component {
             if (data.password) data.password = "[hidden]";
             let info = JSON.stringify(data);
             localStorage.setItem("currentUserInfo", info);
-            this.setState({ userInfo: doc.data(), userInfoReceived: true });
+            this.setState(
+              { userInfo: doc.data(), userInfoReceived: true },
+              this.getPosts()
+            );
             this.getUserDspaces(doc.data());
           }
         })
@@ -112,7 +118,7 @@ export default class HomePage extends React.Component {
     arr.splice(index, 1);
     this.setState({ allPosts: arr });
     let deleteDoc = database.collection("posts").doc(post.id).delete();
-  }; 
+  };
 
   sortPosts = (posts) => {
     let importantPosts = [];
@@ -161,31 +167,30 @@ export default class HomePage extends React.Component {
       });
   };
 
-    getUserDspaces = (userInfo) => {
-        let postsData = database.collection('d-spaces')
-        let query = postsData.get()
-            .then(snapshot => {
-                if (snapshot.empty) {
-                    console.log('No matching documents.');
-                    return;
-                }
-                let a = [] 
-                if(!!snapshot){ 
-                    snapshot.forEach(doc => { 
-                        if(!!userInfo.dspaces){ 
-                            userInfo.dspaces.forEach((dspaceId) => {
-                                if (dspaceId === doc.id) {
-                                    a.push(doc.data().title)
-                                }
-                            })
-                        }
-                    });
-                }
-                // let dspaceInfo = snapshot.data()
-                this.setState({ userDspaces: a, userDspacesArrived: true })
-                console.log(this.state.userDspaces)
-            })
-    }
+  getUserDspaces = (userInfo) => {
+    let postsData = database.collection("d-spaces");
+    let query = postsData.get().then((snapshot) => {
+      if (snapshot.empty) {
+        console.log("No matching documents.");
+        return;
+      }
+      let a = [];
+      if (!!snapshot) {
+        snapshot.forEach((doc) => {
+          if (!!userInfo.dspaces) {
+            userInfo.dspaces.forEach((dspaceId) => {
+              if (dspaceId === doc.id) {
+                a.push(doc.data().title);
+              }
+            });
+          }
+        });
+      }
+      // let dspaceInfo = snapshot.data()
+      this.setState({ userDspaces: a, userDspacesArrived: true });
+      console.log(this.state.userDspaces);
+    });
+  };
 
   calculatePostScored = (post) => {
     if (post.isAdminPost) {
@@ -276,48 +281,52 @@ export default class HomePage extends React.Component {
       );
     } else
       return (
-        <div>
-          <Box display="flex" flexDirection="row-reverse" p={1} m={1}>
-            <Box p={1}>
-              <Button
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                onClick={this.handleClick}
+        <UserContext.Consumer>
+          {(value) => (
+            <div>
+              <Box display="flex" flexDirection="row-reverse" p={1} m={1}>
+                <Box p={1}>
+                  <Button
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                    onClick={this.handleClick}
+                  >
+                    <SortIcon />
+                    Filter
+                  </Button>
+                </Box>
+              </Box>
+              <Menu
+                id="simple-menu"
+                anchorEl={this.state.filterClicked}
+                keepMounted
+                open={Boolean(this.state.filterClicked)}
+                onClose={() => this.handleClose(POST_CATEGORIES.NONE)}
               >
-                <SortIcon />
-                Filter
-              </Button>
-            </Box>
-          </Box>
-          <Menu
-            id="simple-menu"
-            anchorEl={this.state.filterClicked}
-            keepMounted
-            open={Boolean(this.state.filterClicked)}
-            onClose={() => this.handleClose(POST_CATEGORIES.NONE)}
-          >
-            {Object.keys(POST_CATEGORIES).map(function (key) {
-              return (
-                <MenuItem
-                  key={key}
-                  onClick={() => this.handleClose(POST_CATEGORIES[key])}
-                >
-                  {POST_CATEGORIES[key]}
-                </MenuItem>
-              );
-            }, this)}
-          </Menu>
-          <Link href="/new-post" variant="body2">
-            <Tooltip title="New Post" aria-label="add">
-              <Fab color="primary" aria-label="add" className="fab-icon">
-                <AddIcon className="add-icon" />
-              </Fab>
-            </Tooltip>
-          </Link>
-          {this.state.allPosts.map((post) => {
-            return this.filterPosts(post);
-          })}
-        </div>
+                {Object.keys(POST_CATEGORIES).map(function (key) {
+                  return (
+                    <MenuItem
+                      key={key}
+                      onClick={() => this.handleClose(POST_CATEGORIES[key])}
+                    >
+                      {POST_CATEGORIES[key]}
+                    </MenuItem>
+                  );
+                }, this)}
+              </Menu>
+              <Link href="/new-post" variant="body2">
+                <Tooltip title="New Post" aria-label="add">
+                  <Fab color="primary" aria-label="add" className="fab-icon">
+                    <AddIcon className="add-icon" />
+                  </Fab>
+                </Tooltip>
+              </Link>
+              {this.state.allPosts.map((post) => {
+                return this.filterPosts(post);
+              })}
+            </div>
+          )}
+        </UserContext.Consumer>
       );
   }
 }

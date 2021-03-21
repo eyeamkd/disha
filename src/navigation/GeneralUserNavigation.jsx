@@ -35,12 +35,13 @@ export class GeneralUserNavigation extends Component {
     } 
   render() {
     return (
-      <>
+      <UserContext.Consumer> 
+      {(value)=> ( 
        <Switch>
                 <Route path="/" exact render={() => <LandingPage />} />
-                <Route path="/home" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <HomePage />} />
-                <Route path="/SignUp" exact render={() => this.getCurrentUserId() ? (<Redirect to="/home" />) : <SignUp />} />
-                <Route path="/SignIn" exact render={() => this.getCurrentUserId() ? (<Redirect to="/home" />) : <SignIn />} />
+                <Route path="/home" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <HomePage userInfo={value.state.currentUser} />} />
+                <Route path="/SignUp" exact render={() => this.getCurrentUserId() ? (<Redirect to="/home" />) : <SignUp updateUser={value.updateUser} />} />
+                <Route path="/SignIn" exact render={() => this.getCurrentUserId() ? (<Redirect to="/home" />) : <SignIn updateUser={value.updateUser} />} />
                 <Route path="/community" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <CommunityPage />} />
                 <Route path="/account-requests" exact render={() => <ClaimAccountPage />} />
                 <Route path="/search-d-spaces" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <SearchPage />} />
@@ -58,7 +59,8 @@ export class GeneralUserNavigation extends Component {
                 <Route path="/dspace=:dspace" component={IndividualDspace} />
                 <Route path="*" render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) :<NoMatch/> }/>
             </Switch>
-      </>
+      )}
+      </UserContext.Consumer>
     );
   }
 }

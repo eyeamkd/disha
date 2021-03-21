@@ -15,7 +15,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { auth } from "../../../firebase/firebase.utils";
 import { setIsNewUser } from "../../../redux/signup/isNewUser-actions";
-import { setUser } from "../../../redux/user/user-actions";
+import { setUser } from "../../../redux/user/user-actions"; 
+import {getUserDocument} from "../../../firebase/firebase.utils";
 import Logo from "../../Logo/Logo";
 import "./SignIn.css";
 
@@ -57,7 +58,12 @@ class SignIn extends React.Component {
     const { email, password } = this.state;
     if (!this.state.isEmail && !this.state.isPassword) {
       try {
-        var signedIn = await auth.signInWithEmailAndPassword(email, password);
+        var signedIn = await auth.signInWithEmailAndPassword(email, password).then((userCredential)=>{
+            const user = userCredential.user;  
+            let snapshot = getUserDocument(userCredential.user).then(snapshot => {
+              this.props.updateUser(snapshot.data())
+            } )
+        } )
         this.setState({
           email: "",
           password: "",
