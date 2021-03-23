@@ -18,21 +18,19 @@ import { connect } from 'react-redux';
 
 export class Profile extends Component {
 
-  
-
   constructor(props) { 
     super(props); 
     this.state = {
       info: null
     }
-    let currentUserId = localStorage.getItem('currentUserId')
+    let currentUserId = this.props.currentUser.id
     let userData = database.collection('users').doc(currentUserId);
     this.getUserData(userData);
   }
 
   getUserData(userData) {
-    if(this.props.userInfo) {
-      this.setState({ info: this.props.userInfo })
+    if(this.props.currentUser) {
+      this.setState({ info: this.props.currentUser })
     }
     var a;
     a = userData.get()

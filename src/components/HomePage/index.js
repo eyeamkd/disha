@@ -35,7 +35,7 @@ export default class HomePage extends React.Component {
     postsArrived: false,
     userDspaces: [],
     userDspacesArrived: false,
-    userInfo: null,
+    currentUser: null,
     userInfoReceived: false,
   };
 
@@ -55,60 +55,11 @@ export default class HomePage extends React.Component {
   }
 
   getUserData = () => {
-    let currentUserInfo = this.props.userInfo;
-    if (currentUserInfo) {
       this.setState(
-        { userInfo: currentUserInfo, userInfoReceived: true },
+        { currentUser: this.props.currentUser, userInfoReceived: true },
         this.getPosts()
       );
-      this.getUserDspaces(currentUserInfo);
-    } else {
-      let currentUserId = localStorage.getItem("currentUserId");
-      let userData = database.collection("users").doc(currentUserId);
-      var a;
-      a = userData
-        .get()
-        .then((doc) => {
-          if (!doc.exists) {
-            console.log("No such document!");
-          } else {
-            let data = doc.data();
-            if (data.password) data.password = "[hidden]";
-            let info = JSON.stringify(data);
-            localStorage.setItem("currentUserInfo", info);
-            this.setState(
-              { userInfo: doc.data(), userInfoReceived: true },
-              this.getPosts()
-            );
-            this.getUserDspaces(doc.data());
-          }
-        })
-        .catch((err) => {
-          console.log("Error getting document", err);
-        });
-    }
-  };
-
-  getUserDspaces = (userInfo) => {
-    let postsData = database.collection("d-spaces");
-    let query = postsData.get().then((snapshot) => {
-      if (snapshot.empty) {
-        console.log("No matching documents.");
-        return;
-      }
-      let a = [];
-      snapshot.forEach((doc) => {
-        if (!userInfo.dspaces) return;
-        userInfo.dspaces.forEach((dspaceId) => {
-          if (dspaceId === doc.id) {
-            a.push(doc.data().title);
-          }
-        });
-      });
-      // let dspaceInfo = snapshot.data()
-      this.setState({ userDspaces: a, userDspacesArrived: true });
-      console.log(this.state.userDspaces);
-    });
+      this.getUserDspaces(this.props.currentUser);
   };
 
   removePost = (post) => {
@@ -155,7 +106,7 @@ export default class HomePage extends React.Component {
           var a = doc.data();
           a.id = doc.id;
           a.score = 0;
-          a.userLiked = this.state.userInfo.likedPosts.includes(doc.id);
+          a.userLiked = this.state.currentUser.likedPosts.includes(doc.id);
           posts.push(a);
         });
         posts = this.sortPosts(posts);
@@ -206,7 +157,7 @@ export default class HomePage extends React.Component {
       post.score = post.score + POST_SCORES.NOT_LIKED;
     }
     let authorRollNumber = post.authorRollNumber;
-    let userRollNumber = this.state.userInfo.rollNumber;
+    let userRollNumber = this.state.currentUser.rollNumber;
     if (
       authorRollNumber.substring(0, 1) === userRollNumber.substring(0, 1) ||
       authorRollNumber.substring(4, 6) === userRollNumber.substring(4, 6)
@@ -235,8 +186,8 @@ export default class HomePage extends React.Component {
         <Post
           post={post}
           key={post.id}
-          userLiked={this.state.userInfo.likedPosts.includes(post.id)}
-          postedByUser={this.state.userInfo.rollNumber == post.authorRollNumber}
+          userLiked={this.state.currentUser.likedPosts.includes(post.id)}
+          postedByUser={this.state.currentUser.rollNumber == post.authorRollNumber}
           removePost={this.removePost}
           inIndividualPost={false}
         />
@@ -247,9 +198,9 @@ export default class HomePage extends React.Component {
           <Post
             post={post}
             key={post.id}
-            userLiked={this.state.userInfo.likedPosts.includes(post.id)}
+            userLiked={this.state.currentUser.likedPosts.includes(post.id)}
             postedByUser={
-              this.state.userInfo.rollNumber == post.authorRollNumber
+              this.state.currentUser.rollNumber == post.authorRollNumber
             }
             removePost={this.removePost}
             inIndividualPost={false}
@@ -265,7 +216,7 @@ export default class HomePage extends React.Component {
     if (
       this.state.postsArrived === false ||
       this.state.userDspacesArrived === false ||
-      !this.state.userInfo
+      !this.state.currentUser
     ) {
       return (
         <div

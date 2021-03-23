@@ -324,6 +324,7 @@ class SignUp extends React.Component {
       let { email, year, department, section } = values;
       let newEmail = email.toLowerCase();
       let { isAlumni, isAuthenticated } = this.state;
+      debugger;
       const { user } = information;  
       const userDoc = {
         firstName,
@@ -338,21 +339,9 @@ class SignUp extends React.Component {
         likedPosts,
         dspaces,
       };
+      userDoc.id = user.uid
       this.props.updateUser(userDoc);
        createUserProfileDocument(user, userDoc).then(()=>this.setState({ accountCreated: true }));
-      // localStorage.setItem("currentUserInfo", {
-      //   firstName,
-      //   lastName,
-      //   newEmail,
-      //   rollNumber,
-      //   year,
-      //   department,
-      //   section,
-      //   isAlumni,
-      //   isAuthenticated,
-      //   likedPosts,
-      //   dspaces,
-      // });
     } catch (error) {
       console.error(error);
       setSubmitting(false);

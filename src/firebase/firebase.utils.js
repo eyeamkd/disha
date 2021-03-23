@@ -30,15 +30,17 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   return userRef;
 };
 
-export async function getUserDocument(userAuth) {
-  if (!userAuth) return;
-  const userRef = database.collection("users").doc(userAuth.uid);
+export async function getUserDocument(userId) {
+  if (!userId) return;
+  const userRef = database.collection("users").doc(userId);
 
   return await userRef
     .get()
     .then((snapShot) => {
       if (!!snapShot.exists) {
-        return snapShot;
+        let data = snapShot.data();
+        data.id = userId
+        return data;
       }
     })
     .catch((err) => {

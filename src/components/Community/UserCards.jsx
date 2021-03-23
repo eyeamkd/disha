@@ -17,78 +17,6 @@ let FilteredUsers = [];
 
 let CompleteUsersArray = [];
 
-const updateUsersArray = (searchValue, filterValues) => {
-  if (!searchValue) {
-    if (FilteredUsers) return FilteredUsers;
-    else return CompleteUsersArray;
-  } else {
-    if (filterValues.length)
-      return FilteredUsers.filter((user) => {
-        let userFullName = user.firstName + user.lastName;
-        console.log(user);
-        return userFullName.toLowerCase().includes(searchValue.toLowerCase());
-      });
-    else
-      return CompleteUsersArray.filter((user) => {
-        let userFullName = user.firstName + user.lastName;
-
-        console.log(user);
-        return userFullName.toLowerCase().includes(searchValue.toLowerCase());
-      });
-  }
-};
-
-const filterUsers = (searchValue, filterValues) => {
-  let currentUserInfo = JSON.parse(localStorage.getItem("currentUserInfo"));
-  if (!filterValues.length) {
-    if (SearchUsers) return SearchUsers;
-    else return CompleteUsersArray;
-  } else {
-    if (searchValue)
-      return SearchUsers.filter((user) => {
-        return checkUserValid(user, currentUserInfo, filterValues);
-      });
-    else
-      return CompleteUsersArray.filter((user) => {
-        return checkUserValid(user, currentUserInfo, filterValues);
-      });
-  }
-};
-
-const checkUserValid = (user, currentUserInfo, filterValues) => {
-  let isSameBatch = false;
-  let isSameDepartment = false;
-  let isSameClass = false;
-  filterValues.forEach((value) => {
-    switch (value) {
-      case FILTER_TYPES.BATCH:
-        isSameBatch = isUserFromSameBatch(user, currentUserInfo);
-        break;
-      case FILTER_TYPES.DEPARTMENT:
-        isSameDepartment = isUserFromSameDepartment(user, currentUserInfo);
-        break;
-      case FILTER_TYPES.SECTION:
-        isSameClass = isUserFromSameClass(user, currentUserInfo);
-        break;
-    }
-  });
-  return isSameBatch || isSameDepartment || isSameClass;
-};
-
-const isUserFromSameBatch = (user, currentUserInfo) => {
-  return currentUserInfo.year === user.year;
-};
-const isUserFromSameDepartment = (user, currentUserInfo) => {
-  return currentUserInfo.department === user.department;
-};
-const isUserFromSameClass = (user, currentUserInfo) => {
-  return (
-    currentUserInfo.year === user.year &&
-    currentUserInfo.department === user.department &&
-    currentUserInfo.section === user.section
-  );
-};
-
 export class UserCards extends Component {
   constructor(props) {
     super(props);
@@ -114,9 +42,86 @@ export class UserCards extends Component {
     this.updateUsers(prevProps);
   }
 
+  updateUsersArray = (searchValue, filterValues) => {
+    if (!searchValue) {
+      if (FilteredUsers) return FilteredUsers;
+      else return CompleteUsersArray;
+    } else {
+      if (filterValues.length)
+        return FilteredUsers.filter((user) => {
+          let userFullName = user.firstName + user.lastName;
+          console.log(user);
+          return userFullName.toLowerCase().includes(searchValue.toLowerCase());
+        });
+      else
+        return CompleteUsersArray.filter((user) => {
+          let userFullName = user.firstName + user.lastName;
+
+          console.log(user);
+          return userFullName.toLowerCase().includes(searchValue.toLowerCase());
+        });
+    }
+  };
+
+  filterUsers = (searchValue, filterValues) => {
+    if (!filterValues.length) {
+      if (SearchUsers) return SearchUsers;
+      else return CompleteUsersArray;
+    } else {
+      if (searchValue)
+        return SearchUsers.filter((user) => {
+          return this.checkUserValid(user, filterValues);
+        });
+      else
+        return CompleteUsersArray.filter((user) => {
+          return this.checkUserValid(user, filterValues);
+        });
+    }
+  };
+
+  checkUserValid = (user, filterValues) => {
+    let isSameBatch = false;
+    let isSameDepartment = false;
+    let isSameClass = false;
+    filterValues.forEach((value) => {
+      switch (value) {
+        case FILTER_TYPES.BATCH:
+          isSameBatch = this.isUserFromSameBatch(user, this.props.currentUser);
+          break;
+        case FILTER_TYPES.DEPARTMENT:
+          isSameDepartment = this.isUserFromSameDepartment(
+            user,
+            this.props.currentUser
+          );
+          break;
+        case FILTER_TYPES.SECTION:
+          isSameClass = this.isUserFromSameClass(user, this.props.currentUser);
+          break;
+      }
+    });
+    return isSameBatch || isSameDepartment || isSameClass;
+  };
+
+  isUserFromSameBatch = (user) => {
+    return this.props.currentUser.year === user.year;
+  };
+  isUserFromSameDepartment = (user) => {
+    return this.props.currentUser.department === user.department;
+  };
+  isUserFromSameClass = (user) => {
+    return (
+      this.props.currentUser.year === user.year &&
+      this.props.currentUser.department === user.department &&
+      this.props.currentUser.section === user.section
+    );
+  };
+
   updateUsers(prevProps) {
     if (prevProps.searchValue !== this.props.searchValue) {
-      Users = updateUsersArray(this.props.searchValue, this.props.filterValues);
+      Users = this.updateUsersArray(
+        this.props.searchValue,
+        this.props.filterValues
+      );
       SearchUsers = Users;
       if (Users.length === 0) {
         this.noUsersFound();
@@ -125,7 +130,7 @@ export class UserCards extends Component {
       }
     }
     if (prevProps.filterValues !== this.props.filterValues) {
-      Users = filterUsers(this.props.searchValue, this.props.filterValues);
+      Users = this.filterUsers(this.props.searchValue, this.props.filterValues);
       FilteredUsers = Users;
       if (Users.length === 0) {
         this.noUsersFound();
@@ -169,7 +174,7 @@ export class UserCards extends Component {
       .catch((err) => {
         console.log("Error getting documents", err);
       });
-      this.countByDept(Users)
+    this.countByDept(Users);
     SearchUsers = Users;
     CompleteUsersArray = Users;
     FilteredUsers = Users;
@@ -177,7 +182,7 @@ export class UserCards extends Component {
   }
 
   countByDept(users) {
-    let count = {}
+    let count = {};
     count["CSE"] = users.filter((obj) => obj.department === "CSE").length;
     count["IT"] = users.filter((obj) => obj.department === "IT").length;
     count["ECE"] = users.filter((obj) => obj.department === "ECE").length;
@@ -207,7 +212,7 @@ export class UserCards extends Component {
               Users.map((User) => {
                 let linkPath = `/id=${User.rollNumber}`;
                 return (
-                  <Link to={linkPath}>
+                  <Link to={linkPath} key={User.rollNumber}>
                     <UserCard
                       className="d-space-card"
                       title={User.firstName + " " + User.lastName}

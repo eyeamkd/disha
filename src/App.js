@@ -7,6 +7,7 @@ import { setUser } from "./redux/user/user-actions";
 import { UserContext } from "./utils/Context/index";
 import userRoles from "./utils/userRoles";
 import { isAdmin } from "./utils/Functions";
+import firebase from "firebase";
 
 UserContext.displayName = "UserContext";
 export class App extends Component {
@@ -14,15 +15,20 @@ export class App extends Component {
     super(props);
 
     this.state = {
+      currentUserId: localStorage.getItem("currentUserId"),
       currentUser: null,
       admin: false,
     };
+    if (!this.state.currentUser && this.state.currentUserId) {
+      getUserDocument(this.state.currentUserId).then((data) => {
+        this.setState({ currentUser: data });
+      });
+    }
   }
 
   unsubscribeFromAuth = null;
 
   setUserId() {
-    localStorage.setItem("currentUserId", this.state.currentUser.id);
     this.props.setUser(this.state.currentUser.id);
     this.setUserContext();
   }
@@ -83,19 +89,17 @@ export class App extends Component {
     });
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    debugger;
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       console.log("Auth state changed!!!");
       if (!!userAuth) {
-        let snapShot = await getUserDocument(userAuth);
+        let data = await getUserDocument(userAuth.uid);
         if (this.state.currentUser === null) {
-          if (!!snapShot) {
+          if (!!data) {
             this.setState(
               {
-                currentUser: {
-                  id: snapShot.id,
-                  ...snapShot.data(),
-                },
+                currentUser: data,
               },
               () => {
                 this.state.currentUser
@@ -106,9 +110,7 @@ export class App extends Component {
           } else {
             this.setState(
               {
-                currentUser: {
-                  id: userAuth.uid,
-                },
+                currentUser: data,
               },
               () => {
                 this.state.currentUser
@@ -117,17 +119,17 @@ export class App extends Component {
               }
             );
           }
-        }
-        else if(this.props.isNewUser === true){
-        // let userRef = null;
-        this.setState({ currentUser: null }, () => {
-          this.props.setUser(null)
-        })
+        } else if (this.props.isNewUser === true) {
+          // let userRef = null;
+          this.setState({ currentUser: null }, () => {
+            this.props.setUser(null);
+          });
         }
       } else {
-        this.setState({ currentUser: userAuth }, () => {
+        this.setState({ currentUser: null }, () => {
           this.props.setUser(null);
           this.setUserContext();
+          localStorage.setItem("currentUserId", "");
         });
       }
     });
@@ -140,23 +142,21 @@ export class App extends Component {
   changeCurrentUser() {
     this.setState({ currentUser: null });
     this.props.setUser(null);
-    localStorage.removeItem("currentUserId");
     // console.log(this.props.user)
   }
 
-  updateUser=(user)=> {
+  updateUser = (user) => {
     this.setState({ currentUser: user });
-  }
+  };
 
   render() {
-    var currentUserId = localStorage.getItem("currentUserId");
     // this.getUsers();
     return (
       <UserContext.Provider
         value={{ state: this.state, updateUser: this.updateUser }}
       >
         <Layout
-          currentUser={this.props.isNewUser ? null : currentUserId}
+          currentUser={this.props.isNewUser ? null : this.state.currentUser?.id}
           changeCurrentUser
           userInfo={this.state.currentUser}
         >

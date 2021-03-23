@@ -134,7 +134,6 @@ export default class EditProfile extends Component {
     userData.lastName = this.state.lastName;
     if (this.state.location) userData.location = this.state.location;
     if (this.state.company) userData.company = this.state.company;
-    localStorage.setItem("currentUserInfo", JSON.stringify(userData));
     database.collection("users").doc(currentUserId).update({
       firstName: this.state.firstName,
       lastName: this.state.lastName,
