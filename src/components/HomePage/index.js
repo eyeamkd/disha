@@ -22,9 +22,11 @@ import {
 import postData from "./postsdata.json";
 import { UserContext } from "../../utils/Context";
 
-let posts = [];
+let posts = []; 
 
-export default class HomePage extends React.Component {
+export default class HomePage extends React.Component { 
+  static contextType = UserContext;
+  
   state = {
     items: postData.slice(0, 5),
     hasMore: true,
@@ -37,10 +39,14 @@ export default class HomePage extends React.Component {
     userDspacesArrived: false,
     currentUser: null,
     userInfoReceived: false,
-  };
+  }; 
+
+ 
 
   constructor(props) {
-    super(props);
+    super(props); 
+
+    console.log("User Info is in Home page", this.context, this.props);
   }
 
   componentDidMount() {

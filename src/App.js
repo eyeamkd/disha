@@ -16,16 +16,13 @@ export class App extends Component {
 
     this.state = {
       currentUserId: localStorage.getItem("currentUserId"),
-      currentUser: null,
+      currentUser: JSON.parse(localStorage.getItem("currentUserInfo")),
       admin: false,
-    };
-    if (!this.state.currentUser && this.state.currentUserId) {
-      getUserDocument(this.state.currentUserId).then((data) => {
-        this.setState({ currentUser: data });
-      });
-    }
-  }
+    }; 
 
+  
+  }
+ 
   unsubscribeFromAuth = null;
 
   setUserId() {
@@ -90,7 +87,6 @@ export class App extends Component {
   }
 
   async componentDidMount() {
-    debugger;
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       console.log("Auth state changed!!!");
       if (!!userAuth) {
@@ -129,7 +125,8 @@ export class App extends Component {
         this.setState({ currentUser: null }, () => {
           this.props.setUser(null);
           this.setUserContext();
-          localStorage.setItem("currentUserId", "");
+          localStorage.setItem("currentUserId", ""); 
+          localStorage.setItem("currentUserInfo", "");
         });
       }
     });
@@ -145,8 +142,10 @@ export class App extends Component {
     // console.log(this.props.user)
   }
 
-  updateUser = (user) => {
-    this.setState({ currentUser: user });
+  updateUser = (userDoc) => {   
+    localStorage.setItem("currentUserId", JSON.stringify(userDoc.id)); 
+    localStorage.setItem("currentUserInfo", JSON.stringify(userDoc)); 
+    this.setState({ currentUser: userDoc });
   };
 
   render() {

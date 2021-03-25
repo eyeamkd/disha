@@ -19,6 +19,7 @@ import { setUser } from "../../../redux/user/user-actions";
 import { getUserDocument } from "../../../firebase/firebase.utils";
 import Logo from "../../Logo/Logo";
 import "./SignIn.css";
+import { Redirect } from "react-router-dom";
 
 class SignIn extends React.Component {
   constructor(props) {
@@ -34,7 +35,8 @@ class SignIn extends React.Component {
     errorMessage: "",
     signinErrorMessage: "Please fill all the fields",
     labelWidth: 0,
-    inputLabel: null,
+    inputLabel: null, 
+    isSigninClicked:false
   };
 
   handleEmailChange = (event) => {
@@ -52,9 +54,7 @@ class SignIn extends React.Component {
   };
 
   handleSigninClick = async () => {
-    this.setState({ isSignin: true }, () =>
-      this.setState({ signinErrorMessage: "" })
-    );
+    this.setState({isSigninClicked:true});
     const { email, password } = this.state;
     if (!this.state.isEmail && !this.state.isPassword) {
       try {
@@ -63,8 +63,11 @@ class SignIn extends React.Component {
           .then((userCredential) => {
             localStorage.setItem("currentUserId", userCredential.user.uid);
             let snapshot = getUserDocument(userCredential.user.uid).then(
-              (data) => {
-                this.props.updateUser(data);
+              async (data) => {
+                await this.props.updateUser(data);
+                this.setState({ isSignin: true }, () =>
+      this.setState({ signinErrorMessage: "" })
+    );
               }
             );
           });
@@ -95,8 +98,13 @@ class SignIn extends React.Component {
     }
   };
 
-  render() {
-    return (
+  render() {   
+    if(this.state.isSignin){
+      return( 
+        <Redirect to="/home"/>
+      )
+    }
+    return ( 
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className="paper">
@@ -148,7 +156,7 @@ class SignIn extends React.Component {
           </form>
           <br />
           <p style={{ color: "red" }}>{this.state.errorMessage}</p>
-          {this.state.isSignin ? (
+          {this.state.isSigninClicked ? (
             <CircularProgress color="primary" />
           ) : (
             <Button

@@ -340,7 +340,7 @@ class SignUp extends React.Component {
         dspaces,
       };
       userDoc.id = user.uid
-      this.props.updateUser(userDoc);
+      await this.props.updateUser(userDoc);
        createUserProfileDocument(user, userDoc).then(()=>this.setState({ accountCreated: true }));
     } catch (error) {
       console.error(error);

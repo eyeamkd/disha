@@ -88,7 +88,9 @@ const useStyles = makeStyles((theme) => ({
 function Layout(props) {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false); 
+  const [currentUser, setCurrentUser] = React.useState(JSON.parse(localStorage.getItem("currentUserInfo"))); 
+
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -140,7 +142,7 @@ function Layout(props) {
                 </Typography>
               </Box>
               <Box>
-                {props.currentUser ? (
+                {currentUser ? (
                   <Button
                     type="submit"
                     variant="contained"

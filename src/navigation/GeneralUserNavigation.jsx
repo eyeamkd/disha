@@ -26,8 +26,9 @@ import EditProfile from "../components/EditProfile";
 import Reauthentication from "../components/Reauthentication";
 import IndividualDspace from "../components/IndividualDspace";
 export class GeneralUserNavigation extends Component { 
-    getCurrentUserId() {
-        let currentUserId = localStorage.getItem('currentUserId');
+    getCurrentUserId(value) { 
+      console.log("Value is ", value);
+        let currentUserId = localStorage.getItem("currentUserId");
         if(currentUserId)
             return true;
         else   
