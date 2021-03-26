@@ -13,16 +13,13 @@ UserContext.displayName = "UserContext";
 export class App extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       currentUserId: localStorage.getItem("currentUserId"),
-      currentUser: JSON.parse(localStorage.getItem("currentUserInfo")),
+      currentUser: JSON.parse(localStorage.getItem("currentUserInfo") || null),
       admin: false,
-    }; 
-
-  
+    };
   }
- 
+
   unsubscribeFromAuth = null;
 
   setUserId() {
@@ -125,7 +122,7 @@ export class App extends Component {
         this.setState({ currentUser: null }, () => {
           this.props.setUser(null);
           this.setUserContext();
-          localStorage.setItem("currentUserId", ""); 
+          localStorage.setItem("currentUserId", "");
           localStorage.setItem("currentUserInfo", "");
         });
       }
@@ -142,9 +139,9 @@ export class App extends Component {
     // console.log(this.props.user)
   }
 
-  updateUser = (userDoc) => {   
-    localStorage.setItem("currentUserId", JSON.stringify(userDoc.id)); 
-    localStorage.setItem("currentUserInfo", JSON.stringify(userDoc)); 
+  updateUser = (userDoc) => {
+    localStorage.setItem("currentUserId", JSON.stringify(userDoc.id));
+    localStorage.setItem("currentUserInfo", JSON.stringify(userDoc));
     this.setState({ currentUser: userDoc });
   };
 

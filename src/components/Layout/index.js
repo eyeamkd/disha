@@ -88,9 +88,10 @@ const useStyles = makeStyles((theme) => ({
 function Layout(props) {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false); 
-  const [currentUser, setCurrentUser] = React.useState(JSON.parse(localStorage.getItem("currentUserInfo"))); 
-
+  const [open, setOpen] = React.useState(false);
+  const [currentUser, setCurrentUser] = React.useState(
+    JSON.parse(localStorage.getItem("currentUserInfo") || null)
+  );
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -105,6 +106,7 @@ function Layout(props) {
   };
 
   const handleSignOut = () => {
+    setCurrentUser(null)
     auth.signOut().then(redirect()).then(changeCurrentUser());
   };
 
