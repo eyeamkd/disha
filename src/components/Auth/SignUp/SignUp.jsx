@@ -56,7 +56,8 @@ class SignUp extends React.Component {
     confirmPassword: "",
     labelWidth: 0,
     inputLabel: null,
-    errors: null,
+    errors: null, 
+    confirmPasswordDisabled:true
   };  
 
   constructor(props){
@@ -145,16 +146,20 @@ class SignUp extends React.Component {
 
   handlePasswordChange = (value) => {
     if (value.length < 1) {
-      this.setState({ passwordMessage: "" });
+      this.setState({ passwordMessage: "",  confirmPasswordDisabled:true});
       return "* Required";
     }
-    if (value.length < 9) {
+    if (value.length < 9) { 
+      this.setState({ 
+        confirmPasswordDisabled:true
+      })
       return "* Too Short!";
     }
     let pwdAnalysis = zxcvbn(value); //Gives the password strength score
     this.setState({
       password: value,
-      passwordMessage: PASSWORD_STRENGTHS[pwdAnalysis.score],
+      passwordMessage: PASSWORD_STRENGTHS[pwdAnalysis.score], 
+      confirmPasswordDisabled:false
     });
   };
 
@@ -369,6 +374,7 @@ class SignUp extends React.Component {
               department: "Department",
               section: "a",
               acknowledged: false,
+              
             }}
             validate={(values) => {
               const errors = {};
@@ -640,7 +646,8 @@ class SignUp extends React.Component {
                         value={values.confirmPassword}
                         labelWidth={60}
                         required={true}
-                        fullWidth
+                        fullWidth 
+                        disabled={this.state.confirmPasswordDisabled}
                       />
                       {touched.confirmPassword && (
                         <FormHelperText error={true}>
