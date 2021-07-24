@@ -26,39 +26,42 @@ import EditProfile from "../components/EditProfile";
 import Reauthentication from "../components/Reauthentication";
 import IndividualDspace from "../components/IndividualDspace";
 export class GeneralUserNavigation extends Component { 
-    getCurrentUserId() {
-        let currentUserId = localStorage.getItem('currentUserId');
+    getCurrentUserId(value) { 
+      console.log("Value is ", value);
+        let currentUserId = localStorage.getItem("currentUserId");
         if(currentUserId)
             return true;
         else   
             return false;
-    } 
+    }   
   render() {
     return (
-      <>
+      <UserContext.Consumer> 
+      {(value)=> ( 
        <Switch>
                 <Route path="/" exact render={() => <LandingPage />} />
-                <Route path="/home" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <HomePage />} />
-                <Route path="/SignUp" exact render={() => this.getCurrentUserId() ? (<Redirect to="/home" />) : <SignUp />} />
-                <Route path="/SignIn" exact render={() => this.getCurrentUserId() ? (<Redirect to="/home" />) : <SignIn />} />
-                <Route path="/community" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <CommunityPage />} />
+                <Route path="/home" exact render={() => !this.getCurrentUserId(value) ? (<Redirect to="/SignIn" />) : <HomePage currentUser={value.state.currentUser} />} />
+                <Route path="/SignUp" exact render={() => this.getCurrentUserId(value) ? (<Redirect to="/home" />) : <SignUp updateUser={value.updateUser} />} />
+                <Route path="/SignIn" exact render={() => this.getCurrentUserId(value) ? (<Redirect to="/home" />) : <SignIn updateUser={value.updateUser} />} />
+                <Route path="/community" exact render={() => !this.getCurrentUserId(value) ? (<Redirect to="/SignIn" />) : <CommunityPage userInfo={value.state.currentUser}/>} />
                 <Route path="/account-requests" exact render={() => <ClaimAccountPage />} />
-                <Route path="/search-d-spaces" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <SearchPage />} />
-                <Route path="/profile" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <Profile />} />
-                <Route path="/user-dspaces" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <UserDspaces />} />
-                <Route path="/claim-account" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <ClaimAccountPage />} />
-                <Route path="/confirm-account" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <ConfirmAccount />} />
-                <Route path="/new-post" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <NewPost />} />
-                <Route path="/data-updated" render={(props) => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <DataUpdated {...props} />} />
-                <Route path="/new-dspace" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <NewDspaceForm />} />
-                <Route path="/edit-profile" exact render={(props) => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <EditProfile {...props} />} />
-                <Route path="/reauth" exact render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn" />) : <Reauthentication />} />
-                <Route path="/id=:id" exact component={!this.getCurrentUserId() ? SignIn : OtherUser} />
+                <Route path="/search-d-spaces" exact render={() => !this.getCurrentUserId(value) ? (<Redirect to="/SignIn" />) : <SearchPage />} />
+                <Route path="/profile" exact render={() => !this.getCurrentUserId(value) ? (<Redirect to="/SignIn" />) : <Profile currentUser={value.state.currentUser}/>} />
+                <Route path="/user-dspaces" exact render={() => !this.getCurrentUserId(value) ? (<Redirect to="/SignIn" />) : <UserDspaces />} />
+                <Route path="/claim-account" exact render={() => !this.getCurrentUserId(value) ? (<Redirect to="/SignIn" />) : <ClaimAccountPage />} />
+                <Route path="/confirm-account" exact render={() => !this.getCurrentUserId(value) ? (<Redirect to="/SignIn" />) : <ConfirmAccount />} />
+                <Route path="/new-post" exact render={() => !this.getCurrentUserId(value) ? (<Redirect to="/SignIn" />) : <NewPost />} />
+                <Route path="/data-updated" render={(props) => !this.getCurrentUserId(value) ? (<Redirect to="/SignIn" />) : <DataUpdated {...props} />} />
+                <Route path="/new-dspace" exact render={() => !this.getCurrentUserId(value) ? (<Redirect to="/SignIn" />) : <NewDspaceForm />} />
+                <Route path="/edit-profile" exact render={(props) => !this.getCurrentUserId(value) ? (<Redirect to="/SignIn" />) : <EditProfile {...props} />} />
+                <Route path="/reauth" exact render={() => !this.getCurrentUserId(value) ? (<Redirect to="/SignIn" />) : <Reauthentication />} />
+                <Route path="/id=:id" exact component={!this.getCurrentUserId(value) ? SignIn : OtherUser} />
                 <Route path="/post=:post" component={IndividualPost} />
-                <Route path="/dspace=:dspace" component={IndividualDspace} />
-                <Route path="*" render={() => !this.getCurrentUserId() ? (<Redirect to="/SignIn"/>) :<NoMatch/> }/>
+                <Route path="/dspace=:dspace" render={(props) => <IndividualDspace currentUser={value.state.currentUser} {...props} />}/>
+                <Route path="*" render={() => !this.getCurrentUserId(value) ? (<Redirect to="/SignIn"/>) :<NoMatch/> }/>
             </Switch>
-      </>
+      )}
+      </UserContext.Consumer>
     );
   }
 }

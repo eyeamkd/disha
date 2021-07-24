@@ -1,41 +1,41 @@
-import React from "react";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormLabel from "@material-ui/core/FormLabel";
-import Container from "@material-ui/core/Container";
-import Logo from "../../Logo/Logo";
-import { database } from "../../../firebase/firebase.utils";
-import { Formik } from "formik";
-import { PASSWORD_STRENGTHS, EMAIL_REGEX } from "../../../shared/constants";
-import zxcvbn from "zxcvbn";
-
 import {
   FormControl,
-  OutlinedInput,
-  InputLabel,
-  CircularProgress,
-  FormHelperText,
+
+
+
+  FormHelperText, InputLabel, OutlinedInput
 } from "@material-ui/core";
-
+import Button from "@material-ui/core/Button";
+import Checkbox from "@material-ui/core/Checkbox";
+import Container from "@material-ui/core/Container";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormLabel from "@material-ui/core/FormLabel";
+import Grid from "@material-ui/core/Grid";
+import Link from "@material-ui/core/Link";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import Typography from "@material-ui/core/Typography";
+import { Formik } from "formik";
+<<<<<<< HEAD
+import React from "react";
 import { Redirect } from "react-router-dom";
-
-import {
-  ROLL_NUMBER_CONFIG,
-  DEPARTMENT_CODES,
-} from "../../../shared/constants";
-
-import "./SignUp.css";
+=======
+import { PASSWORD_STRENGTHS, EMAIL_REGEX } from "../../../shared/constants";
+>>>>>>> master
+import zxcvbn from "zxcvbn";
 import {
   auth,
-  createUserProfileDocument,
+  createUserProfileDocument, database
 } from "../../../firebase/firebase.utils";
+import {
+  DEPARTMENT_CODES, ROLL_NUMBER_CONFIG
+} from "../../../shared/constants";
+import Logo from "../../Logo/Logo";
+import "./SignUp.css";
+
+
+
+
 
 var emailRegex = EMAIL_REGEX;
 let mbaCode = "1e";
@@ -56,13 +56,8 @@ class SignUp extends React.Component {
     confirmPassword: "",
     labelWidth: 0,
     inputLabel: null,
-    errors: null, 
-    confirmPasswordDisabled:true
-  };  
-
-  constructor(props){
-    super(props);
-  }
+    errors: null,
+  };
 
   handleFirstNameChange = (value) => {
     if (value.length < 1) return "* Required";
@@ -73,7 +68,6 @@ class SignUp extends React.Component {
   };
 
   handleEmailChange = (value) => {
-    console.log(process.env.NODE_ENV);
     let isEmailProper = emailRegex.test(value);
     if (value.length < 1 || !isEmailProper) {
       if (value.length < 1) {
@@ -106,9 +100,9 @@ class SignUp extends React.Component {
     if (value.length > 7) {
       let deptCode = value.substring(6, 8);
       let studentType = value.substring(4, 6);
-      if (studentType === mbaCode) {
+      if(studentType === mbaCode) {
         this.setState({ department: "MBA" });
-        department = "MBA";
+        department = "MBA"
         return department;
       }
       department = departments[deptCode];
@@ -146,20 +140,16 @@ class SignUp extends React.Component {
 
   handlePasswordChange = (value) => {
     if (value.length < 1) {
-      this.setState({ passwordMessage: "",  confirmPasswordDisabled:true});
+      this.setState({ passwordMessage: "" });
       return "* Required";
     }
-    if (value.length < 9) { 
-      this.setState({ 
-        confirmPasswordDisabled:true
-      })
+    if (value.length < 9) {
       return "* Too Short!";
     }
     let pwdAnalysis = zxcvbn(value); //Gives the password strength score
     this.setState({
       password: value,
-      passwordMessage: PASSWORD_STRENGTHS[pwdAnalysis.score], 
-      confirmPasswordDisabled:false
+      passwordMessage: PASSWORD_STRENGTHS[pwdAnalysis.score],
     });
   };
 
@@ -227,7 +217,6 @@ class SignUp extends React.Component {
       .catch((err) => {
         console.log("Error getting documents", err);
       });
-    console.log("email query", query);
     return query;
   };
 
@@ -255,12 +244,9 @@ class SignUp extends React.Component {
     }
     if (branch.indexOf(rollNumber.substring(6, 8)) === -1) {
       return false;
-    } else {
-      if (
-        rollNumber.substring(6, 8) === "00" &&
-        rollNumber.substring(4, 6) !== mbaCode
-      )
-        return false;
+    }
+    else {
+      if(rollNumber.substring(6, 8) === "00" && rollNumber.substring(4, 6) !== mbaCode) return false;
     }
     return true;
   }
@@ -289,6 +275,7 @@ class SignUp extends React.Component {
   }
 
   handleSignupClick = async (values, setSubmitting) => {
+    debugger;
     if (!this.state.isAckChecked) {
       this.setState({
         ackMessage: "* Please confirm if the details are correct",
@@ -329,9 +316,8 @@ class SignUp extends React.Component {
       let { email, year, department, section } = values;
       let newEmail = email.toLowerCase();
       let { isAlumni, isAuthenticated } = this.state;
-      debugger;
-      const { user } = information;  
-      const userDoc = {
+      const { user } = information;
+      await createUserProfileDocument(user, {
         firstName,
         lastName,
         newEmail,
@@ -343,10 +329,8 @@ class SignUp extends React.Component {
         isAuthenticated,
         likedPosts,
         dspaces,
-      };
-      userDoc.id = user.uid
-      await this.props.updateUser(userDoc);
-       createUserProfileDocument(user, userDoc).then(()=>this.setState({ accountCreated: true }));
+      });
+      this.setState({ accountCreated: true });
     } catch (error) {
       console.error(error);
       setSubmitting(false);
@@ -374,7 +358,6 @@ class SignUp extends React.Component {
               department: "Department",
               section: "a",
               acknowledged: false,
-              
             }}
             validate={(values) => {
               const errors = {};
@@ -646,8 +629,7 @@ class SignUp extends React.Component {
                         value={values.confirmPassword}
                         labelWidth={60}
                         required={true}
-                        fullWidth 
-                        disabled={this.state.confirmPasswordDisabled}
+                        fullWidth
                       />
                       {touched.confirmPassword && (
                         <FormHelperText error={true}>

@@ -1,4 +1,25 @@
 import {
+<<<<<<< HEAD
+    CircularProgress, FormControl,
+    FormHelperText, InputLabel, OutlinedInput
+} from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
+import Typography from '@material-ui/core/Typography';
+import React from 'react';
+import { connect } from 'react-redux';
+import { auth } from '../../../firebase/firebase.utils';
+import { setIsNewUser } from '../../../redux/signup/isNewUser-actions';
+import { setUser } from '../../../redux/user/userActions';
+import Logo from '../../Logo/Logo';
+import './SignIn.css';
+
+
+
+=======
   CircularProgress,
   FormControl,
   FormHelperText,
@@ -16,10 +37,9 @@ import { connect } from "react-redux";
 import { auth } from "../../../firebase/firebase.utils";
 import { setIsNewUser } from "../../../redux/signup/isNewUser-actions";
 import { setUser } from "../../../redux/user/user-actions";
-import { getUserDocument } from "../../../firebase/firebase.utils";
 import Logo from "../../Logo/Logo";
 import "./SignIn.css";
-import { Redirect } from "react-router-dom";
+>>>>>>> master
 
 class SignIn extends React.Component {
   constructor(props) {
@@ -35,8 +55,7 @@ class SignIn extends React.Component {
     errorMessage: "",
     signinErrorMessage: "Please fill all the fields",
     labelWidth: 0,
-    inputLabel: null, 
-    isSigninClicked:false
+    inputLabel: null,
   };
 
   handleEmailChange = (event) => {
@@ -54,23 +73,13 @@ class SignIn extends React.Component {
   };
 
   handleSigninClick = async () => {
-    this.setState({isSigninClicked:true});
+    this.setState({ isSignin: true }, () =>
+      this.setState({ signinErrorMessage: "" })
+    );
     const { email, password } = this.state;
     if (!this.state.isEmail && !this.state.isPassword) {
       try {
-        var signedIn = await auth
-          .signInWithEmailAndPassword(email, password)
-          .then((userCredential) => {
-            localStorage.setItem("currentUserId", userCredential.user.uid);
-            let snapshot = getUserDocument(userCredential.user.uid).then(
-              async (data) => {
-                await this.props.updateUser(data);
-                this.setState({ isSignin: true }, () =>
-      this.setState({ signinErrorMessage: "" })
-    );
-              }
-            );
-          });
+        var signedIn = await auth.signInWithEmailAndPassword(email, password);
         this.setState({
           email: "",
           password: "",
@@ -98,13 +107,8 @@ class SignIn extends React.Component {
     }
   };
 
-  render() {   
-    if(this.state.isSignin){
-      return( 
-        <Redirect to="/home"/>
-      )
-    }
-    return ( 
+  render() {
+    return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className="paper">
@@ -156,7 +160,7 @@ class SignIn extends React.Component {
           </form>
           <br />
           <p style={{ color: "red" }}>{this.state.errorMessage}</p>
-          {this.state.isSigninClicked ? (
+          {this.state.isSignin ? (
             <CircularProgress color="primary" />
           ) : (
             <Button

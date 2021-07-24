@@ -20,10 +20,13 @@ import {
 } from "../../shared/constants";
 
 import postData from "./postsdata.json";
+import { UserContext } from "../../utils/Context";
 
-let posts = [];
+let posts = []; 
 
-export default class HomePage extends React.Component {
+export default class HomePage extends React.Component { 
+  static contextType = UserContext;
+  
   state = {
     items: postData.slice(0, 5),
     hasMore: true,
@@ -34,17 +37,20 @@ export default class HomePage extends React.Component {
     postsArrived: false,
     userDspaces: [],
     userDspacesArrived: false,
-    userInfo: null,
+    currentUser: null,
     userInfoReceived: false,
-  };
+  }; 
+
+ 
 
   constructor(props) {
-    super(props);
+    super(props); 
+
+    console.log("User Info is in Home page", this.context, this.props);
   }
 
   componentDidMount() {
     this.getUserData();
-    this.getPosts();
     console.log(this.state.allPosts);
   }
 
@@ -55,54 +61,11 @@ export default class HomePage extends React.Component {
   }
 
   getUserData = () => {
-    let currentUserInfo = JSON.parse(localStorage.getItem("currentUserInfo"));
-    if (currentUserInfo) {
-      this.setState({ userInfo: currentUserInfo, userInfoReceived: true });
-      this.getUserDspaces(currentUserInfo);
-    } else {
-      let currentUserId = localStorage.getItem("currentUserId");
-      let userData = database.collection("users").doc(currentUserId);
-      var a;
-      a = userData
-        .get()
-        .then((doc) => {
-          if (!doc.exists) {
-            console.log("No such document!");
-          } else {
-            let data = doc.data();
-            if (data.password) data.password = "[hidden]";
-            let info = JSON.stringify(data);
-            localStorage.setItem("currentUserInfo", info);
-            this.setState({ userInfo: doc.data(), userInfoReceived: true });
-            this.getUserDspaces(doc.data());
-          }
-        })
-        .catch((err) => {
-          console.log("Error getting document", err);
-        });
-    }
-  };
-
-  getUserDspaces = (userInfo) => {
-    let postsData = database.collection("d-spaces");
-    let query = postsData.get().then((snapshot) => {
-      if (snapshot.empty) {
-        console.log("No matching documents.");
-        return;
-      }
-      let a = [];
-      snapshot.forEach((doc) => {
-        if (!userInfo.dspaces) return;
-        userInfo.dspaces.forEach((dspaceId) => {
-          if (dspaceId === doc.id) {
-            a.push(doc.data().title);
-          }
-        });
-      });
-      // let dspaceInfo = snapshot.data()
-      this.setState({ userDspaces: a, userDspacesArrived: true });
-      console.log(this.state.userDspaces);
-    });
+      this.setState(
+        { currentUser: this.props.currentUser, userInfoReceived: true },
+        this.getPosts()
+      );
+      this.getUserDspaces(this.props.currentUser);
   };
 
   removePost = (post) => {
@@ -112,7 +75,7 @@ export default class HomePage extends React.Component {
     arr.splice(index, 1);
     this.setState({ allPosts: arr });
     let deleteDoc = database.collection("posts").doc(post.id).delete();
-  }; 
+  };
 
   sortPosts = (posts) => {
     let importantPosts = [];
@@ -149,7 +112,7 @@ export default class HomePage extends React.Component {
           var a = doc.data();
           a.id = doc.id;
           a.score = 0;
-          a.userLiked = this.state.userInfo.likedPosts.includes(doc.id);
+          a.userLiked = this.state.currentUser.likedPosts.includes(doc.id);
           posts.push(a);
         });
         posts = this.sortPosts(posts);
@@ -161,31 +124,30 @@ export default class HomePage extends React.Component {
       });
   };
 
-    getUserDspaces = (userInfo) => {
-        let postsData = database.collection('d-spaces')
-        let query = postsData.get()
-            .then(snapshot => {
-                if (snapshot.empty) {
-                    console.log('No matching documents.');
-                    return;
-                }
-                let a = [] 
-                if(!!snapshot){ 
-                    snapshot.forEach(doc => { 
-                        if(!!userInfo.dspaces){ 
-                            userInfo.dspaces.forEach((dspaceId) => {
-                                if (dspaceId === doc.id) {
-                                    a.push(doc.data().title)
-                                }
-                            })
-                        }
-                    });
-                }
-                // let dspaceInfo = snapshot.data()
-                this.setState({ userDspaces: a, userDspacesArrived: true })
-                console.log(this.state.userDspaces)
-            })
-    }
+  getUserDspaces = (userInfo) => {
+    let postsData = database.collection("d-spaces");
+    let query = postsData.get().then((snapshot) => {
+      if (snapshot.empty) {
+        console.log("No matching documents.");
+        return;
+      }
+      let a = [];
+      if (!!snapshot) {
+        snapshot.forEach((doc) => {
+          if (!!userInfo.dspaces) {
+            userInfo.dspaces.forEach((dspaceId) => {
+              if (dspaceId === doc.id) {
+                a.push(doc.data().title);
+              }
+            });
+          }
+        });
+      }
+      // let dspaceInfo = snapshot.data()
+      this.setState({ userDspaces: a, userDspacesArrived: true });
+      console.log(this.state.userDspaces);
+    });
+  };
 
   calculatePostScored = (post) => {
     if (post.isAdminPost) {
@@ -201,7 +163,7 @@ export default class HomePage extends React.Component {
       post.score = post.score + POST_SCORES.NOT_LIKED;
     }
     let authorRollNumber = post.authorRollNumber;
-    let userRollNumber = this.state.userInfo.rollNumber;
+    let userRollNumber = this.state.currentUser.rollNumber;
     if (
       authorRollNumber.substring(0, 1) === userRollNumber.substring(0, 1) ||
       authorRollNumber.substring(4, 6) === userRollNumber.substring(4, 6)
@@ -230,8 +192,8 @@ export default class HomePage extends React.Component {
         <Post
           post={post}
           key={post.id}
-          userLiked={this.state.userInfo.likedPosts.includes(post.id)}
-          postedByUser={this.state.userInfo.rollNumber == post.authorRollNumber}
+          userLiked={this.state.currentUser.likedPosts.includes(post.id)}
+          postedByUser={this.state.currentUser.rollNumber == post.authorRollNumber}
           removePost={this.removePost}
           inIndividualPost={false}
         />
@@ -242,9 +204,9 @@ export default class HomePage extends React.Component {
           <Post
             post={post}
             key={post.id}
-            userLiked={this.state.userInfo.likedPosts.includes(post.id)}
+            userLiked={this.state.currentUser.likedPosts.includes(post.id)}
             postedByUser={
-              this.state.userInfo.rollNumber == post.authorRollNumber
+              this.state.currentUser.rollNumber == post.authorRollNumber
             }
             removePost={this.removePost}
             inIndividualPost={false}
@@ -260,7 +222,7 @@ export default class HomePage extends React.Component {
     if (
       this.state.postsArrived === false ||
       this.state.userDspacesArrived === false ||
-      !this.state.userInfo
+      !this.state.currentUser
     ) {
       return (
         <div
@@ -276,48 +238,52 @@ export default class HomePage extends React.Component {
       );
     } else
       return (
-        <div>
-          <Box display="flex" flexDirection="row-reverse" p={1} m={1}>
-            <Box p={1}>
-              <Button
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                onClick={this.handleClick}
+        <UserContext.Consumer>
+          {(value) => (
+            <div>
+              <Box display="flex" flexDirection="row-reverse" p={1} m={1}>
+                <Box p={1}>
+                  <Button
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                    onClick={this.handleClick}
+                  >
+                    <SortIcon />
+                    Filter
+                  </Button>
+                </Box>
+              </Box>
+              <Menu
+                id="simple-menu"
+                anchorEl={this.state.filterClicked}
+                keepMounted
+                open={Boolean(this.state.filterClicked)}
+                onClose={() => this.handleClose(POST_CATEGORIES.NONE)}
               >
-                <SortIcon />
-                Filter
-              </Button>
-            </Box>
-          </Box>
-          <Menu
-            id="simple-menu"
-            anchorEl={this.state.filterClicked}
-            keepMounted
-            open={Boolean(this.state.filterClicked)}
-            onClose={() => this.handleClose(POST_CATEGORIES.NONE)}
-          >
-            {Object.keys(POST_CATEGORIES).map(function (key) {
-              return (
-                <MenuItem
-                  key={key}
-                  onClick={() => this.handleClose(POST_CATEGORIES[key])}
-                >
-                  {POST_CATEGORIES[key]}
-                </MenuItem>
-              );
-            }, this)}
-          </Menu>
-          <Link href="/new-post" variant="body2">
-            <Tooltip title="New Post" aria-label="add">
-              <Fab color="primary" aria-label="add" className="fab-icon">
-                <AddIcon className="add-icon" />
-              </Fab>
-            </Tooltip>
-          </Link>
-          {this.state.allPosts.map((post) => {
-            return this.filterPosts(post);
-          })}
-        </div>
+                {Object.keys(POST_CATEGORIES).map(function (key) {
+                  return (
+                    <MenuItem
+                      key={key}
+                      onClick={() => this.handleClose(POST_CATEGORIES[key])}
+                    >
+                      {POST_CATEGORIES[key]}
+                    </MenuItem>
+                  );
+                }, this)}
+              </Menu>
+              <Link href="/new-post" variant="body2">
+                <Tooltip title="New Post" aria-label="add">
+                  <Fab color="primary" aria-label="add" className="fab-icon">
+                    <AddIcon className="add-icon" />
+                  </Fab>
+                </Tooltip>
+              </Link>
+              {this.state.allPosts.map((post) => {
+                return this.filterPosts(post);
+              })}
+            </div>
+          )}
+        </UserContext.Consumer>
       );
   }
 }

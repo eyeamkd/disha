@@ -1,18 +1,12 @@
-import React, { Component, Fragment } from "react";
-import { Container, Col, Row } from "react-bootstrap";
-import { Redirect } from 'react-router-dom'; 
-
-import firebase from 'firebase/app';
-import 'firebase/firestore';
+import { CircularProgress } from "@material-ui/core";
 import 'firebase/auth';
-
-import { Typography, Divider, Grid, CircularProgress, Card } from "@material-ui/core";
-import Post from '../Post';
-import {database} from '../../firebase/firebase.utils';
-import CommentsComponent from "../CommentsComponent"; 
-import './styles.css';
+import 'firebase/firestore';
+import React, { Component } from "react";
+import { Redirect } from 'react-router-dom';
+import { database } from '../../firebase/firebase.utils';
 import Dspace from '../Dspace';
-
+import './styles.css';
+import { UserContext } from "../../utils/Context";
 
 export class IndividualDspace extends Component { 
   
@@ -20,9 +14,7 @@ export class IndividualDspace extends Component {
       super(props); 
       this.state = {
         info: null,
-        infoNotArrived: true,
         dSpaceNotArrived: true,
-        currentUserInfo: null,
         dSpaceNotExists: false,
         userLoggedIn: true
       }
@@ -49,38 +41,13 @@ export class IndividualDspace extends Component {
     });
   }
 
-  getCurrentUserInfo = () => { 
-    let currentUserId = localStorage.getItem('currentUserId'); 
-    if(currentUserId) {
-      let query = database.collection('users').doc(currentUserId).get()
-        .then(doc => {
-          if (!doc.exists) {
-            console.log('No such document!');
-            this.setState({ infoNotArrived: false })
-          } else {
-            this.setState({ currentUserInfo: doc.data(), infoNotArrived: false })
-          }
-        })
-        .catch(err => {
-          console.log('Error getting document', err);
-        });
-    }
-    else {
-      this.setState({ currentUserInfo: null })
-    } 
-  }
-
-
   componentDidMount () {
     const { dspace } = this.props.match.params
     this.getDspaceData(dspace); 
-    this.getCurrentUserInfo(); 
   }
-
-
   
   render() { 
-    if(this.state.infoNotArrived || this.state.dSpaceNotArrived) {
+    if(this.state.dSpaceNotArrived) {
       return (
         <div style={{
             position: 'absolute', left: '50%', top: '50%',
@@ -92,13 +59,14 @@ export class IndividualDspace extends Component {
       )
     }
     else {
-      console.log("STATE", this.state);
-      if(!this.state.currentUserInfo)
-      return(<Redirect to="/home"/>)
       if(this.state.dSpaceNotExists)
       return(<Redirect to="/404"/>)
       else return (
-        <Dspace dSpace={this.state.info} />
+        <UserContext.Consumer>
+          {(value) => (
+            <Dspace currentUser={value.state.currentUser} dSpace={this.state.info} />
+          )}
+        </UserContext.Consumer>
       );
     }
   }

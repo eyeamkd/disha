@@ -1,3 +1,36 @@
+<<<<<<< HEAD
+import { CircularProgress, Container, Typography } from "@material-ui/core";
+import React, { Component, Fragment } from "react";
+import { Col, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { fetchUsers } from "../../middleware";
+import { FILTER_TYPES } from "../../shared/constants";
+import "../SearchPage/styles.css";
+import UserCard from "./UserCard";
+import { connect } from "react-redux";
+
+let users = [];
+
+let searchUsers = [];
+
+let filteredUsers = [];
+
+let completeUsersArray = [];
+
+const updateUsersArray = (searchValue, filterValues) => {
+  if (!searchValue) {
+    if (filteredUsers) return filteredUsers;
+    else return completeUsersArray;
+  } else {
+    if (filterValues.length)
+      return filteredUsers.filter((user) => {
+        let userFullName = user.firstName + user.lastName;
+        let a = userFullName.toLowerCase().includes(searchValue.toLowerCase());
+      });
+    else
+      return completeUsersArray.filter((user) => {
+        let userFullName = user.firstName + user.lastName;
+=======
 import React, { Component, Fragment } from "react";
 import DspaceCard from "../SearchPage/DspaceCard";
 import { Container, CircularProgress, Typography } from "@material-ui/core";
@@ -25,11 +58,15 @@ const updateUsersArray = (searchValue, filterValues) => {
     if (filterValues.length)
       return FilteredUsers.filter((user) => {
         let userFullName = user.firstName + user.lastName;
+        console.log(user);
         return userFullName.toLowerCase().includes(searchValue.toLowerCase());
       });
     else
       return CompleteUsersArray.filter((user) => {
         let userFullName = user.firstName + user.lastName;
+
+        console.log(user);
+>>>>>>> master
         return userFullName.toLowerCase().includes(searchValue.toLowerCase());
       });
   }
@@ -38,6 +75,17 @@ const updateUsersArray = (searchValue, filterValues) => {
 const filterUsers = (searchValue, filterValues) => {
   let currentUserInfo = JSON.parse(localStorage.getItem("currentUserInfo"));
   if (!filterValues.length) {
+<<<<<<< HEAD
+    if (searchUsers) return searchUsers;
+    else return completeUsersArray;
+  } else {
+    if (searchValue)
+      return searchUsers.filter((user) => {
+        return checkUserValid(user, currentUserInfo, filterValues);
+      });
+    else
+      return completeUsersArray.filter((user) => {
+=======
     if (SearchUsers) return SearchUsers;
     else return CompleteUsersArray;
   } else {
@@ -47,6 +95,7 @@ const filterUsers = (searchValue, filterValues) => {
       });
     else
       return CompleteUsersArray.filter((user) => {
+>>>>>>> master
         return checkUserValid(user, currentUserInfo, filterValues);
       });
   }
@@ -59,27 +108,35 @@ const checkUserValid = (user, currentUserInfo, filterValues) => {
   filterValues.forEach((value) => {
     switch (value) {
       case FILTER_TYPES.BATCH:
+<<<<<<< HEAD
+        isSameBatch = currentUserInfo.year === user.year;
+        break;
+      case FILTER_TYPES.DEPARTMENT:
+        isSameDepartment = currentUserInfo.department === user.department;
+=======
         isSameBatch = isUserFromSameBatch(user, currentUserInfo);
         break;
       case FILTER_TYPES.DEPARTMENT:
         isSameDepartment = isUserFromSameDepartment(user, currentUserInfo);
+>>>>>>> master
         break;
       case FILTER_TYPES.SECTION:
         isSameClass = isUserFromSameClass(user, currentUserInfo);
-        break;
-      default:
         break;
     }
   });
   return isSameBatch || isSameDepartment || isSameClass;
 };
 
+<<<<<<< HEAD
+=======
 const isUserFromSameBatch = (user, currentUserInfo) => {
   return currentUserInfo.year === user.year;
 };
 const isUserFromSameDepartment = (user, currentUserInfo) => {
   return currentUserInfo.department === user.department;
 };
+>>>>>>> master
 const isUserFromSameClass = (user, currentUserInfo) => {
   return (
     currentUserInfo.year === user.year &&
@@ -87,11 +144,43 @@ const isUserFromSameClass = (user, currentUserInfo) => {
     currentUserInfo.section === user.section
   );
 };
+<<<<<<< HEAD
+=======
 
+>>>>>>> master
 export class UserCards extends Component {
   constructor(props) {
     super(props);
     this.state = {
+<<<<<<< HEAD
+      isUserPresent: true,
+      usersLoaded: false,
+      error: "",
+    };
+  }
+
+  async componentDidMount() {
+    let data;
+    if (users.length < 1) {
+      data = await fetchUsers();
+      if (data.users) {
+        completeUsersArray = data.users;
+        users = data.users;
+        this.setState({ usersLoaded: true, isUserPresent: true });
+      } else {
+        this.setState({
+          usersLoaded: true,
+          isUserPresent: false,
+          error: data.error,
+        });
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    users = [];
+    searchUsers = [];
+=======
       users: [],
       isUserPresent: true,
       display: [],
@@ -107,107 +196,129 @@ export class UserCards extends Component {
   componentWillUnmount() {
     Users = [];
     SearchUsers = [];
+>>>>>>> master
   }
 
   componentDidUpdate(prevProps) {
     this.updateUsers(prevProps);
   }
 
-  updateUsersArray = (searchValue, filterValues) => {
-    if (!searchValue) {
-      if (FilteredUsers) return FilteredUsers;
-      else return CompleteUsersArray;
-    } else {
-      if (filterValues.length)
-        return FilteredUsers.filter((user) => {
-          let userFullName = user.firstName + user.lastName;
-          console.log(user);
-          return userFullName.toLowerCase().includes(searchValue.toLowerCase());
-        });
-      else
-        return CompleteUsersArray.filter((user) => {
-          let userFullName = user.firstName + user.lastName;
-
-          console.log(user);
-          return userFullName.toLowerCase().includes(searchValue.toLowerCase());
-        });
-    }
-  };
-
-  filterUsers = (searchValue, filterValues) => {
-    if (!filterValues.length) {
-      if (SearchUsers) return SearchUsers;
-      else return CompleteUsersArray;
-    } else {
-      if (searchValue)
-        return SearchUsers.filter((user) => {
-          return this.checkUserValid(user, filterValues);
-        });
-      else
-        return CompleteUsersArray.filter((user) => {
-          return this.checkUserValid(user, filterValues);
-        });
-    }
-  };
-
-  checkUserValid = (user, filterValues) => {
-    let isSameBatch = false;
-    let isSameDepartment = false;
-    let isSameClass = false;
-    filterValues.forEach((value) => {
-      switch (value) {
-        case FILTER_TYPES.BATCH:
-          isSameBatch = this.isUserFromSameBatch(user, this.props.currentUser);
-          break;
-        case FILTER_TYPES.DEPARTMENT:
-          isSameDepartment = this.isUserFromSameDepartment(
-            user,
-            this.props.currentUser
-          );
-          break;
-        case FILTER_TYPES.SECTION:
-          isSameClass = this.isUserFromSameClass(user, this.props.currentUser);
-          break;
-      }
-    });
-    return isSameBatch || isSameDepartment || isSameClass;
-  };
-
-  isUserFromSameBatch = (user) => {
-    return this.props.currentUser.year === user.year;
-  };
-  isUserFromSameDepartment = (user) => {
-    return this.props.currentUser.department === user.department;
-  };
-  isUserFromSameClass = (user) => {
-    return (
-      this.props.currentUser.year === user.year &&
-      this.props.currentUser.department === user.department &&
-      this.props.currentUser.section === user.section
-    );
-  };
-
   updateUsers(prevProps) {
     if (prevProps.searchValue !== this.props.searchValue) {
-      Users = this.updateUsersArray(
-        this.props.searchValue,
-        this.props.filterValues
-      );
+<<<<<<< HEAD
+      users = updateUsersArray(this.props.searchValue, this.props.filterValues);
+      searchUsers = users;
+      if (users.length === 0) {
+=======
+      Users = updateUsersArray(this.props.searchValue, this.props.filterValues);
       SearchUsers = Users;
       if (Users.length === 0) {
+>>>>>>> master
         this.noUsersFound();
       } else {
         this.UserFound();
       }
     }
     if (prevProps.filterValues !== this.props.filterValues) {
-      Users = this.filterUsers(this.props.searchValue, this.props.filterValues);
+<<<<<<< HEAD
+      users = filterUsers(this.props.searchValue, this.props.filterValues);
+      filteredUsers = users;
+      if (users.length === 0) {
+=======
+      Users = filterUsers(this.props.searchValue, this.props.filterValues);
       FilteredUsers = Users;
       if (Users.length === 0) {
+>>>>>>> master
         this.noUsersFound();
       } else {
         this.UserFound();
       }
+<<<<<<< HEAD
+    }
+    if (this.props.searchValue === "" && this.props.filterValues.length < 1) {
+      users = completeUsersArray;
+    }
+  }
+
+  noUsersFound() {
+    this.setState({
+      isUserPresent: false,
+    });
+  }
+
+  UserFound() {
+    this.setState({
+      isUserPresent: true,
+    });
+  }
+
+  render() {
+    return !this.state.usersLoaded ? (
+      <Container>
+        <Row>
+          <Col md={{ span: 6, offset: 3 }}>
+            <CircularProgress color="secondary" />
+          </Col>
+        </Row>
+      </Container>
+    ) : this.state.error ? (
+      <Container>
+        <Row>
+          <Col md={{ span: 6, offset: 3 }}>
+            <Typography variant="h4">Error!</Typography>
+            <Typography variant="h6">
+              {this.props.usersData.usersError}
+            </Typography>
+          </Col>
+        </Row>
+      </Container>
+    ) : (
+      <Container>
+        <Row className="d-space-cards-display-row">
+          {users.length > 0 ? (
+            users.map((user) => {
+              let linkPath = `/id=${user.rollNumber}`;
+              return (
+                <Link to={linkPath}>
+                  <UserCard
+                    className="d-space-card"
+                    title={user.firstName + " " + user.lastName}
+                    isAlumni={user.isAlumni}
+                    department={user.department}
+                    // description = { dSpace.description }
+                    key={user.id}
+                  />
+                </Link>
+              );
+            })
+          ) : (
+            <Fragment>
+              <center>
+                <Typography variant="h4">Oof, user not found!</Typography>
+              </center>
+              <br />
+              <center>
+                <Typography variant="h6">
+                  if you have your friends who are missing here, ask them to
+                  register on DISHA!
+                </Typography>
+              </center>
+            </Fragment>
+          )}
+        </Row>
+      </Container>
+    );
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    userData: state.user,
+  };
+};
+
+export default connect(mapStateToProps)(UserCards);
+=======
     }
     if (this.props.searchValue === "" && this.props.filterValues.length < 1) {
       Users = CompleteUsersArray;
@@ -245,7 +356,7 @@ export class UserCards extends Component {
       .catch((err) => {
         console.log("Error getting documents", err);
       });
-    this.countByDept(Users);
+      this.countByDept(Users)
     SearchUsers = Users;
     CompleteUsersArray = Users;
     FilteredUsers = Users;
@@ -253,7 +364,7 @@ export class UserCards extends Component {
   }
 
   countByDept(users) {
-    let count = {};
+    let count = {}
     count["CSE"] = users.filter((obj) => obj.department === "CSE").length;
     count["IT"] = users.filter((obj) => obj.department === "IT").length;
     count["ECE"] = users.filter((obj) => obj.department === "ECE").length;
@@ -283,12 +394,10 @@ export class UserCards extends Component {
               Users.map((User) => {
                 let linkPath = `/id=${User.rollNumber}`;
                 return (
-                  <Link to={linkPath} key={User.rollNumber}>
+                  <Link to={linkPath}>
                     <UserCard
                       className="d-space-card"
                       title={User.firstName + " " + User.lastName}
-                      imageSrc={User.profileImagePath}
-                      image={!!User.profileImagePath}
                       // description = { dSpace.description }
                       key={User.firstName}
                     />
@@ -317,3 +426,4 @@ export class UserCards extends Component {
 }
 
 export default UserCards;
+>>>>>>> master

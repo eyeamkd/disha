@@ -1,6 +1,20 @@
+import {
+<<<<<<< HEAD
+    Button,
+    CircularProgress, FormControl,
+    FormHelperText, TextField, Typography
+} from "@material-ui/core";
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+import firebase from 'firebase/app';
 import React, { Component } from "react";
 import { Container } from "react-bootstrap";
-import {
+import 'react-quill/dist/quill.snow.css';
+import { Redirect } from "react-router-dom";
+import { database } from '../../firebase/firebase.utils';
+import LocationSearch from './LocationSearch';
+import "./style.css";
+=======
   Typography,
   FormControl,
   TextField,
@@ -22,13 +36,9 @@ import { Redirect } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
 import firebase from "firebase/app";
 import LocationSearch from "./LocationSearch";
-import { ImageUploadComponent } from "../../shared/ImageUploadComponent";
-import { ProfileImage } from "../Profile/ProfileImage";
-import { getInitials, getUpdatedObjectByProperty } from "../../utils/Functions";
+>>>>>>> master
 
 let posts = [];
-let infoUpdated = false;
-let initalUserState = null;
 export default class EditProfile extends Component {
   constructor(props) {
     super(props);
@@ -49,61 +59,56 @@ export default class EditProfile extends Component {
       isCurrentPasswordValid: true,
       isNewPasswordValid: true,
       isConfirmPasswordValid: true,
-      isConfirmPasswordValid: true,
       cities: [],
-      uploadImageString: "",
-      imageUploaded: false,
-      profileImage: "",
-      imageDeleted: false,
-      infoChanged: false,
     };
   }
 
-  onProfileImageUpdated = (updatedImageUrl) => {
-    console.log("Profile Image updated with", updatedImageUrl);
-    const { currentUserInfo } = this.state;
-    this.setState({
-      currentUserInfo: getUpdatedObjectByProperty(
-        currentUserInfo,
-        "profileImagePath",
-        updatedImageUrl
-      ),
-      profileImage: updatedImageUrl,
-      infoChanged: true,
-    });
-  };
-
+<<<<<<< HEAD
+    constructor(props) {
+        super(props);
+        this.state = {
+            firstName: null,
+            lastName: null,
+            location: "",
+            company: "",
+            currentPassword: null,
+            newPassword: null,
+            confirmPassword: null,
+            onDataSubmitting: false,
+            detailsUpdatedSuccessfully: false,
+            currentUserInfo: null,
+            userDataReceived: false,
+            postsUpdated: false,
+            isPasswordTab: false,
+            isCurrentPasswordValid: true,
+            isNewPasswordValid: true,
+            isConfirmPasswordValid: true,
+            cities: []
+        }
+=======
   componentDidMount() {
     this.getUserDetails();
-    this.getCities(); 
+    this.getCities();
   }
+>>>>>>> master
 
   componentWillUnmount() {
     posts = [];
-    if (this.checkIfUserInfoChanged()) {
-      this.updateUserDetails();
-    }
   }
 
-  // componentDidUpdate(prevProps, prevState, snapshot) {
-  //   // infoUpdated = true;
-  // }
-
-  handleTextChange = (
-    event,
-    key = event.target.id,
-    value = event.target.value
-  ) => {
+  handleTextChange = (event) => {
     this.setState({
-      currentUserInfo: getUpdatedObjectByProperty(
-        this.state.currentUserInfo,
-        key,
-        value
-      ),
-      infoChanged: true,
+      [event.target.id]: event.target.value,
     });
+    console.log(this.state);
   };
 
+  handleFirstNameChange = (event) => {
+    this.setState({ firstName: event.target.value });
+  };
+  handleLastNameChange = (event) => {
+    this.setState({ lastName: event.target.value });
+  };
   handleNewPasswordChange = (event) => {
     if (event.target.value.length < 8) {
       this.setState({ isNewPasswordValid: false });
@@ -118,14 +123,23 @@ export default class EditProfile extends Component {
     } else {
       this.setState({ isConfirmPasswordValid: true });
     }
+<<<<<<< HEAD
+
+    
+
+    handleTextChange = (event) => {
+        this.setState({
+            [event.target.id]: event.target.value
+        })
+=======
     this.setState({ newPassword: event.target.value });
   };
-
   handleConfirmPasswordChange = (event) => {
     if (event.target.value !== this.state.newPassword) {
       this.setState({ isConfirmPasswordValid: false });
     } else {
       this.setState({ isConfirmPasswordValid: true });
+>>>>>>> master
     }
     this.setState({ confirmPassword: event.target.value });
   };
@@ -161,20 +175,15 @@ export default class EditProfile extends Component {
     });
   };
 
-  checkIfUserInfoChanged = () => {
-    return (
-      JSON.stringify(initalUserState) !==
-      JSON.stringify(this.state.currentUserInfo)
-    );
-  };
-
   updateUserDetails = () => {
+    if (!this.state.firstName || !this.state.lastName) return;
     let currentUserId = localStorage.getItem("currentUserId");
     let userData = this.state.currentUserInfo;
     userData.firstName = this.state.firstName;
     userData.lastName = this.state.lastName;
     if (this.state.location) userData.location = this.state.location;
     if (this.state.company) userData.company = this.state.company;
+    localStorage.setItem("currentUserInfo", JSON.stringify(userData));
     database.collection("users").doc(currentUserId).update({
       firstName: this.state.firstName,
       lastName: this.state.lastName,
@@ -184,22 +193,18 @@ export default class EditProfile extends Component {
     this.setState({ detailsUpdatedSuccessfully: true });
   };
 
-  handleDetailsSubmit = () => { 
-    console.log("In HDS");
+  handleDetailsSubmit = () => {
+    debugger;
     if (this.isNameChanged()) {
       this.setState({ postsUpdated: false });
       this.updatePostData();
     }
-    if (this.checkIfUserInfoChanged()) {
+    if (this.isNameChanged() || this.isOtherDetailsChanged()) {
       this.updateUserDetails();
       this.setState({
         onDataSubmitting: true,
       });
     }
-  };
-
-  handleImageUpload = (base64string) => {
-    this.setState({ uploadImageString: base64string, imageUploaded: true });
   };
 
   handlePasswordSubmit = () => {
@@ -231,7 +236,6 @@ export default class EditProfile extends Component {
   getUserDetails = () => {
     let currentUserInfo = localStorage.getItem("currentUserInfo");
     let userData = JSON.parse(currentUserInfo);
-    initalUserState = userData;
     this.setState({
       currentUserInfo: userData,
       userDataReceived: true,
@@ -239,7 +243,6 @@ export default class EditProfile extends Component {
       lastName: userData.lastName,
       company: userData.company,
       location: userData.location,
-      profileImage: userData.profileImagePath,
     });
   };
 
@@ -271,6 +274,14 @@ export default class EditProfile extends Component {
     });
   };
 
+  handleCompanyChange = (event) => {
+    this.state.company = event.target.value;
+  };
+
+  handleSearchChange = (value) => {
+    this.state.location = value;
+  };
+
   render() {
     // console.log(this.state);
     if (this.state.detailsUpdatedSuccessfully) {
@@ -289,7 +300,14 @@ export default class EditProfile extends Component {
       this.state.cities.length < 1
     ) {
       return (
-        <div className="progress-container">
+        <div
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
           <CircularProgress size={80} />
         </div>
       );
@@ -297,36 +315,6 @@ export default class EditProfile extends Component {
       return (
         <Container component="main" maxWidth="xs">
           <Typography variant="h1">Edit Profile</Typography>
-
-          <Grid container className="profile-image-grid-container">
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              style={{ maxWidth: "250px", margin: "15px" }}
-            >
-              <ProfileImage
-                name={getInitials(
-                  this.state.currentUserInfo.firstName,
-                  this.state.currentUserInfo.lastName
-                )}
-                scale={250}
-                variant="square"
-                image={!!this.state.profileImage}
-                imageSrc={this.state.profileImage}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <ImageUploadComponent
-                image={
-                  !!this.state.profileImage ? this.state.profileImage : false
-                }
-                onImageUpload={this.handleImageUpload}
-                onProfileImageUpdated={this.onProfileImageUpdated}
-                context="user"
-              />
-            </Grid>
-          </Grid>
           <Grid container>
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>
@@ -337,7 +325,7 @@ export default class EditProfile extends Component {
                   placeholder={this.state.currentUserInfo.firstName}
                   variant="outlined"
                   required
-                  onChange={this.handleTextChange}
+                  onChange={this.handleFirstNameChange}
                   error={this.state.isFirstNameInvalid}
                 />
               </FormControl>
@@ -351,7 +339,7 @@ export default class EditProfile extends Component {
                   placeholder={this.state.currentUserInfo.lastName}
                   variant="outlined"
                   required
-                  onChange={this.handleTextChange}
+                  onChange={this.handleLastNameChange}
                   error={this.state.isLastNameInvalid}
                 />
               </FormControl>
@@ -362,9 +350,7 @@ export default class EditProfile extends Component {
               <LocationSearch
                 defaultCity={this.state.currentUserInfo.location}
                 cities={this.state.cities}
-                handleSearchChange={(event, newValue) =>
-                  this.handleTextChange(event, "location", newValue)
-                }
+                handleSearchChange={this.handleSearchChange}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -375,22 +361,22 @@ export default class EditProfile extends Component {
                   defaultValue={this.state.currentUserInfo.company || ""}
                   placeholder={this.state.currentUserInfo.company || ""}
                   variant="outlined"
-                  onChange={this.handleTextChange}
+                  onChange={this.handleCompanyChange}
                   error={this.state.isCompanyInvalid}
                 />
               </FormControl>
             </Grid>
           </Grid>
-
           <Grid container direction="row" justify="center">
             <Button
+              type="submit"
               variant="contained"
               color="secondary"
               className="button"
               size="large"
-              onClick={() => this.handleDetailsSubmit()}
+              onClick={this.handleDetailsSubmit}
             >
-              Save Changes
+              <div id="textColor">Save Changes</div>
             </Button>
           </Grid>
           <br />

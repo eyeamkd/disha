@@ -18,17 +18,21 @@ import { connect } from "react-redux";
 import {getInitials} from '../../utils/Functions';
 
 export class Profile extends Component {
-  constructor(props) {
-    super(props);
+
+  constructor(props) { 
+    super(props); 
     this.state = {
-      info: null,
-    };
-    let currentUserId = localStorage.getItem("currentUserId");
-    let userData = database.collection("users").doc(currentUserId);
+      info: null
+    }
+    let currentUserId = this.props.currentUser.id
+    let userData = database.collection('users').doc(currentUserId);
     this.getUserData(userData);
   }
 
   getUserData(userData) {
+    if(this.props.currentUser) {
+      this.setState({ info: this.props.currentUser })
+    }
     var a;
     a = userData
       .get()

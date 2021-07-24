@@ -19,17 +19,11 @@ class Navigation extends React.Component {
     this.setState({ userInfo: this.props.userInfo });
   }
 
-  getCurrentUserId() {
-    let currentUserId = localStorage.getItem("currentUserId");
-    if (currentUserId) return true;
-    else return false;
-  }
-
   render() {
     return (
       <UserContext.Consumer>
         {(value) => {
-          switch (value.userType) {
+          switch (value.state.userType) {
             case userRoles.admin:
               return <AdminNavigation />;
             case userRoles.general:

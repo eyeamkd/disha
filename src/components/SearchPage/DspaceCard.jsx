@@ -1,3 +1,4 @@
+import { Box, Card, CardContent, Typography } from '@material-ui/core';
 import React, { Component } from 'react';
 import { Card, CardContent, Typography, Box, CardHeader } from '@material-ui/core';  
 import { BrowserRouter as Router, Route } from "react-router-dom";
@@ -9,6 +10,7 @@ import Dspace from '../Dspace';
 import "./styles.css"; 
 import DspaceProfileImage from '../Dspace/DspaceProfileImage/index';
 import { CardFooter } from 'reactstrap';
+
 
 export class DspaceCard extends Component { 
     constructor(props){ 

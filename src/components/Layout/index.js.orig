@@ -25,7 +25,30 @@ import { menu } from "../../navigation/menu";
 import { UserContext } from "../../utils/Context";
 import { setUser } from "./../../redux/user/user-actions";
 
+<<<<<<< HEAD
+import { setUser } from './../../redux/user/userActions';
+
+
+const getdrawerWidth = () => {     
+  let userInfo = localStorage.getItem('currentUserInfo')
+  if(userInfo!=null){ 
+    if(!userInfo.isAdmin){ 
+      return 240; 
+    } 
+    else { 
+      return 0;
+    }
+  }  
+  else 
+    return 0;
+} 
+
+
+
+const drawerWidth = getdrawerWidth(); 
+=======
 const drawerWidth = 240;
+>>>>>>> master
 console.log("Drawer width is ", drawerWidth);
 
 const useStyles = makeStyles((theme) => ({
@@ -89,9 +112,6 @@ function Layout(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [currentUser, setCurrentUser] = React.useState(
-    JSON.parse(localStorage.getItem("currentUserInfo") || null)
-  );
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -106,7 +126,6 @@ function Layout(props) {
   };
 
   const handleSignOut = () => {
-    setCurrentUser(null)
     auth.signOut().then(redirect()).then(changeCurrentUser());
   };
 
@@ -144,7 +163,7 @@ function Layout(props) {
                 </Typography>
               </Box>
               <Box>
-                {currentUser ? (
+                {props.currentUser ? (
                   <Button
                     type="submit"
                     variant="contained"
@@ -187,8 +206,8 @@ function Layout(props) {
             </div>
             <Divider />
             <List>
-              {!!value.state.userType ? (
-                menu[value.state.userType].map((menuItem, key) => (
+              {!!value.userType ? (
+                menu[value.userType].map((menuItem, key) => (
                   <ListItem
                     component={Link}
                     to={menuItem.endpoint}
