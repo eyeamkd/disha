@@ -31,7 +31,6 @@ export class SearchPage extends Component {
 }
 
 const mapStateToProps = state => { 
-    console.log("State Updated!!", state);
    return {searchValue : state.dSpaceSearch.searchValue}
 }
 

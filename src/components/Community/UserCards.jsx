@@ -17,6 +17,77 @@ let FilteredUsers = [];
 
 let CompleteUsersArray = [];
 
+const updateUsersArray = (searchValue, filterValues) => {
+  if (!searchValue) {
+    if (FilteredUsers) return FilteredUsers;
+    else return CompleteUsersArray;
+  } else {
+    if (filterValues.length)
+      return FilteredUsers.filter((user) => {
+        let userFullName = user.firstName + user.lastName;
+        return userFullName.toLowerCase().includes(searchValue.toLowerCase());
+      });
+    else
+      return CompleteUsersArray.filter((user) => {
+        let userFullName = user.firstName + user.lastName;
+        return userFullName.toLowerCase().includes(searchValue.toLowerCase());
+      });
+  }
+};
+
+const filterUsers = (searchValue, filterValues) => {
+  let currentUserInfo = JSON.parse(localStorage.getItem("currentUserInfo"));
+  if (!filterValues.length) {
+    if (SearchUsers) return SearchUsers;
+    else return CompleteUsersArray;
+  } else {
+    if (searchValue)
+      return SearchUsers.filter((user) => {
+        return checkUserValid(user, currentUserInfo, filterValues);
+      });
+    else
+      return CompleteUsersArray.filter((user) => {
+        return checkUserValid(user, currentUserInfo, filterValues);
+      });
+  }
+};
+
+const checkUserValid = (user, currentUserInfo, filterValues) => {
+  let isSameBatch = false;
+  let isSameDepartment = false;
+  let isSameClass = false;
+  filterValues.forEach((value) => {
+    switch (value) {
+      case FILTER_TYPES.BATCH:
+        isSameBatch = isUserFromSameBatch(user, currentUserInfo);
+        break;
+      case FILTER_TYPES.DEPARTMENT:
+        isSameDepartment = isUserFromSameDepartment(user, currentUserInfo);
+        break;
+      case FILTER_TYPES.SECTION:
+        isSameClass = isUserFromSameClass(user, currentUserInfo);
+        break;
+      default:
+        break;
+    }
+  });
+  return isSameBatch || isSameDepartment || isSameClass;
+};
+
+const isUserFromSameBatch = (user, currentUserInfo) => {
+  return currentUserInfo.year === user.year;
+};
+const isUserFromSameDepartment = (user, currentUserInfo) => {
+  return currentUserInfo.department === user.department;
+};
+const isUserFromSameClass = (user, currentUserInfo) => {
+  return (
+    currentUserInfo.year === user.year &&
+    currentUserInfo.department === user.department &&
+    currentUserInfo.section === user.section
+  );
+};
+
 export class UserCards extends Component {
   constructor(props) {
     super(props);
@@ -216,6 +287,8 @@ export class UserCards extends Component {
                     <UserCard
                       className="d-space-card"
                       title={User.firstName + " " + User.lastName}
+                      imageSrc={User.profileImagePath}
+                      image={!!User.profileImagePath}
                       // description = { dSpace.description }
                       key={User.firstName}
                     />

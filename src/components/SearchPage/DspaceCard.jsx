@@ -1,6 +1,15 @@
 import { Box, Card, CardContent, Typography } from '@material-ui/core';
 import React, { Component } from 'react';
-import "./styles.css";
+import { Card, CardContent, Typography, Box, CardHeader } from '@material-ui/core';  
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Container, Col, Row } from "react-bootstrap";
+import { borderColor } from '@material-ui/system';
+import { Link } from 'react-router-dom';
+import Dspace from '../Dspace';
+
+import "./styles.css"; 
+import DspaceProfileImage from '../Dspace/DspaceProfileImage/index';
+import { CardFooter } from 'reactstrap';
 
 
 export class DspaceCard extends Component { 
@@ -13,26 +22,28 @@ export class DspaceCard extends Component {
         return (   
                 <Box  
                 boxShadow={2}
-                borderColor="primary"
+                borderColor={'yellow'}
                 borderRadius={16}
                 style={{ 
-                    margin: '0.5rem',
+                    margin: '0.5rem', 
+                    border: '1px solid #f57f17'
                 }}
                 >  
+                <Container style={{display:'flex', justifyContent:'center'}}>
+                <DspaceProfileImage imageSrc={this.props.imageSrc}/>
+                </Container>  
                     <Card  
                     variant="outlined"
                     style={{ 
                         width: '18rem',
-                        minHeight: '12rem',
-                        border: '1px solid #f57f17'
-
+                        height: '12rem',   
+                        borderRadius:'16px'
                     }}
-                    className="grow"
-                    >  
-                        <CardContent>  
-                            <center><h4>{this.props.title}</h4></center>
+                    > 
+                    <CardHeader title={<Typography variant="h6" align="center" style={{fontWeight:'300'}} >{this.props.title}</Typography>}/> 
+                        <CardContent style={{ overflow:'scroll', height:'6rem', padding:'10px'}} >  
                             <Typography>{this.props.description}</Typography>
-                        </CardContent>
+                        </CardContent> 
                     </Card>
                 </Box>
         )

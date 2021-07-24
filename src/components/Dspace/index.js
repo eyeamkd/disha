@@ -1,20 +1,26 @@
-import React, { Component } from "react";
-import DspaceHeader from "./DspaceHeader";
-import Button from "@material-ui/core/Button";
-import { Container, Typography, CircularProgress } from "@material-ui/core";
-import { Row, Col } from "react-bootstrap";
-import { database } from "../../firebase/firebase.utils";
-import firebase from "firebase/app";
+import React, { Component } from 'react'
+import DspaceHeader from './DspaceHeader'
+import Button from '@material-ui/core/Button';
+import { Container, Typography, CircularProgress, Avatar } from '@material-ui/core';
+import { Row, Col } from 'react-bootstrap'; 
+import {database} from '../../firebase/firebase.utils';
+import firebase from 'firebase/app'
+import UploadModal from '../UploadModal';
+import DspaceProfileImage from './DspaceProfileImage'; 
 import { Redirect } from "react-router";
 
 let dSpace = {};
 export class Dspace extends Component {
-  state = {
-    filterClicked: null,
-    noPostsYet: false,
-    filterValue: "None",
-    joined: false,
-  };
+    
+    state = {
+        filterClicked: null,
+        noPostsYet: false,
+        filterValue: "None",
+        userInfo: null,
+        joined: false,
+        userDataReceived: false,
+        editModalOpen : false
+      };
 
   constructor(props) {
     super(props);

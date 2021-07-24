@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
+import "firebase/storage";
 import firebaseConfig from "./firebase.config.json";
 import firebaseTestingConfig from "./firebase.testing-config.json";
 
@@ -28,6 +29,16 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
     }
   }
   return userRef;
+}; 
+
+export const storeImageInFireStore = async (file,path) => {
+  let userProfileImageStorageReference = storage.ref().child(path);
+  return  userProfileImageStorageReference.put(file)
+}
+
+export const getImageFromSource = async (imageSrc) => {
+  let imageStorageReference = firebase.storage().ref(imageSrc);
+  return imageStorageReference.getDownloadURL();
 };
 
 export async function getUserDocument(userId) {
@@ -57,3 +68,4 @@ if (process.env.NODE_ENV === "development") {
 
 export const auth = firebase.auth();
 export const database = firebase.firestore();
+export const storage = firebase.storage();

@@ -45,4 +45,14 @@
 
 .post-submitted-text{
     color: green;
+} 
+
+#uploadIcon{ 
+    margin: 10px; 
+    margin-bottom: 20px; 
+
+} 
+
+#uploadIcon--button{ 
+    margin: 15px;
 }
