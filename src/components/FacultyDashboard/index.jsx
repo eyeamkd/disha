@@ -43,8 +43,8 @@ const FacultyDashboard = (props) => {
   const [department, setdepartment] = useState("");
   const [batchWiseUsers, setBatchWiseUsers] = useState({});
   const classes = useStyles();
-
-  let dept = useContext(UserContext).facultyData.department;
+console.log("User context is", useContext(UserContext));
+  let dept = useContext(UserContext).state.currentUser.department;
   useEffect(() => {
     getAllUsers(dept);
   }, [dept]);
@@ -84,10 +84,10 @@ const FacultyDashboard = (props) => {
 
   return (
     <UserContext.Consumer>
-      {(value) => (
+      {(value) => ( 
         <React.Fragment>
           <Typography variant="h1" style={{paddingBottom:'30px'}}>
-            Department of {value.facultyData.department}
+            Department of {dept}
           </Typography>
           <React.Fragment>
             <Typography variant="h4" className={classes.subHeadingStyle}>

@@ -5,6 +5,7 @@ import AdminDashboard from "../components/Admin/AdminDashboard";
 import SignIn from "../components/Auth/SignIn/SignIn";
 import FacultyDashboard from "../components/FacultyDashboard";
 import LandingPage from "../components/LandingPage";
+import { UserContext } from "../utils/Context";
 
 export class FacultyNavigation extends Component {
   constructor(props) {
@@ -26,10 +27,11 @@ export class FacultyNavigation extends Component {
     else return false;
   }
   render() {
-    return (
-      <>
-        <Switch>
-          <Route exact path="/home" render={() => <Redirect to="/dashboard" />} />
+    return ( 
+       <UserContext.Consumer> 
+      {(value)=> ( 
+       <Switch> 
+        <Route exact path="/home" render={() => <Redirect to="/dashboard" />} />
           <Route
             path="/dashboard"
             exact
@@ -48,7 +50,7 @@ export class FacultyNavigation extends Component {
               this.getCurrentUserId() ? (
                 <Redirect to="/dashboard" />
               ) : (
-                <SignIn />
+                <SignIn updateUser={value.updateUser}/>
               )
             }
           />
@@ -61,8 +63,9 @@ export class FacultyNavigation extends Component {
               !this.getCurrentUserId() ? <Redirect to="/SignIn" /> : <NoMatch />
             }
           />
-        </Switch>
-      </>
+       </Switch> 
+      )}
+      </UserContext.Consumer>
     );
   }
 }

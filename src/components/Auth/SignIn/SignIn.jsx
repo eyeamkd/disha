@@ -20,6 +20,7 @@ import { getUserDocument } from "../../../firebase/firebase.utils";
 import Logo from "../../Logo/Logo";
 import "./SignIn.css";
 import { Redirect } from "react-router-dom";
+import userRoles from "../../../utils/userRoles";
 
 class SignIn extends React.Component {
   constructor(props) {
@@ -35,14 +36,16 @@ class SignIn extends React.Component {
     errorMessage: "",
     signinErrorMessage: "Please fill all the fields",
     labelWidth: 0,
-    inputLabel: null, 
-    isSigninClicked:false
+    inputLabel: null,
+    isSigninClicked: false,
+    role: userRoles.signedout,
   };
 
   handleEmailChange = (event) => {
-    let isEmailProper = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-      event.target.value
-    );
+    let isEmailProper =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+        event.target.value
+      );
     event.target.value.length < 1 || !isEmailProper
       ? this.setState({ isEmail: true })
       : this.setState({ isEmail: false });
@@ -54,23 +57,22 @@ class SignIn extends React.Component {
   };
 
   handleSigninClick = async () => {
-    this.setState({isSigninClicked:true});
+    this.setState({ isSigninClicked: true });
     const { email, password } = this.state;
     if (!this.state.isEmail && !this.state.isPassword) {
       try {
-        var signedIn = await auth
-          .signInWithEmailAndPassword(email, password)
-          .then((userCredential) => {
-            localStorage.setItem("currentUserId", userCredential.user.uid);
-            let snapshot = getUserDocument(userCredential.user.uid).then(
-              async (data) => {
-                await this.props.updateUser(data);
-                this.setState({ isSignin: true }, () =>
-      this.setState({ signinErrorMessage: "" })
-    );
-              }
-            );
-          });
+        var userCredential = await auth.signInWithEmailAndPassword(
+          email,
+          password
+        );
+        localStorage.setItem("currentUserId", userCredential.user.uid);
+        let userObject = await getUserDocument(userCredential.user.uid);
+        console.log("user data for updating", userObject.data);
+        await this.props?.updateUser(userObject.data, userObject.role);
+        this.setState({ isSignin: true, role: userObject.role }, () =>
+          this.setState({ signinErrorMessage: "" })
+        );
+
         this.setState({
           email: "",
           password: "",
@@ -80,31 +82,44 @@ class SignIn extends React.Component {
           this.setState({
             errorMessage: "Incorrect e-mail ID or password. Please check!",
             isSignin: false,
+            role: userRoles.signedout,
           });
         else if (error.code === "auth/wrong-password")
           this.setState({
             errorMessage: "Incorrect e-mail ID or password. Please check!",
             isSignin: false,
+            role: userRoles.signedout,
           });
         console.error(error);
       }
       // console.log("ok")
     } else {
       // console.log("not ok")
-      this.setState({ isSignin: false }, () =>
+      this.setState({ isSignin: false, role: userRoles.signedout }, () =>
         this.setState({ signinErrorMessage: "* Please fill all the fields" })
       );
       return;
     }
   };
 
-  render() {   
-    if(this.state.isSignin){
-      return( 
-        <Redirect to="/home"/>
-      )
+  redirectUser() {
+    switch (this.state.role) {
+      case userRoles.admin:
+        return <Redirect to="/dashboard" />;
+      case userRoles.faculty:
+        return <Redirect to="/dashboard" />;
+      case userRoles.general:
+        return <Redirect to="/home" />;
+      default:
+        return <Redirect to="/SignIn" />;
     }
-    return ( 
+  }
+
+  render() {
+    if (this.state.isSignin) {
+      this.redirectUser();
+    }
+    return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className="paper">
