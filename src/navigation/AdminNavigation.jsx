@@ -6,6 +6,7 @@ import OverAllStats from "../components/Admin/OverAllStats";
 import SetAdmins from "../components/Admin/SetAdmins/SetAdmins";
 import SignIn from "../components/Auth/SignIn/SignIn";
 import LandingPage from "../components/LandingPage";
+import { UserContext } from "../utils/Context";
 
 export class AdminNavigation extends Component {
   constructor(props) {
@@ -28,9 +29,10 @@ export class AdminNavigation extends Component {
   }
   render() {
     return (
-      <>
+      <UserContext.Consumer> 
+      {(value)=> ( 
         <Switch>
-          <Route path="/home" exact render={() => <LandingPage />} />
+          {/* <Route path="/home" exact render={() => <LandingPage />} /> */}
           <Route
             path="/dashboard"
             exact
@@ -49,7 +51,7 @@ export class AdminNavigation extends Component {
               this.getCurrentUserId() ? (
                 <Redirect to="/dashboard" />
               ) : (
-                <SignIn />
+                <SignIn  updateUser={value.updateUser}/>
               )
             }
           />
@@ -82,7 +84,8 @@ export class AdminNavigation extends Component {
             }
           />
         </Switch>
-      </>
+      )} 
+      </UserContext.Consumer>
     );
   }
 }

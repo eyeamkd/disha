@@ -11,18 +11,18 @@ class Navigation extends React.Component {
     this.state = {
       userInfo: null,
     };
-
-    console.log("Admin Navigation");
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps() { 
+    console.log("UserInfo is", this.props.userInfo);
     this.setState({ userInfo: this.props.userInfo });
   }
 
   render() {
     return (
       <UserContext.Consumer>
-        {(value) => {
+        {(value) => { 
+          console.log("Value in Navigation is",value);
           switch (value.state.userType) {
             case userRoles.admin:
               return <AdminNavigation />;

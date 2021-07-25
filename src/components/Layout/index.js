@@ -17,7 +17,8 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 //import HomeIcon from "@material-ui/icons/HomeRounded";
 import MenuIcon from "@material-ui/icons/Menu";
 import clsx from "clsx";
-import React from "react";
+import React, { useState } from "react";
+import { useEffect } from "react";
 import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 import { auth } from "../../firebase/firebase.utils";
@@ -89,9 +90,17 @@ function Layout(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [signedIn, setSignedIn] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState(
-    JSON.parse(localStorage.getItem("currentUserInfo") || null)
-  );
+    JSON.parse(localStorage.getItem("currentUserInfo")) || null);
+   
+
+  useEffect(()=>{   
+    let storage = JSON.parse(localStorage.getItem("currentUserInfo")) || null;
+    if(storage!=null)
+    setCurrentUser(storage);
+  },[props.userInfo]) 
+
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -105,9 +114,9 @@ function Layout(props) {
     return <Redirect to="/SignIn" />;
   };
 
-  const handleSignOut = () => {
-    setCurrentUser(null)
-    auth.signOut().then(redirect()).then(changeCurrentUser());
+  const handleSignOut = async () => { 
+    setCurrentUser(null);
+   await auth.signOut().then(redirect()).then(()=>changeCurrentUser());
   };
 
   const changeCurrentUser = () => {

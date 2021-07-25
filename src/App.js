@@ -4,7 +4,7 @@ import Layout from "./components/Layout";
 import { auth, database, getUserDocument } from "./firebase/firebase.utils";
 import Navigation from "./navigation/index";
 import { setUser } from "./redux/user/user-actions";
-import { UserContext } from "./utils/Context/index";
+import { getUserContext, UserContext } from "./utils/Context/index";
 import userRoles from "./utils/userRoles";
 import { isAdmin } from "./utils/Functions";
 import firebase from "firebase";
@@ -19,6 +19,8 @@ export class App extends Component {
       admin: false,
     };
   }
+
+  mounted = false;
 
   unsubscribeFromAuth = null;
 
@@ -37,51 +39,17 @@ export class App extends Component {
     return data;
   }
 
-  // getUsers(){
-  //   let users = [];
-  //   let docs;
-  //   database.collection('users').get()
-  //   .then(snapshot => {
-  //      docs = snapshot.docs.map(doc=>doc.data())
-  //      console.log("Users are ",docs);
-  //    })
-  // }
-
-  setUserContext = async () => {
-    console.log("The Current User State is", this.state.currentUser);
-    if (!!this.state.currentUser) {
-      let admin = isAdmin(this.state.currentUser.email);
-      let { id } = this.state.currentUser;
-      const query = database.collection("faculty").doc(id);
-      if (admin) {
-        this.setState({ userType: userRoles.admin });
-      } else {
-        let snapshot = await query.get();
-        console.log("Snapshot is ", snapshot.data());
-        if (!snapshot.exists) this.setState({ userType: userRoles.general });
-        else
-          this.setState({
-            userType: userRoles.faculty,
-            facultyData: snapshot.data(),
-          });
-      }
+  setUserContext =  async () => {
+    if (this.state.currentUserId) {
+      const userObject = await getUserContext(this.state.currentUserId);
+      this.setState({
+        currentUser: userObject.data,
+        userType: userObject.role,
+      });
     } else {
-      this.setState({ userType: userRoles.signedout });
+      this.setState({ currentUser: null, userType: userRoles.signedout });
     }
   };
-
-  componentDidMounts() {
-    //app auth change event subscription
-    auth.onAuthStateChanged(async (userAuth) => {
-      if (!userAuth) {
-        //user isn signed in
-        this.setState({ currentUser: userAuth }, () => {
-          this.props.setUser(null);
-          this.setUserContext();
-        });
-      }
-    });
-  }
 
   async componentDidMount() {
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
@@ -122,14 +90,17 @@ export class App extends Component {
         this.setState({ currentUser: null }, () => {
           this.props.setUser(null);
           this.setUserContext();
-          localStorage.setItem("currentUserId", "");
-          localStorage.setItem("currentUserInfo", "");
+          // localStorage.setItem("currentUserId", "");
+          // localStorage.setItem("currentUserInfo", "");
         });
       }
     });
+    this.mounted = true;
+    if (this.mounted) this.setUserContext();
   }
 
   componentWillUnmount() {
+    this.mounted = false;
     this.unsubscribeFromAuth();
   }
 
@@ -139,10 +110,15 @@ export class App extends Component {
     // console.log(this.props.user)
   }
 
-  updateUser = (userDoc) => {
-    localStorage.setItem("currentUserId", JSON.stringify(userDoc.id));
-    localStorage.setItem("currentUserInfo", JSON.stringify(userDoc));
-    this.setState({ currentUser: userDoc });
+  updateUser = (userDoc, role = null) => {
+    console.log("faculty user doc", userDoc);
+    if (userDoc) { 
+      // Commented because there's no ID property on the user info document
+     // localStorage.setItem("currentUserId", JSON.stringify(userDoc?.id));
+      localStorage.setItem("currentUserInfo", JSON.stringify(userDoc));
+      if (role != null) this.setState({ currentUser: userDoc, userType: role });
+      else this.setState({ currentUser: userDoc });
+    }
   };
 
   render() {
@@ -156,7 +132,9 @@ export class App extends Component {
           changeCurrentUser
           userInfo={this.state.currentUser}
         >
-          <Navigation userInfo={this.state.currentUser} />
+          <Navigation
+            userInfo={(this.state.currentUser, this.state.userType)}
+          />
         </Layout>
       </UserContext.Provider>
     );
