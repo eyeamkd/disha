@@ -155,7 +155,7 @@ getUserDetails = () => {
     let getDoc = userData.get()
     .then(doc => {
         if (!doc.exists) {
-        // console.log('No such document!');
+        console.log('No such document!');
         } else { 
             
            this.setState({userDetails: doc.data(), isAuthenticated : !!doc.data().isAuthenticated })
