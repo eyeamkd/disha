@@ -42,7 +42,7 @@
     "redux-logger": "^3.0.6",
     "simple-react-comments": "^1.1.0",
     "styled-components": "^5",
-    "testcafe": "^1.8.3",
+    "testcafe": "^1.20.1",
     "typeface-roboto": "0.0.75",
     "zxcvbn": "^4.4.2"
   },
